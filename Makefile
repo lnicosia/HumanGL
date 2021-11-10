@@ -56,29 +56,34 @@ endif
 
 all: $(LIB_TARGET) $(EXEC_TARGET)
 
-$D:
-	@mkdir -p $D
-
-$O:
-	@mkdir -p $O
+$O $D $I:
+	@mkdir -p $@
 
 $D/%.d: $S/%.cpp | $D $(INCLUDES)
 	$(info Updating dep list for $<)
 	@$(CC) -MM $(CPPFLAGS) $(INCLUDES:%=-I%) $< | \
 		sed 's,\($*\)\.o[ :]*,$O\1.o $@ : ,g' > $@; \
 
-$O/%.o: $S/%.cpp | $O
+$(OBJ): $O/%.o: $S/%.cpp | $O $(INCLUDES)
 	$(CC) -c -o $@ $(CPPFLAGS) $(INCLUDES:%=-I%) $<
 
 define submodule_init
-$(if $(shell git submodule status $(1) | grep '^-'),@git submodule update --init $(1),@#)
+$(if $(shell git submodule status $(1) | grep '^-'),git submodule update --init $(1),)
 endef
+
+define init_includes
+$($(1)_DIR)/$($(1)_INC):
+	$(call submodule_init,$($(1)_DIR))
+
+endef
+
+$(eval $(foreach MOD,$(LIB_MOD) $(CMAKE_LIB_MOD),$(call init_includes,$(MOD))))
 
 $(eval $(foreach MOD,$(CMAKE_LIB_MOD),$($(MOD)_DIR)/build/$($(MOD)_LIB): MOD = $(MOD)))
 $(CMAKE_LIB): DIR = $($(MOD)_DIR)/build
 
 $(CMAKE_LIB):
-	$(call submodule_init,$(DIR))
+	@$(call submodule_init,$(DIR))
 	@mkdir -p $(DIR)
 	@sh -c "cd $(DIR); cmake .."
 	@$(MAKE) -C $(DIR)
