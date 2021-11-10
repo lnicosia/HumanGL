@@ -52,7 +52,8 @@ else
 $(error OS not supported)
 endif
 
-.PHONY: all, clean, fclean, libclean, realclean, re, relib, space, force, $(LIB_DEP)
+.PHONY: all, clean, clean(), fclean, libclean, libclean(), realclean, re, relib, space, force
+.PHONY: $(foreach MOD,$(LIB_MOD),$(if $(filter 1,$(shell make -C $($(MOD)_DIR) -q $($(MOD)_LIB) >/dev/null; echo $$?)),$($(MOD)_DIR)/$($(MOD)_LIB),))
 
 all: $(LIB_TARGET) $(EXEC_TARGET)
 
