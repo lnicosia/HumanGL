@@ -5,5 +5,5 @@
 lib/**/build
 **/.DS_STORE
 humangl
-x64/
-SDL2d.dll
+windows/x64/
+windows/SDL2d.dll

@@ -26,5 +26,5 @@ if not exist SDL2d.dll (
 			!msbuild-path! lib\SDL\build-windows\SDL2.sln
 		)
 	)
-	move lib\SDL\build-windows\Debug\SDL2d.dll .
+	move lib\SDL\build-windows\Debug\SDL2d.dll windows\
 )
