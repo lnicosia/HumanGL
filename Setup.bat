@@ -14,8 +14,8 @@ if not exist SDL2d.dll goto MoveSDL
 
 :MoveSDL
 
-if not exist lib\SDL\build-windows\SDL2.dll goto BuildSDL
-move lib\SDL\build-windows\SDL2d.dll .
+if not exist lib\SDL\build-windows\Debug\SDL2d.dll goto BuildSDL
+move lib\SDL\build-windows\Debug\SDL2d.dll .
 
 :BuildSDL
 
