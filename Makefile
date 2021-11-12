@@ -25,6 +25,8 @@ RMDIR = $(if $(wildcard $1),$(if $(if $1,$(shell ls $1),),$(warning "$1 is not e
 DEP =	$(SRC:$S/%.cpp=$D/%.d)
 OBJ =	$(SRC:$S/%.cpp=$O/%.o)
 
+TMP_DIRS=$(sort $(foreach DIRS,$(OBJ) $(DEP),$(dir $(shell echo '$(DIRS)' | sed ':do;p;s,^\(.*\)/[^/]*$$,\1,;\%^\(.*\)/[^/]*$$%b do;d'))))
+
 INCLUDES += $I
 
 $(eval $(foreach MOD,$(LIB_MOD),$(MOD)_DIR?=$L/$(MOD)))
@@ -57,15 +59,17 @@ endif
 
 all: $(LIB_TARGET) $(EXEC_TARGET)
 
-$O $D $I:
+$(TMP_DIRS) $I:
 	@mkdir -p $@
 
-$D/%.d: $S/%.cpp | $D $(INCLUDES)
+.SECONDEXPANSION:
+$D/%.d: $S/%.cpp | $$(dir $$@) $(INCLUDES)
 	$(info Updating dep list for $<)
 	@$(CC) -MM $(CPPFLAGS) $(INCLUDES:%=-I%) $< | \
 		sed 's,\($*\)\.o[ :]*,$O\1.o $@ : ,g' > $@; \
 
-$(OBJ): $O/%.o: $S/%.cpp | $O $(INCLUDES)
+.SECONDEXPANSION:
+$(OBJ): $O/%.o: $S/%.cpp |  $$(dir $$@) $(INCLUDES)
 	$(CC) -c -o $@ $(CPPFLAGS) $(INCLUDES:%=-I%) $<
 
 define submodule_init
@@ -89,7 +93,7 @@ $(CMAKE_LIB):
 	@sh -c "cd $(DIR); cmake .."
 	@$(MAKE) -C $(DIR)
 
-$(eval $(foreach MOD,$(LIB_MOD),$($(MOD)_DIR)/$($(MOD)_LIB): MOD = $(MOD)))
+$(foreach MOD,$(LIB_MOD),$(eval $($(MOD)_DIR)/$($(MOD)_LIB): MOD = $(MOD)))
 $(LIB): DIR = $($(MOD)_DIR)
 
 $(LIB):
@@ -103,31 +107,27 @@ $(LIB_TARGET): $(OBJ) project.mk
 	ar -rc $@ $(OBJ)
 	ranlib $@
 
-clean($O/% $D/%):
-	@$(call RM,$%)
+$(patsubst %,clean@%,$(OBJ) $(DEP) $(EXEC_TARGET) $(LIB_TARGET)): clean@%:
+	@$(call RM,$*)
 
-clean($(EXEC_TARGET) $(LIB_TARGET)):
-	@$(call RM,$%)
+$(foreach FILE,$(OBJ) $(DEP) $(TMP_DIR),$(eval $(if $(filter-out ./,$(dir $(FILE))),clean@$(dir $(FILE)): clean@$(FILE),)))
 
-clean($O): $(foreach file,$(OBJ),clean($(file)))
+$(TMP_DIRS:%=clean@%):
 	@$(call RMDIR,$%)
 
-clean($D): $(foreach file,$(DEP),clean($(file)))
-	@$(call RMDIR,$%)
+clean: $(TMP_DIRS:%=clean@%)
 
-clean: clean($O $D)
+fclean: clean $(patsubst %,clean@%,$(EXEC_TARGET) $(LIB_TARGET))
 
-fclean: clean clean($(EXEC_TARGET) $(LIB_TARGET))
-
-libclean($(LIB_MOD:%=$L/%)):
+$(LIB_MOD:%=libclean@$L/%):
 	$(MAKE) -s -C $% fclean "L="
 
-libclean($(CMAKE_LIB_MOD:%=$L/%/build)):
+$(CMAKE_LIB_MOD:%=libclean@$L/%/build):
 	rm -Rf $%
 
-libclean: libclean($(LIB_MOD:%=$L/%))
+libclean: $(LIB_MOD:%=libclean@$L/%)
 
-realclean: libclean($(CMAKE_LIB_MOD:%=$L/%/build))
+realclean: $(CMAKE_LIB_MOD:%=libclean@$L/%/build)
 
 re: fclean all
 relib: libclean all

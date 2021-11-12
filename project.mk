@@ -7,7 +7,7 @@ EXEC_TARGET = humangl
 SRC =	$S/main.cpp \
 
 CPPFLAGS =
-LDFLAGS =
+LDFLAGS = -lpthread -ldl
 INCLUDE =
 
 LIB_MOD = notrealengine
