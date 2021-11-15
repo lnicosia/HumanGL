@@ -1,10 +1,6 @@
 @echo off
 SetLocal EnableDelayedExpansion
 
-if not exist lib\notrealengine\.git (
-	git submodule update --init lib/notrealengine
-	)
-
 if not exist SDL2d.dll (
 
 	if not exist lib\SDL\build-windows\Debug\SDL2d.dll (
@@ -27,4 +23,18 @@ if not exist SDL2d.dll (
 		)
 	)
 	move lib\SDL\build-windows\Debug\SDL2d.dll windows\
+)
+
+if not exist NotRealEngine.dll (
+
+	if not exist lib\notrealengine\windows\x64\Debug\NotRealEngine.dll (
+	
+		if not exist lib\notrealengine\.git (
+			git submodule update --init lib/notrealengine
+			
+		)
+		echo Launching !msbuild-path!
+		!msbuild-path! "lib\notrealengine\windows\Not Real Engine.sln"
+	)
+	move lib\notrealengine\windows\x64\Debug\NotRealEngine.dll windows\
 )
