@@ -69,7 +69,7 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\lib\SDL\include;inc;$(IncludePath)</IncludePath>
+    <IncludePath>..\lib\notrealengine\inc;..\lib\SDL\include;inc;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\SDL\build-windows\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
