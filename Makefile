@@ -29,18 +29,18 @@ TMP_DIRS=$(sort $(foreach DIRS,$(OBJ) $(DEP),$(dir $(shell echo '$(DIRS)' | sed 
 
 INCLUDES += $I
 
-$(eval $(foreach MOD,$(LIB_MOD),$(MOD)_DIR?=$L/$(MOD)))
+$(foreach MOD,$(LIB_MOD),$(eval $(MOD)_DIR?=$L/$(MOD)))
 
-LIB = $(foreach MOD,$(LIB_MOD),$($(MOD)_DIR)/$($(MOD)_LIB))
-INCLUDES += $(foreach MOD,$(LIB_MOD),$($(MOD)_DIR)/$($(MOD)_INC))
+LIB = $(foreach MOD,$(LIB_MOD),$(patsubst %,$($(MOD)_DIR)/%,$($(MOD)_LIB)))
+INCLUDES += $(foreach MOD,$(LIB_MOD),$(patsubst %,$($(MOD)_DIR)/%,$($(MOD)_INC)))
 LDFLAGS += $(foreach LIBRARY,$(LIB),-L$(dir $(LIBRARY)) -l$(patsubst lib%.a,%,$(notdir $(LIBRARY))))
 
 LIB_DEP = $(LIB:%=%.d)
 
-$(eval $(foreach MOD,$(CMAKE_LIB_MOD),$(MOD)_DIR?=$L/$(MOD)))
+$(foreach MOD,$(CMAKE_LIB_MOD),$(eval $(MOD)_DIR?=$L/$(MOD)))
 
-CMAKE_LIB = $(foreach MOD,$(CMAKE_LIB_MOD),$(if $($(MOD)_LIB),$($(MOD)_DIR)/build/$($(MOD)_LIB),))
-INCLUDES += $(foreach MOD,$(CMAKE_LIB_MOD),$(if $($(MOD)_INC),$($(MOD)_DIR)/$($(MOD)_INC),))
+CMAKE_LIB = $(foreach MOD,$(CMAKE_LIB_MOD),$(if $($(MOD)_LIB),$(patsubst %,$($(MOD)_DIR)/build/%,$($(MOD)_LIB))))
+INCLUDES += $(foreach MOD,$(CMAKE_LIB_MOD),$(if $($(MOD)_INC),$(patsubst %,$($(MOD)_DIR)/%,$($(MOD)_INC))))
 LDFLAGS += $(foreach LIBRARY,$(CMAKE_LIB),-L$(dir $(LIBRARY)) -l$(patsubst lib%.a,%,$(notdir $(LIBRARY))))
 
 UNAME_S = $(shell uname -s)
@@ -82,9 +82,9 @@ $($(1)_DIR)/$($(1)_INC):
 
 endef
 
-$(eval $(foreach MOD,$(LIB_MOD) $(CMAKE_LIB_MOD),$(call init_includes,$(MOD))))
+$(foreach MOD,$(LIB_MOD) $(CMAKE_LIB_MOD),$(eval $(call init_includes,$(MOD))))
 
-$(eval $(foreach MOD,$(CMAKE_LIB_MOD),$($(MOD)_DIR)/build/$($(MOD)_LIB): MOD = $(MOD)))
+$(foreach MOD,$(CMAKE_LIB_MOD),$(eval $($(MOD)_DIR)/build/$($(MOD)_LIB): MOD = $(MOD)))
 $(CMAKE_LIB): DIR = $($(MOD)_DIR)/build
 
 $(CMAKE_LIB):
