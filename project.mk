@@ -5,8 +5,9 @@ LIB_TARGET =
 EXEC_TARGET = humangl
 
 SRC =	$S/main.cpp \
+		$S/HumanGL.cpp \
 
-CPPFLAGS = --std=c++20
+CPPFLAGS = --std=c++20 -flto -O3
 LDFLAGS = -lpthread -ldl -lGL
 INCLUDE =
 

@@ -9,7 +9,7 @@ define n
 
 endef
 
-CC = clang++ --std=c++17
+CC = clang++ --std=c++20 -flto -O3
 
 include project.mk
 
@@ -99,7 +99,7 @@ $(LIB): DIR = $($(MOD)_DIR)
 
 $(LIB):
 	$(call submodule_init,$(DIR))
-	make -C $(DIR) $($(MOD)_LIB) L='$(abspath $L)'
+	@make -C $(DIR) $($(MOD)_LIB) L='$L'
 
 $(EXEC_TARGET): $(OBJ) $(LIB) project.mk | $(CMAKE_LIB)
 	$(CC) -o $@ $(OBJ) $(LDFLAGS)
@@ -121,7 +121,7 @@ clean: $(TMP_DIRS:%=clean@%)
 fclean: clean $(patsubst %,clean@%,$(EXEC_TARGET) $(LIB_TARGET))
 
 $(LIB_MOD:%=libclean@$L/%):
-	$(MAKE) -s -C $% fclean "L="
+	$(MAKE) -s -C $L/$* fclean "L="
 
 $(CMAKE_LIB_MOD:%=libclean@$L/%/build):
 	rm -Rf $%
