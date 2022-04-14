@@ -7,7 +7,7 @@ EXEC_TARGET = humangl
 SRC =	$S/main.cpp \
 		$S/HumanGL.cpp \
 
-CPPFLAGS = --std=c++20 -flto -O3
+CPPFLAGS = --std=c++20 -g3 -fsanitize=address
 LDFLAGS = -lpthread -ldl -lGL
 INCLUDE =
 
