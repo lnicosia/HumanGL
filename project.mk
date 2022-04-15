@@ -5,9 +5,10 @@ LIB_TARGET =
 EXEC_TARGET = humangl
 
 SRC =	$S/main.cpp \
-		$S/HumanGL.cpp \
+			$S/HumanGL.cpp \
+			$S/InitBobby.cpp \
 
-CPPFLAGS = --std=c++20 -g3 -fsanitize=address
+CPPFLAGS = --std=c++20 -O3
 LDFLAGS = -lpthread -ldl -lGL
 INCLUDE =
 
@@ -20,4 +21,4 @@ notrealengine_INC = inc inc/notrealengine
 SDL_LIB = libSDL2.a
 SDL_INC = include
 
-LDFLAGS += 
+LDFLAGS +=

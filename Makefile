@@ -9,7 +9,7 @@ define n
 
 endef
 
-CC = clang++ --std=c++20 -g3 -fsanitize=address
+CC = clang++ --std=c++20 -O3 -flto
 
 include project.mk
 
