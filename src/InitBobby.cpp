@@ -1,5 +1,6 @@
 #include "GLContext.class.hpp"
 #include "Object/GLObject.class.hpp"
+#include "Object/AssetManager.class.hpp"
 
 using namespace notrealengine;
 
@@ -11,17 +12,9 @@ std::shared_ptr<GLObject> InitBobby(void)
   meshes.push_back(mesh);
   Mesh& torso = *mesh;
 
-
-  //torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   torso.setName("Torso");
   torso.setColor(mft::vec3(0.0f, 0.5f, 0.0f));
-  //torso.localTransform.move(mft::vec3(-0.25f, 0.0f, 0.0f));
   torso.localTransform.scale(mft::vec3(0.50f, 0.75f, 0.15f));
-  //torso.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, mft::radians(30.0f), 0.0f)));
-
-
-  //torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
-  //torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
 
   torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh&	head = (*torso.getChildren()[0]);
@@ -51,7 +44,6 @@ std::shared_ptr<GLObject> InitBobby(void)
   upperRightArm.localTransform.move(mft::vec3(-0.025f, 0.95f, 0.0f));
   upperRightArm.localTransform.scale(mft::vec3(0.35f, 0.475f, 1.0f));
   upperRightArm.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
-  //upperRightArm.localTransform.rotate(mft::quat(0.996195f, 0.0f, 0.0f, -0.0871557f));
 
   upperRightArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh& lowerRightArm = (*upperRightArm.getChildren()[0]);
@@ -91,6 +83,8 @@ std::shared_ptr<GLObject> InitBobby(void)
   character->setName("Bobby");
   character->setShader(GLContext::getShader("color"));
   character->transform.move(mft::vec3(-0.25f, 1.15f, 0.0f));
+
+  AssetManager::getInstance().addAsset(character);
 
   return character;
 }

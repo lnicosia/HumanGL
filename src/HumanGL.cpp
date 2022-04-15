@@ -10,6 +10,9 @@ RenderingMode renderingMode;
 bool 					renderBones;
 SDLEvents			events;
 bool					running;
+Scene					scene;
+uint32_t			timeSinceLastFrame;
+uint32_t			timeOfLastFrame;
 
 void AddAnimation(std::string path)
 {
@@ -25,14 +28,17 @@ void	InitResources(int ac, char **av)
 	//	Objects
 
 	std::shared_ptr<GLObject> bobby = InitBobby();
+	bobby->visible = false;
 
 	std::shared_ptr<GLObject> obj =
 		assetManager.loadAsset<GLObject>(av[1]);
 	obj->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(180.0f)));
+	//obj->visible = false;
 
 	std::shared_ptr<GLObject> rock =
 		assetManager.loadAsset<GLObject>("resources/objects/Rock/rock.dae");
 	rock->transform.move(mft::vec3(5.0f, 0.0f, 5.0f));
+	//rock->visible = false;
 
 	//	Animations
 
@@ -46,11 +52,6 @@ void	InitResources(int ac, char **av)
 		anim = assetManager.loadAsset<Animation>(av[2], 0);
 	else if (ac >= 2)
 		anim = assetManager.loadAsset<Animation>(av[1], 0);
-
-	//	Light
-
-	std::shared_ptr<Light>	light1(new Light(LightType::Directional));
-	light1->move(mft::vec3(0.0f, 4.0f, -5.0f));
 
 	//	Fonts
 
@@ -79,9 +80,15 @@ void RenderLoop(Scene& scene, GLContext_SDL& context)
 
 	uint32_t	moveTime = 0;
 
+	timeSinceLastFrame = 0;
+	timeOfLastFrame = SDL_GetTicks();
+
 	while (running)
 	{
-		events.handle();
+		timeSinceLastFrame = SDL_GetTicks() - moveTime;
+		timeOfLastFrame = SDL_GetTicks();
+		if (events.handle() == NRE_QUIT)
+			break ;
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -96,15 +103,25 @@ void RenderLoop(Scene& scene, GLContext_SDL& context)
 void	Render(char* loadedObject, GLContext_SDL& context)
 {
 	AssetManager& assetManager = AssetManager::getInstance();
+
 	//	Scene setup
-	Scene scene;
+	scene = Scene("Scene");
+
 	scene.drawGrid = true;
 
-	scene.setCameraSpeed(0.05f);
+	scene.setCameraSpeed(0.00005f);
 
 	scene.addObject(assetManager.getAsset<GLObject>(loadedObject));
 	scene.addObject(assetManager.getAsset<GLObject>("resources/objects/Rock/rock.dae"));
-	//scene.addObject(bobby);
+	scene.addObject(assetManager.getAsset<GLObject>(1)); // Bobby
+
+	//	Light
+
+	std::shared_ptr<Light>	light1(new Light(LightType::Directional));
+	light1->move(mft::vec3(0.0f, 4.0f, -5.0f));
+
+	scene.addLight(light1);
+	scene.setLightingMode(LightingMode::Unlit);
 
 	RenderLoop(scene, context);
 }
@@ -126,6 +143,7 @@ int		HumanGL(int ac, char** av)
 	GLCallThrow(glEnable, GL_DEPTH_TEST);
 	GLCallThrow(glEnable, GL_BLEND);
 	GLCallThrow(glEnable, GL_CULL_FACE);
+	GLCallThrow(glCullFace, GL_FRONT);
 	GLCallThrow(glBlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//	Global variables init
