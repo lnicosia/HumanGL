@@ -7,6 +7,7 @@ EXEC_TARGET = humangl
 SRC =	$S/main.cpp \
 			$S/HumanGL.cpp \
 			$S/InitBobby.cpp \
+			$S/Bindings.cpp \
 
 CPPFLAGS = --std=c++20 -O3
 LDFLAGS = -lpthread -ldl -lGL

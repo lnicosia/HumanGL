@@ -1,19 +1,20 @@
 #include "NotRealEngine.hpp"
 #include "mft/mft.hpp"
 #include "InitBobby.hpp"
+#include "Bindings.hpp"
+#include "HumanGL.hpp"
 
 using namespace notrealengine;
 
-enum RenderingMode
-{
-	Object,
-	Bobby,
-	Bones
-};
-
-RenderingMode renderingMode = Bobby;
-bool 					renderBones = false;
+RenderingMode renderingMode;
+bool 					renderBones;
 SDLEvents			events;
+bool					running;
+
+void AddAnimation(std::string path)
+{
+	AssetManager::getInstance().loadAsset<Animation>(path, 0);
+}
 
 //	Load/init all the wanted resources
 
@@ -67,17 +68,20 @@ void	InitResources(int ac, char **av)
 	return ;
 }
 
-void HandleInputs(int& running)
-{
-	events.handle();
-}
-
 void RenderLoop(Scene& scene, GLContext_SDL& context)
 {
-	int	running = 1;
+	//	Timers
+
+	uint32_t	newTime = 0;
+	uint32_t	fpsCount = 0;
+	uint32_t	frameTime = 0;
+	uint32_t	fps = 0;
+
+	uint32_t	moveTime = 0;
+
 	while (running)
 	{
-		HandleInputs(running);
+		events.handle();
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -102,15 +106,6 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 	scene.addObject(assetManager.getAsset<GLObject>("resources/objects/Rock/rock.dae"));
 	//scene.addObject(bobby);
 
-	//	Timers
-
-	uint32_t	newTime = 0;
-	uint32_t	fpsCount = 0;
-	uint32_t	frameTime = 0;
-	uint32_t	fps = 0;
-
-	uint32_t	moveTime = 0;
-
 	RenderLoop(scene, context);
 }
 
@@ -133,7 +128,16 @@ int		HumanGL(int ac, char** av)
 	GLCallThrow(glEnable, GL_CULL_FACE);
 	GLCallThrow(glBlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	//	Global variables init
+
+	renderingMode = Bobby;
+	renderBones = false;
+	events = SDLEvents();
+	running = true;
+
+
 	InitResources(ac, av);
+	InitBindings();
 
 	Render(av[1], context);
 
