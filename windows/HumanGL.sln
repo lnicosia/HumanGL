@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HumanGL", "HumanGL.vcxproj", "{EF0292E3-2805-454D-8C5B-206A17BBD410}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F} = {B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Not Real Engine", "..\lib\notrealengine\windows\Not Real Engine.vcxproj", "{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +16,10 @@ Global
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		UsingExternalLibs-Debug|x64 = UsingExternalLibs-Debug|x64
+		UsingExternalLibs-Debug|x86 = UsingExternalLibs-Debug|x86
+		UsingExternalLibs-Release|x64 = UsingExternalLibs-Release|x64
+		UsingExternalLibs-Release|x86 = UsingExternalLibs-Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EF0292E3-2805-454D-8C5B-206A17BBD410}.Debug|x64.ActiveCfg = Debug|x64
@@ -21,6 +30,30 @@ Global
 		{EF0292E3-2805-454D-8C5B-206A17BBD410}.Release|x64.Build.0 = Release|x64
 		{EF0292E3-2805-454D-8C5B-206A17BBD410}.Release|x86.ActiveCfg = Release|Win32
 		{EF0292E3-2805-454D-8C5B-206A17BBD410}.Release|x86.Build.0 = Release|Win32
+		{EF0292E3-2805-454D-8C5B-206A17BBD410}.UsingExternalLibs-Debug|x64.ActiveCfg = Debug|x64
+		{EF0292E3-2805-454D-8C5B-206A17BBD410}.UsingExternalLibs-Debug|x64.Build.0 = Debug|x64
+		{EF0292E3-2805-454D-8C5B-206A17BBD410}.UsingExternalLibs-Debug|x86.ActiveCfg = Debug|Win32
+		{EF0292E3-2805-454D-8C5B-206A17BBD410}.UsingExternalLibs-Debug|x86.Build.0 = Debug|Win32
+		{EF0292E3-2805-454D-8C5B-206A17BBD410}.UsingExternalLibs-Release|x64.ActiveCfg = Release|x64
+		{EF0292E3-2805-454D-8C5B-206A17BBD410}.UsingExternalLibs-Release|x64.Build.0 = Release|x64
+		{EF0292E3-2805-454D-8C5B-206A17BBD410}.UsingExternalLibs-Release|x86.ActiveCfg = Release|Win32
+		{EF0292E3-2805-454D-8C5B-206A17BBD410}.UsingExternalLibs-Release|x86.Build.0 = Release|Win32
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.Debug|x64.ActiveCfg = Debug|x64
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.Debug|x64.Build.0 = Debug|x64
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.Debug|x86.ActiveCfg = Debug|Win32
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.Debug|x86.Build.0 = Debug|Win32
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.Release|x64.ActiveCfg = Release|x64
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.Release|x64.Build.0 = Release|x64
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.Release|x86.ActiveCfg = Release|Win32
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.Release|x86.Build.0 = Release|Win32
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.UsingExternalLibs-Debug|x64.ActiveCfg = UsingExternalLibs-Debug|x64
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.UsingExternalLibs-Debug|x64.Build.0 = UsingExternalLibs-Debug|x64
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.UsingExternalLibs-Debug|x86.ActiveCfg = UsingExternalLibs-Debug|Win32
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.UsingExternalLibs-Debug|x86.Build.0 = UsingExternalLibs-Debug|Win32
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.UsingExternalLibs-Release|x64.ActiveCfg = UsingExternalLibs-Release|x64
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.UsingExternalLibs-Release|x64.Build.0 = UsingExternalLibs-Release|x64
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.UsingExternalLibs-Release|x86.ActiveCfg = UsingExternalLibs-Release|Win32
+		{B39BD0CF-1BD4-473A-84B6-31AEE6E8550F}.UsingExternalLibs-Release|x86.Build.0 = UsingExternalLibs-Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

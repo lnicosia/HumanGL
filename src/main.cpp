@@ -1,4 +1,5 @@
 #include "GLException.class.hpp"
+#include "SDL.h"
 
 #include <iostream>
 

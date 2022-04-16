@@ -22,6 +22,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{EF0292E3-2805-454D-8C5B-206A17BBD410}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -69,8 +70,8 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\lib\SDL\include;inc;$(IncludePath)</IncludePath>
-    <LibraryPath>..\lib\SDL\build-windows\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>inc;..\lib\notrealengine\inc;..\lib\notrealengine\inc\notrealengine;..\lib\SDL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\lib\notrealengine\windows\x64\Debug;..\lib\SDL\build-windows\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -108,11 +109,37 @@
       <EntryPointSymbol>
       </EntryPointSymbol>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>SDL2d.lib;SDL2maind.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>NotRealEngined.lib;SDL2d.lib;SDL2maind.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>cmd.exe /c "BuildSDL-Debug.bat"
+cmd.exe /c "GetNRE.bat"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <ClCompile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Command>cmd.exe /c "GetNRE-Release.bat"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="src\Bindings.cpp" />
+    <ClCompile Include="src\HumanGL.cpp" />
+    <ClCompile Include="src\InitBobby.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\UI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\Bindings.hpp" />
+    <ClInclude Include="inc\HumanGL.hpp" />
+    <ClInclude Include="inc\InitBobby.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
