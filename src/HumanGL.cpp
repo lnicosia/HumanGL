@@ -66,7 +66,7 @@ void	InitResources(int ac, char **av)
 	return ;
 }
 
-void RenderLoop(Scene& scene, GLContext_SDL& context)
+void RenderLoop(GLContext_SDL& context)
 {
 	//	Timers
 
@@ -124,16 +124,11 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 	std::cout << "Asset manager content:" << std::endl;
 	assetManager.printContent();
 
-	RenderLoop(scene, context);
+	RenderLoop(context);
 }
 
-int		HumanGL(int ac, char** av)
+int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 {
-
-	SDLWindow window("HumanGL", std::pair<int, int>(1600, 900));
-	GLContext_SDL context(window.getContext(), window.getWindow());
-	context.makeCurrent();
-
 	//	Write OpenGL version
 
 	const char* glVersion = (char*)GLCallThrow(glGetString, GL_VERSION);
@@ -161,6 +156,34 @@ int		HumanGL(int ac, char** av)
 	Render(av[1], context);
 
 	AssetManager::getInstance().clear();
+	scene.clear();
+	return 0;
+}
 
+int		HumanGL(int ac, char** av)
+{
+
+	SDLWindow window("HumanGL", std::pair<int, int>(1600, 900));
+	GLContext_SDL context(window.getContext(), window.getWindow());
+	context.makeCurrent();
+
+	try
+	{
+		LaunchHumanGL(ac, av, window, context);
+	}
+	catch (notrealengine::GLException& e)
+	{
+		std::cerr << std::endl << "GL Exception: " << e.what() << std::endl;
+		AssetManager::getInstance().clear();
+		scene.clear();
+		return -1;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << std::endl << "STD Exception: " << e.what() << std::endl;
+		AssetManager::getInstance().clear();
+		scene.clear();
+		return -1;
+	}
 	return 0;
 }
