@@ -1,4 +1,5 @@
 #include "GLException.class.hpp"
+#include "Object/AssetManager.class.hpp"
 #include "SDL.h"
 
 #include <iostream>
@@ -20,11 +21,13 @@ int		main(int ac, char **av)
 	catch (notrealengine::GLException& e)
 	{
 		std::cerr << std::endl << "GL Exception: " << e.what() << std::endl;
+		notrealengine::AssetManager::getInstance().clear();
 		return -1;
 	}
 	catch (std::exception& e)
 	{
 		std::cerr << std::endl << "STD Exception: " << e.what() << std::endl;
+		notrealengine::AssetManager::getInstance().clear();
 		return -1;
 	}
 	return 0;

@@ -63,9 +63,6 @@ void	InitResources(int ac, char **av)
 			assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 	#endif
 
-	std::cout << "Asset manager content:" << std::endl;
-	assetManager.printContent();
-
 	return ;
 }
 
@@ -118,10 +115,14 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 	//	Light
 
 	std::shared_ptr<Light>	light1(new Light(LightType::Directional));
+	assetManager.addAsset(light1);
 	light1->move(mft::vec3(0.0f, 4.0f, -5.0f));
 
 	scene.addLight(light1);
 	scene.setLightingMode(LightingMode::Unlit);
+
+	std::cout << "Asset manager content:" << std::endl;
+	assetManager.printContent();
 
 	RenderLoop(scene, context);
 }
