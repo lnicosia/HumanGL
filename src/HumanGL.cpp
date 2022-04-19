@@ -48,10 +48,13 @@ void	InitResources(int ac, char **av)
 	std::shared_ptr<Animation> bobbyAnim = bobbyIdle;
 
 	std::shared_ptr<Animation>	anim;
-	if (ac == 3)
-		anim = assetManager.loadAsset<Animation>(av[2], 0);
-	else if (ac >= 2)
+	if (ac == 2)
 		anim = assetManager.loadAsset<Animation>(av[1], 0);
+	else
+	{
+		for (int i = 1; i < ac; i++)
+			anim = assetManager.loadAsset<Animation>(av[i], 0);
+	}
 
 	//	Fonts
 
