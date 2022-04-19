@@ -56,7 +56,8 @@ void	InitResources(int ac, char **av)
 	{
 		obj->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(180.0f)));
 		obj->visible = false;
-		obj->setAnimation(skeletalAnimations[0].get());
+		if (!skeletalAnimations.empty())
+			obj->setAnimation(skeletalAnimations[0].get());
 	}
 
 
@@ -89,7 +90,6 @@ void	InitResources(int ac, char **av)
 		std::shared_ptr<GLFont>	font =
 			assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 	#endif
-
 }
 
 void RenderLoop(GLContext_SDL& context)
@@ -101,14 +101,12 @@ void RenderLoop(GLContext_SDL& context)
 	uint32_t	frameTime = 0;
 	uint32_t	fps = 0;
 
-	uint32_t	moveTime = 0;
-
 	timeSinceLastFrame = 0;
 	timeOfLastFrame = SDL_GetTicks();
 
 	while (running)
 	{
-		timeSinceLastFrame = SDL_GetTicks() - moveTime;
+		timeSinceLastFrame = SDL_GetTicks() - timeOfLastFrame;
 		timeOfLastFrame = SDL_GetTicks();
 
 		SDL_GetGlobalMouseState(&events.mousePos.x, &events.mousePos.y);
@@ -135,10 +133,16 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 
 	scene.drawGrid = true;
 
-	scene.setCameraSpeed(0.00005f);
+	scene.setCameraSpeed(0.005f);
 
-	scene.addObject(assetManager.getAsset<GLObject>(loadedObject));
-	scene.addObject(assetManager.getAsset<GLObject>("resources/objects/Rock/rock.dae"));
+	std::shared_ptr<GLObject> obj =
+		assetManager.getAsset<GLObject>(loadedObject);
+	if (obj != nullptr)
+		scene.addObject(obj);
+	std::shared_ptr<GLObject> rock =
+		assetManager.getAsset<GLObject>("resources/objects/Rock/rock.dae");
+	if (rock != nullptr)
+		scene.addObject(rock);
 	scene.addObject(assetManager.getAssetByName<GLObject>("Bobby")); // Bobby
 
 	//	Light

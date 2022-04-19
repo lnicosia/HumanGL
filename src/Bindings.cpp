@@ -132,6 +132,8 @@ void RenderModel()
 {
 	SelectModel();
 	renderingMode = Model;
+	if (selectedObject == nullptr)
+		return ;
 	if (scene.getLightingMode() == LightingMode::Lit)
 		selectedObject->setShader(GLContext::getShader("default"));
 	else
@@ -143,6 +145,8 @@ void RenderBonesInfluence()
 {
 	SelectModel();
 	renderingMode = BonesInfluence;
+	if (selectedObject == nullptr)
+		return ;
 	selectedObject->setShader(GLContext::getShader("bonesInfluence"));
 }
 
@@ -226,6 +230,20 @@ void Previous()
 	}
 	else
 		PreviousAnim();
+}
+
+void ChangeLightingMode()
+{
+	if (scene.getLightingMode() == LightingMode::Lit)
+		scene.setLightingMode(LightingMode::Unlit);
+	else
+		scene.setLightingMode(LightingMode::Lit);
+}
+
+void ResetObjectPose()
+{
+	if (selectedObject != nullptr)
+		selectedObject->resetPose();
 }
 
 //  Init
@@ -329,15 +347,15 @@ void InitBindings()
   events.bindings.push_back(b12);
 
 	//	Change lighting
-	Binding b13("Change lighting", SDLK_g, 0, false);
-  std::function<void()> func15 = Next;
+	Binding b13("Change lighting mode", SDLK_l, 0, false);
+  std::function<void()> func15 = ChangeLightingMode;
   b13.onRelease = new Action(func15);
 
   events.bindings.push_back(b13);
 
 	//	Reset pose
-	Binding b15("Next2", SDLK_g, 0, false);
-  std::function<void()> func17 = Next;
+	Binding b15("Reset pose", SDLK_r, 0, false);
+  std::function<void()> func17 = ResetObjectPose;
   b15.onRelease = new Action(func17);
 
   events.bindings.push_back(b15);
