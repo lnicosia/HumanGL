@@ -194,7 +194,10 @@ std::shared_ptr<Animation> InitBobbyWalking(void)
   Bone leftCalf("Left calf", positions, rotations, scales);
   bones["Left calf"] = leftCalf;
 
-  return std::shared_ptr<Animation>(new Animation("Bobby walking", bones));
+  std::shared_ptr<Animation> anim =
+    std::shared_ptr<Animation>(new Animation("Bobby walking", bones));
+  AssetManager::getInstance().addAsset(anim);
+  return anim;
 }
 
 std::shared_ptr<Animation> InitBobbyJumping(void)
@@ -294,7 +297,10 @@ std::shared_ptr<Animation> InitBobbyJumping(void)
   Bone rightCalf("Right calf", positions, rotations, scales);
   bones["Right calf"] = rightCalf;
 
-  return std::shared_ptr<Animation>(new Animation("Bobby jumping", bones));
+  std::shared_ptr<Animation> anim =
+    std::shared_ptr<Animation>(new Animation("Bobby jumping", bones));
+  AssetManager::getInstance().addAsset(anim);
+  return anim;
 }
 
 
@@ -329,5 +335,8 @@ std::shared_ptr<Animation> InitBobbyIdle(void)
   Bone rightCalf("Right calf", positions, rotations, scales);
   bones["Right calf"] = rightCalf;
 
-  return std::shared_ptr<Animation>(new Animation("Bobby idle", bones));
+  std::shared_ptr<Animation> anim =
+    std::shared_ptr<Animation>(new Animation("Bobby idle", bones));
+  AssetManager::getInstance().addAsset(anim);
+  return anim;
 }
