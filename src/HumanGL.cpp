@@ -16,6 +16,8 @@ uint32_t			timeSinceLastFrame;
 uint32_t			timeOfLastFrame;
 char*					modelPath;
 unsigned int	selectedBone;
+uint32_t			fps;
+uint32_t			lastFpsUpdate;
 std::shared_ptr<GLObject> selectedObject;
 std::shared_ptr<Animation> selectedAnimation;
 std::vector<std::shared_ptr<Animation>> bobbyAnimations;
@@ -92,22 +94,39 @@ void	InitResources(int ac, char **av)
 	#endif
 }
 
+void UpdateTimers(uint32_t& fpsCount)
+{
+	uint32_t newTime = SDL_GetTicks();
+	timeSinceLastFrame = newTime - timeOfLastFrame;
+	timeOfLastFrame = newTime;
+	fpsCount++;
+	if (newTime - lastFpsUpdate >= 1000)
+	{
+		lastFpsUpdate = newTime;
+		fps = fpsCount;
+		fpsCount = 0;
+	}
+}
+
 void RenderLoop(GLContext_SDL& context)
 {
 	//	Timers
 
-	uint32_t	newTime = 0;
 	uint32_t	fpsCount = 0;
-	uint32_t	frameTime = 0;
-	uint32_t	fps = 0;
 
 	timeSinceLastFrame = 0;
+	lastFpsUpdate = 0;
 	timeOfLastFrame = SDL_GetTicks();
+
+	// TEMPORARY
+	std::shared_ptr<GLFont>	font =
+		AssetManager::getInstance().getAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+		std::shared_ptr<Texture>	texture =
+			AssetManager::getInstance().loadAsset<Texture>("resources/fonts/ExportedFont.bmp", "UI");
 
 	while (running)
 	{
-		timeSinceLastFrame = SDL_GetTicks() - timeOfLastFrame;
-		timeOfLastFrame = SDL_GetTicks();
+		UpdateTimers(fpsCount);
 
 		SDL_GetGlobalMouseState(&events.mousePos.x, &events.mousePos.y);
 		if (events.handle() == NRE_QUIT)
@@ -119,6 +138,10 @@ void RenderLoop(GLContext_SDL& context)
 		scene.render();
 		if (renderBones == true)
 			scene.renderBones();
+
+		// TEMPORARY
+		font->RenderText("FPS: " + std::to_string(fps), mft::vec2i(800, 450), 1.0f, mft::vec4(1.0));
+		texture->draw(mft::vec2i(0, 600), mft::vec2i(1200, 0), 0.0f, mft::vec4(1.0f));
 
 		context.swapWindow();
 	}

@@ -23,6 +23,8 @@ extern uint32_t       timeSinceLastFrame;
 extern uint32_t       timeOfLastFrame;
 extern char*					modelPath;
 extern unsigned int		selectedBone;
+extern uint32_t				fps;
+extern uint32_t				lastFpsUpdate;
 extern std::shared_ptr<GLObject> selectedObject;
 extern std::shared_ptr<Animation> selectedAnimation;
 extern std::vector<std::shared_ptr<Animation>> bobbyAnimations;
