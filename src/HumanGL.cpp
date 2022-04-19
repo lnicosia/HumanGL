@@ -6,6 +6,7 @@
 
 using namespace notrealengine;
 
+//	Set of essential global variables
 RenderingMode renderingMode;
 bool 					renderBones;
 SDLEvents			events;
@@ -13,11 +14,12 @@ bool					running;
 Scene					scene;
 uint32_t			timeSinceLastFrame;
 uint32_t			timeOfLastFrame;
-
-void AddAnimation(std::string path)
-{
-	AssetManager::getInstance().loadAsset<Animation>(path, 0);
-}
+char*					modelPath;
+unsigned int	selectedBone;
+std::shared_ptr<GLObject> selectedObject;
+std::shared_ptr<Animation> selectedAnimation;
+std::vector<std::shared_ptr<Animation>> bobbyAnimations;
+std::vector<std::shared_ptr<Animation>> skeletalAnimations;
 
 //	Load/init all the wanted resources
 
@@ -28,32 +30,55 @@ void	InitResources(int ac, char **av)
 	//	Objects
 
 	std::shared_ptr<GLObject> bobby = InitBobby();
-	bobby->visible = false;
+	//bobby->visible = false;
 
 	std::shared_ptr<GLObject> obj =
 		assetManager.loadAsset<GLObject>(av[1]);
-	obj->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(180.0f)));
-	//obj->visible = false;
+
+	//	Import animation given in the arguments
+	std::vector<std::shared_ptr<Animation>> readAnimations;
+	if (ac == 2)
+	{
+		readAnimations = LoadAnimations(av[1]);
+
+	}
+	else
+	{
+		for (int i = 1; i < ac; i++)
+			readAnimations = LoadAnimations(av[i]);
+	}
+	//	Copy read animations into our global skeletal animations array
+	skeletalAnimations.insert(skeletalAnimations.end(),
+		readAnimations.begin(), readAnimations.end());
+	selectedBone = 0;
+
+	if (obj != nullptr)
+	{
+		obj->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(180.0f)));
+		obj->visible = false;
+		obj->setAnimation(skeletalAnimations[0].get());
+	}
+
 
 	std::shared_ptr<GLObject> rock =
 		assetManager.loadAsset<GLObject>("resources/objects/Rock/rock.dae");
-	rock->transform.move(mft::vec3(5.0f, 0.0f, 5.0f));
-	//rock->visible = false;
+	if (rock != nullptr)
+	{
+		rock->transform.move(mft::vec3(5.0f, 0.0f, 5.0f));
+		rock->visible = false;
+	}
 
 	//	Animations
 
 	std::shared_ptr<Animation> bobbyWalking = InitBobbyWalking();
 	std::shared_ptr<Animation> bobbyJumping = InitBobbyJumping();
 	std::shared_ptr<Animation> bobbyIdle = InitBobbyIdle();
-	std::shared_ptr<Animation> bobbyAnim = bobbyIdle;
-
-	if (ac == 2)
-		LoadAnimations(av[1]);
-	else
-	{
-		for (int i = 1; i < ac; i++)
-			LoadAnimations(av[i]);
-	}
+	selectedAnimation = bobbyIdle;
+	selectedObject = bobby;
+	bobby->setAnimation(bobbyIdle.get());
+	bobbyAnimations.push_back(bobbyIdle);
+	bobbyAnimations.push_back(bobbyWalking);
+	bobbyAnimations.push_back(bobbyJumping);
 
 	//	Fonts
 
@@ -65,7 +90,6 @@ void	InitResources(int ac, char **av)
 			assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 	#endif
 
-	return ;
 }
 
 void RenderLoop(GLContext_SDL& context)
@@ -86,8 +110,11 @@ void RenderLoop(GLContext_SDL& context)
 	{
 		timeSinceLastFrame = SDL_GetTicks() - moveTime;
 		timeOfLastFrame = SDL_GetTicks();
+
+		SDL_GetGlobalMouseState(&events.mousePos.x, &events.mousePos.y);
 		if (events.handle() == NRE_QUIT)
 			break ;
+
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -112,7 +139,7 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 
 	scene.addObject(assetManager.getAsset<GLObject>(loadedObject));
 	scene.addObject(assetManager.getAsset<GLObject>("resources/objects/Rock/rock.dae"));
-	scene.addObject(assetManager.getAsset<GLObject>(1)); // Bobby
+	scene.addObject(assetManager.getAssetByName<GLObject>("Bobby")); // Bobby
 
 	//	Light
 
@@ -129,8 +156,20 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 	RenderLoop(context);
 }
 
+void ReleasePointers()
+{
+	AssetManager::getInstance().clear();
+	scene.clear();
+	selectedObject.reset();
+	selectedAnimation.reset();
+	bobbyAnimations.clear();
+	skeletalAnimations.clear();
+}
+
 int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 {
+	modelPath = av[1];
+
 	//	Write OpenGL version
 
 	const char* glVersion = (char*)GLCallThrow(glGetString, GL_VERSION);
@@ -140,8 +179,8 @@ int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 
 	GLCallThrow(glEnable, GL_DEPTH_TEST);
 	GLCallThrow(glEnable, GL_BLEND);
-	GLCallThrow(glEnable, GL_CULL_FACE);
-	GLCallThrow(glCullFace, GL_FRONT);
+	//GLCallThrow(glEnable, GL_CULL_FACE);
+	//GLCallThrow(glCullFace, GL_BACK);
 	GLCallThrow(glBlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//	Global variables init
@@ -151,14 +190,12 @@ int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 	events = SDLEvents();
 	running = true;
 
-
 	InitResources(ac, av);
 	InitBindings();
 
 	Render(av[1], context);
 
-	AssetManager::getInstance().clear();
-	scene.clear();
+	ReleasePointers();
 	return 0;
 }
 
@@ -176,15 +213,13 @@ int		HumanGL(int ac, char** av)
 	catch (notrealengine::GLException& e)
 	{
 		std::cerr << std::endl << "GL Exception: " << e.what() << std::endl;
-		AssetManager::getInstance().clear();
-		scene.clear();
+		ReleasePointers();
 		return -1;
 	}
 	catch (std::exception& e)
 	{
 		std::cerr << std::endl << "STD Exception: " << e.what() << std::endl;
-		AssetManager::getInstance().clear();
-		scene.clear();
+		ReleasePointers();
 		return -1;
 	}
 	return 0;

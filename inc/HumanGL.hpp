@@ -8,11 +8,12 @@ using namespace notrealengine;
 
 enum RenderingMode
 {
-	Object,
+	Model,
 	Bobby,
-	Bones
+	BonesInfluence
 };
 
+//	Set of essential global variables
 extern RenderingMode  renderingMode;
 extern bool 				  renderBones;
 extern SDLEvents			events;
@@ -20,5 +21,11 @@ extern bool					  running;
 extern Scene          scene;
 extern uint32_t       timeSinceLastFrame;
 extern uint32_t       timeOfLastFrame;
+extern char*					modelPath;
+extern unsigned int		selectedBone;
+extern std::shared_ptr<GLObject> selectedObject;
+extern std::shared_ptr<Animation> selectedAnimation;
+extern std::vector<std::shared_ptr<Animation>> bobbyAnimations;
+extern std::vector<std::shared_ptr<Animation>> skeletalAnimations;
 
 #endif // !_HUMAN_GL_H_
