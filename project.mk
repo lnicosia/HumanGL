@@ -9,7 +9,7 @@ SRC =	$S/main.cpp \
 			$S/InitBobby.cpp \
 			$S/Bindings.cpp \
 
-CPPFLAGS = --std=c++20 -O3
+CPPFLAGS = --std=c++20 -O3 -flto
 LDFLAGS = -lpthread -ldl -lGL
 INCLUDE =
 
