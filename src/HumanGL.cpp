@@ -105,6 +105,7 @@ void UpdateTimers(uint32_t& fpsCount)
 	{
 		lastFpsUpdate = newTime;
 		fps = fpsCount;
+		ui.elements[0]->texts[0].text = std::string("FPS: " + std::to_string(fps));
 		fpsCount = 0;
 	}
 }
@@ -118,10 +119,6 @@ void RenderLoop(GLContext_SDL& context)
 	timeSinceLastFrame = SDL_GetTicks();
 	lastFpsUpdate = 0;
 	timeOfLastFrame = 0;
-
-	// TEMPORARY
-	std::shared_ptr<GLFont>	font =
-		AssetManager::getInstance().getAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 
 	while (running)
 	{
@@ -140,9 +137,6 @@ void RenderLoop(GLContext_SDL& context)
 
 		ui.update(events.mousePos, events.mouseState);
 		ui.draw();
-
-		// TEMPORARY
-		font->RenderText("FPS: " + std::to_string(fps), mft::vec2i(1450, 850), 0.5f, mft::vec4(1.0));
 
 		context.swapWindow();
 	}
