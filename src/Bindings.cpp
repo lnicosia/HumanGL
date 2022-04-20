@@ -36,6 +36,7 @@ void LeftClickPress(mft::vec2i& mouseStart)
 	//	If not on UI, move camera
 
 	mouseStart = events.mousePos;
+	events.mouseState = InputState::NRE_PRESS;
 	SDL_ShowCursor(SDL_DISABLE);
 }
 
@@ -276,143 +277,127 @@ void ObjectBackward()
 
 //  Init
 
+void AddBinding(std::string name, uint32_t key1, uint32_t key2, bool editable,
+  ActionWrapper* whenPressed, ActionWrapper* onPress,
+  ActionWrapper* whenReleased, ActionWrapper* onRelease)
+{
+  Binding b(name, key1, key2, editable);
+	if (whenPressed != nullptr)
+		b.whenPressed = whenPressed;
+	if (onPress != nullptr)
+		b.onPress = onPress;
+	if (whenReleased != nullptr)
+		b.whenReleased = whenReleased;
+	if (onRelease != nullptr)
+		b.onRelease = onRelease;
+	events.bindings.push_back(b);
+}
+
+void AddMouseBinding(std::string name, uint32_t key1, uint32_t key2, bool editable,
+  ActionWrapper* whenPressed, ActionWrapper* onPress,
+  ActionWrapper* whenReleased, ActionWrapper* onRelease)
+{
+  MouseBinding b(name, key1, key2, editable);
+	if (whenPressed != nullptr)
+		b.whenPressed = whenPressed;
+	if (onPress != nullptr)
+		b.onPress = onPress;
+	if (whenReleased != nullptr)
+		b.whenReleased = whenReleased;
+	if (onRelease != nullptr)
+		b.onRelease = onRelease;
+	events.mouseBindings.push_back(b);
+}
+
 void InitBindings()
 {
 
   //  Quit
-	Binding b("Quit", SDLK_ESCAPE, 0, false);
-	std::function<void()> func = Quit;
-	b.onRelease = new Action(func);
-
-	events.bindings.push_back(b);
+	AddBinding("Quit", SDLK_ESCAPE, 0, false,
+	nullptr, nullptr, nullptr, new Action(std::function<void()>(Quit)));
 
   //  Left
-  Binding b2("Left", 0, SDLK_a, false);
-  std::function<void()> func2 = Left;
-  b2.whenPressed = new Action(func2);
-
-  events.bindings.push_back(b2);
+	AddBinding("Left", 0, SDLK_a, false,
+	new Action(std::function<void()>(Left)), nullptr, nullptr, nullptr);
 
   //  Right
-  Binding b3("Right", 0, SDLK_d, false);
-  std::function<void()> func3 = Right;
-  b3.whenPressed = new Action(func3);
-
-  events.bindings.push_back(b3);
+  AddBinding("Right", 0, SDLK_d, false,
+  new Action(std::function<void()>(Right)), nullptr, nullptr, nullptr);
 
   //  Forward
-  Binding b4("Forward", 0, SDLK_w, false);
-  std::function<void()> func4 = Forward;
-  b4.whenPressed = new Action(func4);
-
-  events.bindings.push_back(b4);
+  AddBinding("Forward", 0, SDLK_w, false,
+  new Action(std::function<void()>(Forward)), nullptr, nullptr, nullptr);
 
   //  Backward
-  Binding b5("Backward", 0, SDLK_s, false);
-  std::function<void()> func5 = Backward;
-  b5.whenPressed = new Action(func5);
-
-  events.bindings.push_back(b5);
+  AddBinding("Backward", 0, SDLK_s, false,
+  new Action(std::function<void()>(Backward)), nullptr, nullptr, nullptr);
 
 	//	Mouse
-  MouseBinding b6("Mouse left", SDL_BUTTON_LEFT, 0, false);
-	std::function<void(mft::vec2i&)> func6 = LeftClickPress;
-  b6.onPress = new Action<mft::vec2i&>(func6, b6.start);
-  std::function<void(mft::vec2i&)> func7 = LeftClickPressed;
-  b6.whenPressed = new Action<mft::vec2i&>(func7, b6.start);
-	std::function<void()> func8 = LeftClickRelease;
-  b6.onRelease = new Action(func8);
+  /*MouseAddMouseBinding("Mouse left", SDL_BUTTON_LEFT, 0, false,
+	new Action<mft::vec2i&>(std::function<void(mft::vec2i&)>(LeftClickPressed, b6.start)),
+	new Action<mft::vec2i&>(std::function<void(ft::vec2i&)>(LeftClickPress, b6.start)),
+  nullptr,
+  new Action(std::function<void()>(LeftClickRelease)));*/
 
-  events.mouseBindings.push_back(b6);
+	MouseBinding b6("Mouse left", SDL_BUTTON_LEFT, 0, false);
+	std::function<void(mft::vec2i&)> func6 = LeftClickPress;
+	b6.onPress = new Action<mft::vec2i&>(func6, b6.start);
+	std::function<void(mft::vec2i&)> func7 = LeftClickPressed;
+	b6.whenPressed = new Action<mft::vec2i&>(func7, b6.start);
+	std::function<void()> func8 = LeftClickRelease;
+	b6.onRelease = new Action(func8);
+
+	events.mouseBindings.push_back(b6);
 
 	//  Draw mode: wireframe/fill
-  Binding b7("Change draw mode", SDLK_z, 0, false);
-  std::function<void()> func9 = ChangeDrawMode;
-  b7.onRelease = new Action(func9);
-
-  events.bindings.push_back(b7);
+  AddBinding("Change draw mode", SDLK_z, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(ChangeDrawMode)));
 
 	//  Play/pause animation
-  Binding b8("Play/Pause animation", SDLK_p, 0, false);
-  std::function<void()> func10 = PlayAnimation;
-  b8.onRelease = new Action(func10);
-
-  events.bindings.push_back(b8);
+  AddBinding("Play/Pause animation", SDLK_p, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(PlayAnimation)));
 
 	//	Render model
-	Binding b9("Render model", SDLK_m, 0, false);
-  std::function<void()> func11 = RenderModel;
-  b9.onRelease = new Action(func11);
-
-  events.bindings.push_back(b9);
+	AddBinding("Render model", SDLK_m, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(RenderModel)));
 
 	//	Render bones influence
-	Binding b14("Render bones influence", SDLK_i, 0, false);
-  std::function<void()> func16= RenderBonesInfluence;
-  b14.onRelease = new Action(func16);
-
-  events.bindings.push_back(b14);
+	AddBinding("Render bones influence", SDLK_i, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(RenderBonesInfluence)));
 
 	//	Render Bobby
-	Binding b10("Render Bobby", SDLK_b, 0, false);
-  std::function<void()> func12 = RenderBobby;
-  b10.onRelease = new Action(func12);
-
-  events.bindings.push_back(b10);
+	AddBinding("Render Bobby", SDLK_b, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(RenderBobby)));
 
 	//	Previous
-	Binding b11("Previous", SDLK_KP_MINUS, 0, false);
-  std::function<void()> func13 = Previous;
-  b11.onRelease = new Action(func13);
-
-  events.bindings.push_back(b11);
+	AddBinding("Previous", SDLK_KP_MINUS, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(Previous)));
 
 	//	Next
-	Binding b12("Next", SDLK_KP_PLUS, 0, false);
-  std::function<void()> func14 = Next;
-  b12.onRelease = new Action(func14);
-
-  events.bindings.push_back(b12);
+	AddBinding("Next", SDLK_KP_PLUS, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(Next)));
 
 	//	Change lighting
-	Binding b13("Change lighting mode", SDLK_l, 0, false);
-  std::function<void()> func15 = ChangeLightingMode;
-  b13.onRelease = new Action(func15);
-
-  events.bindings.push_back(b13);
+	AddBinding("Change lighting mode", SDLK_l, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(ChangeLightingMode)));
 
 	//	Reset pose
-	Binding b15("Reset pose", SDLK_r, 0, false);
-  std::function<void()> func17 = ResetObjectPose;
-  b15.onRelease = new Action(func17);
-
-  events.bindings.push_back(b15);
+	AddBinding("Reset pose", SDLK_r, 0, false,
+  nullptr, nullptr, nullptr, new Action(std::function<void()>(ResetObjectPose)));
 
 	//  Move object left
-  Binding b16("Left", SDLK_LEFT, 0, false);
-  std::function<void()> func18 = ObjectLeft;
-  b16.whenPressed = new Action(func18);
-
-  events.bindings.push_back(b16);
+  AddBinding("Left", SDLK_LEFT, 0, false,
+  new Action(std::function<void()>(ObjectLeft)), nullptr, nullptr, nullptr);
 
 	//  Move object right
-  Binding b17("Right", SDLK_RIGHT, 0, false);
-  std::function<void()> func19 = ObjectRight;
-  b17.whenPressed = new Action(func19);
-
-  events.bindings.push_back(b17);
+  AddBinding("Right", SDLK_RIGHT, 0, false,
+  new Action(std::function<void()>(ObjectRight)), nullptr, nullptr, nullptr);
 
 	//  Move object forward
-  Binding b18("Forward", SDLK_UP, 0, false);
-  std::function<void()> func20 = ObjectForward;
-  b18.whenPressed = new Action(func20);
-
-  events.bindings.push_back(b18);
+  AddBinding("Forward", SDLK_UP, 0, false,
+  new Action(std::function<void()>(ObjectForward)), nullptr, nullptr, nullptr);
 
 	//  Move object backward
-  Binding b19("Backward", SDLK_DOWN, 0, false);
-  std::function<void()> func21 = ObjectBackward;
-  b19.whenPressed = new Action(func21);
-
-  events.bindings.push_back(b19);
+  AddBinding("Backward", SDLK_DOWN, 0, false,
+	new Action(std::function<void()>(ObjectBackward)), nullptr, nullptr, nullptr);
 }

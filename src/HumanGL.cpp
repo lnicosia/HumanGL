@@ -22,6 +22,7 @@ std::shared_ptr<GLObject> selectedObject;
 std::shared_ptr<Animation> selectedAnimation;
 std::vector<std::shared_ptr<Animation>> bobbyAnimations;
 std::vector<std::shared_ptr<Animation>> skeletalAnimations;
+UIManager ui;
 
 //	Load/init all the wanted resources
 
@@ -136,6 +137,9 @@ void RenderLoop(GLContext_SDL& context)
 		scene.render();
 		if (renderBones == true)
 			scene.renderBones();
+
+		ui.update(events.mousePos, events.mouseState);
+		ui.draw();
 
 		// TEMPORARY
 		font->RenderText("FPS: " + std::to_string(fps), mft::vec2i(1450, 850), 0.5f, mft::vec4(1.0));

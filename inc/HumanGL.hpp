@@ -3,6 +3,7 @@
 
 #include "Inputs/SDLEvents.class.hpp"
 #include "Object/Scene.class.hpp"
+#include "UI/UIManager.class.hpp"
 
 using namespace notrealengine;
 
@@ -29,5 +30,6 @@ extern std::shared_ptr<GLObject> selectedObject;
 extern std::shared_ptr<Animation> selectedAnimation;
 extern std::vector<std::shared_ptr<Animation>> bobbyAnimations;
 extern std::vector<std::shared_ptr<Animation>> skeletalAnimations;
+extern UIManager ui;
 
 #endif // !_HUMAN_GL_H_
