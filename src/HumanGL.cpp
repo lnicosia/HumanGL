@@ -218,6 +218,7 @@ int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 
 	InitResources(ac, av);
 	InitBindings();
+	InitUI();
 
 	Render(av[1], context);
 

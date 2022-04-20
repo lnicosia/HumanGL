@@ -32,4 +32,6 @@ extern std::vector<std::shared_ptr<Animation>> bobbyAnimations;
 extern std::vector<std::shared_ptr<Animation>> skeletalAnimations;
 extern UIManager ui;
 
+void InitUI( void );
+
 #endif // !_HUMAN_GL_H_
