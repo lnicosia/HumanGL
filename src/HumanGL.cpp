@@ -114,15 +114,13 @@ void RenderLoop(GLContext_SDL& context)
 
 	uint32_t	fpsCount = 0;
 
-	timeSinceLastFrame = 0;
+	timeSinceLastFrame = SDL_GetTicks();
 	lastFpsUpdate = 0;
-	timeOfLastFrame = SDL_GetTicks();
+	timeOfLastFrame = 0;
 
 	// TEMPORARY
 	std::shared_ptr<GLFont>	font =
 		AssetManager::getInstance().getAsset<GLFont>("resources/fonts/pt-sans-48.bff");
-		std::shared_ptr<Texture>	texture =
-			AssetManager::getInstance().loadAsset<Texture>("resources/fonts/ExportedFont.bmp", "UI");
 
 	while (running)
 	{
@@ -140,8 +138,7 @@ void RenderLoop(GLContext_SDL& context)
 			scene.renderBones();
 
 		// TEMPORARY
-		font->RenderText("FPS: " + std::to_string(fps), mft::vec2i(800, 450), 1.0f, mft::vec4(1.0));
-		texture->draw(mft::vec2i(0, 600), mft::vec2i(1200, 0), 0.0f, mft::vec4(1.0f));
+		font->RenderText("FPS: " + std::to_string(fps), mft::vec2i(1450, 850), 0.5f, mft::vec4(1.0));
 
 		context.swapWindow();
 	}
@@ -206,8 +203,6 @@ int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 
 	GLCallThrow(glEnable, GL_DEPTH_TEST);
 	GLCallThrow(glEnable, GL_BLEND);
-	//GLCallThrow(glEnable, GL_CULL_FACE);
-	//GLCallThrow(glCullFace, GL_BACK);
 	GLCallThrow(glBlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//	Global variables init
