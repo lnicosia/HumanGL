@@ -11,14 +11,6 @@ struct			Material
 	float		shininess;
 };
 
-struct		Light
-{
-	vec3	pos;
-	vec3	ambient;
-	vec3	diffuse;
-	vec3	specular;
-};
-
 struct		DirLight
 {
 	vec3	dir;
@@ -90,7 +82,6 @@ vec3	computePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 cameraD
 	float	attenuation = 1.0 /
 		(light.constant + light.linear * dist + light.quadratic * dist * dist);
 
-	//return (ambient + diffuse + specular) * attenuation;
 	return (diffuse);
 }
 
@@ -99,12 +90,12 @@ void main()
 	vec3 norm = normalize(Normal);
 	vec3 cameraDir = normalize(cameraPos - FragPos);
 
-	vec3 res = computeDirLight(dirLight, norm, cameraDir);
-
+	//vec3 res = computeDirLight(dirLight, norm, cameraDir);
+	vec3 res = vec3(0);
 	for (int i = 0; i < MAX_POINT_LIGHTS; i++)
 		res += computePointLight(pointLights[i], norm, FragPos, cameraDir);
 
-	//FragColor = vec4(diffuse, 1.0);
-	FragColor = texture(material.diffuse, TextCoord);
+	FragColor = vec4(res, 1.0);
+	//FragColor = texture(material.diffuse, TextCoord);
 
 }
