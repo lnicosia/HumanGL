@@ -1,7 +1,33 @@
 #include "HumanGL.hpp"
+#include "UI/Button.class.hpp"
+
+void UpdateModelPannel( void )
+{
+  if (selectedObject == nullptr)
+    return ;
+  AssetManager& assetManager = AssetManager::getInstance();
+  std::vector<std::shared_ptr<GLFont>> fonts =
+    assetManager.getAssetsOfType<GLFont>();
+  std::shared_ptr<GLFont> font = nullptr;
+  if (!fonts.empty())
+    font = fonts[0];
+
+  std::shared_ptr<UIElement> modelPannel = ui.elements[0]->getChild(1);
+  modelPannel->clearChildren();
+
+  Button rootNode(mft::vec2i(0, 0),
+    assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
+    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"),
+    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+  rootNode.setText(selectedObject->getMeshes()[0]->getName());
+  rootNode.setFont(font);
+
+  modelPannel->addChild(std::shared_ptr<Button>(new Button(rootNode)));
+}
 
 void InitUI()
 {
+  std::cout << "Initializing UI..." << std::endl;
   AssetManager& assetManager = AssetManager::getInstance();
 
   //  Top pannel
@@ -47,4 +73,6 @@ void InitUI()
   UIElement bottomPannel(mft::vec2i(0, 0));
   bottomPannel.setSize(mft::vec2i(1280, 140));
   ui.registerElement(std::shared_ptr<UIElement>(new UIElement(bottomPannel)));
+
+  UpdateModelPannel();
 }

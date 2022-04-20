@@ -32,6 +32,12 @@ extern std::vector<std::shared_ptr<Animation>> bobbyAnimations;
 extern std::vector<std::shared_ptr<Animation>> skeletalAnimations;
 extern UIManager ui;
 
+/**	Init all the UI
+*/
 void InitUI( void );
+
+/**	Update the model pannel hierarchical view with the current object
+*/
+void UpdateModelPannel( void );
 
 #endif // !_HUMAN_GL_H_
