@@ -72,7 +72,7 @@ vec3	computePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 cameraD
 
 	//	Diffuse
 	float	diff = max(dot(normal, lightDir), 0.0);
-	vec3	diffuse = diff * baseColor;
+	vec3	diffuse = light.diffuse * diff * baseColor;
 
 	//	Specular
 	vec3	reflectDir = reflect(-lightDir, normal);

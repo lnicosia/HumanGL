@@ -167,9 +167,9 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 
 	//	Light
 
-	std::shared_ptr<Light>	light1(new Light(LightType::Directional));
+	std::shared_ptr<Light>	light1(new Light(LightType::Point));
 	assetManager.addAsset(light1);
-	light1->move(mft::vec3(0.0f, 4.0f, -5.0f));
+	light1->move(mft::vec3(0.0f, 3.0f, -5.0f));
 
 	scene.addLight(light1);
 	scene.setLightingMode(LightingMode::Unlit);
