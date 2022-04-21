@@ -91,7 +91,7 @@ void	InitResources(int ac, char **av)
 			assetManager.loadAsset<GLFont>("resources/fonts/arial.ttf");
 	#else
 		std::shared_ptr<GLFont>	font =
-			assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+			assetManager.loadAsset<GLFont>("resources/fonts/Times-New-Roman-16.bff");
 	#endif
 }
 

@@ -10,7 +10,7 @@ SRC =	$S/main.cpp \
 			$S/Bindings.cpp \
 			$S/UI.cpp \
 
-CPPFLAGS = --std=c++20 -O3 -flto
+CPPFLAGS = --std=c++20 -O3
 LDFLAGS = -lpthread -ldl -lGL
 INCLUDE =
 
