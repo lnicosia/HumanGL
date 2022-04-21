@@ -7,6 +7,9 @@
 
 using namespace notrealengine;
 
+#define WINDOW_WIDTH 1600
+#define WINDOW_HEIGHT 900
+
 enum RenderingMode
 {
 	Model,
@@ -15,6 +18,7 @@ enum RenderingMode
 };
 
 //	Set of essential global variables
+extern mft::vec2i screenSize;
 extern RenderingMode  renderingMode;
 extern bool 				  renderBones;
 extern SDLEvents			events;
@@ -27,6 +31,7 @@ extern unsigned int		selectedBone;
 extern uint32_t				fps;
 extern uint32_t				lastFpsUpdate;
 extern std::shared_ptr<GLObject> selectedObject;
+extern std::shared_ptr<Mesh> selectedMesh;
 extern std::shared_ptr<Animation> selectedAnimation;
 extern std::vector<std::shared_ptr<Animation>> bobbyAnimations;
 extern std::vector<std::shared_ptr<Animation>> skeletalAnimations;

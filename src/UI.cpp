@@ -1,24 +1,34 @@
 #include "HumanGL.hpp"
 #include "UI/Button.class.hpp"
 
+void SelectMesh(std::shared_ptr<Mesh> mesh)
+{
+    std::cout << "Selected mesh = " << mesh->getName() << std::endl;
+    selectedMesh = mesh;
+}
+
 void AddMeshToModelPannel(AssetManager& assetManager, std::shared_ptr<GLFont> font,
     std::shared_ptr<UIElement> modelPannel, std::shared_ptr<Mesh> mesh, mft::vec2i& pos)
 {
-    Button node(pos,
+    Button button(pos,
         assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-    node.setText(mesh->getName());
-    node.setFont(font);
-    node.setAllSizes(mft::vec2i(100, 20));
+    button.setText(mesh->getName());
+    button.setFont(font);
+    button.setAllSizes(mft::vec2i(100, 20));
+    std::function<void(std::shared_ptr<Mesh>)> func = SelectMesh;
+    std::shared_ptr<ActionWrapper> action =
+        std::shared_ptr<ActionWrapper>(new Action<std::shared_ptr<Mesh>>(func, mesh));
+    button.onRelease = action;
 
-    modelPannel->addChild(std::shared_ptr<Button>(new Button(node)));
+    modelPannel->addChild(std::shared_ptr<Button>(new Button(button)));
     std::vector<std::shared_ptr<Mesh>> children = mesh->getChildren();
     pos.x += 20;
     pos.y -= 22;
     for (auto child : children)
     {
-        AddMeshToModelPannel(assetManager, font, modelPannel, child, pos);
+        //AddMeshToModelPannel(assetManager, font, modelPannel, child, pos);
     }
     pos.x -= 20;
 }

@@ -7,6 +7,7 @@
 using namespace notrealengine;
 
 //	Set of essential global variables
+mft::vec2i screenSize;
 RenderingMode renderingMode;
 bool 					renderBones;
 SDLEvents			events;
@@ -19,6 +20,7 @@ unsigned int	selectedBone;
 uint32_t			fps;
 uint32_t			lastFpsUpdate;
 std::shared_ptr<GLObject> selectedObject;
+std::shared_ptr<Mesh> selectedMesh;
 std::shared_ptr<Animation> selectedAnimation;
 std::vector<std::shared_ptr<Animation>> bobbyAnimations;
 std::vector<std::shared_ptr<Animation>> skeletalAnimations;
@@ -79,6 +81,7 @@ void	InitResources(int ac, char **av)
 	std::shared_ptr<Animation> bobbyIdle = InitBobbyIdle();
 	selectedAnimation = bobbyIdle;
 	selectedObject = bobby;
+	selectedMesh = bobby->getMeshes()[0];
 	bobby->setAnimation(bobbyIdle.get());
 	bobbyAnimations.push_back(bobbyIdle);
 	bobbyAnimations.push_back(bobbyWalking);
@@ -124,7 +127,11 @@ void RenderLoop(GLContext_SDL& context)
 	{
 		UpdateTimers(fpsCount);
 
-		SDL_GetGlobalMouseState(&events.mousePos.x, &events.mousePos.y);
+		SDL_GetMouseState(&events.mousePos.x, &events.mousePos.y);
+		SDL_GetGlobalMouseState(&events.mouseGlobalPos.x, &events.mouseGlobalPos.y);
+		//	Invert y-axis (SDL is Y- and OpenGL is Y+)
+		events.mousePos.y = WINDOW_HEIGHT - events.mousePos.y;
+		events.mouseGlobalPos.y = screenSize.y - events.mouseGlobalPos.y;
 		if (events.handle() == NRE_QUIT)
 			break ;
 
@@ -223,9 +230,13 @@ int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 int		HumanGL(int ac, char** av)
 {
 
-	SDLWindow window("HumanGL", std::pair<int, int>(1600, 900));
+	SDLWindow window("HumanGL", std::pair<int, int>(WINDOW_WIDTH, WINDOW_HEIGHT));
 	GLContext_SDL context(window.getContext(), window.getWindow());
 	context.makeCurrent();
+
+	SDL_DisplayMode dm;
+	SDL_GetCurrentDisplayMode(0, &dm);
+	screenSize = mft::vec2i(dm.w, dm.h);
 
 	try
 	{
