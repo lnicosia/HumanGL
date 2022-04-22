@@ -15,5 +15,16 @@ int		main(int ac, char **av)
 		std::cout << "3D Engine demo for playing animation" << std::endl;
 		return 1;
 	}
-	return HumanGL(ac, av);
+	try
+	{
+		return HumanGL(ac, av);
+	}
+	catch (std::runtime_error& e)
+	{
+		std::cerr << "Runtime error: " << e.what() << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "STD Exception: " << e.what() << std::endl;
+	}
 }
