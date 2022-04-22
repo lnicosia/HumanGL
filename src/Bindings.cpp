@@ -48,7 +48,7 @@ void LeftClickPressed(mft::vec2i& mouseStart)
 	scene.setYaw(scene.getYaw()
 		+ (float)(mouseStart.x - events.mouseGlobalPos.x) * scene.getCamera().sensitivity);
 	scene.setPitch(scene.getPitch()
-		- (float)(mouseStart.y - events.mouseGlobalPos.y) * scene.getCamera().sensitivity);
+		+ (float)(mouseStart.y - events.mouseGlobalPos.y) * scene.getCamera().sensitivity);
 	mouseStart = events.mouseGlobalPos;
 }
 
