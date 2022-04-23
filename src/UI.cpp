@@ -16,21 +16,21 @@ void UpdateTransformPannel( void )
                    // slot2 1   // X
     str << scale.x;
     transformPannel->getChild(1)->getChild(0)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     transformPannel->getChild(1)->getChild(3)->texts.clear();
                // slot2 1   // Y
     str.str("");
     str << scale.y;
     transformPannel->getChild(1)->getChild(3)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     transformPannel->getChild(1)->getChild(6)->texts.clear();
                     // slot2 1    // Z
     str.str("");
     str << scale.z;
     transformPannel->getChild(1)->getChild(6)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     //  Rotation
     transformPannel->getChild(3)->getChild(0)->texts.clear();
@@ -38,20 +38,20 @@ void UpdateTransformPannel( void )
     str.str("");
     str << scale.z;
     transformPannel->getChild(3)->getChild(0)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     transformPannel->getChild(3)->getChild(3)->texts.clear();
                     // slot2 3   // Y
     str.str("");
     str << scale.y;
     transformPannel->getChild(3)->getChild(3)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
     transformPannel->getChild(3)->getChild(6)->texts.clear();
                  // slot2 3    // Z
     str.str("");
     str << scale.z;
     transformPannel->getChild(3)->getChild(6)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     //  Location
     transformPannel->getChild(5)->getChild(0)->texts.clear();
@@ -59,21 +59,21 @@ void UpdateTransformPannel( void )
     str.str("");
     str << pos.x;
     transformPannel->getChild(5)->getChild(0)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     transformPannel->getChild(5)->getChild(3)->texts.clear();
                     // slot2 5   // Y
     str.str("");
     str << pos.y;
     transformPannel->getChild(5)->getChild(3)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     transformPannel->getChild(5)->getChild(6)->texts.clear();
                     // slot2 5    // Z
     str.str("");
     str << pos.z;
     transformPannel->getChild(5)->getChild(6)->texts.push_back(
-        UIText(str.str(), textPos, 16.0f));
+        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 }
 
 void SelectMesh(std::shared_ptr<Mesh> mesh)
@@ -136,6 +136,8 @@ void InitUI()
   std::shared_ptr<GLFont> font = nullptr;
   if (!fonts.empty())
       font = fonts[0];
+  std::shared_ptr<GLFont> font12 =
+      assetManager.loadAsset<GLFont>("resources/fonts/Times-New-Roman-12.bff");
 
   //  Top pannel
 
@@ -248,14 +250,14 @@ void InitUI()
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
           button.setText("+");
-          button.setFont(font);
+          button.setFont(font12);
           button.setAllSizes(mft::vec2i(12, 12));
           slot2.addChild(std::shared_ptr<Button>(new Button(button)));
 
 
           button.setPos(mft::vec2i(49 + 60 * j, 3));
           button.setText("-");
-          button.setFont(font);
+          button.setFont(font12);
           button.setAllSizes(mft::vec2i(12, 12));
           slot2.addChild(std::shared_ptr<Button>(new Button(button)));
       }
