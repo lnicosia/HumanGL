@@ -4,63 +4,76 @@
 void UpdateTransformPannel( void )
 {                                                // rightP     / transformP / backgroundP
     std::shared_ptr<UIElement> transformPannel = ui.elements[1]->getChild(3)->getChild(0);
+    const mft::vec3& pos = selectedMesh->localTransform.getPos();
+    const mft::quat& rot = selectedMesh->localTransform.getRotation();
+    const mft::vec3& scale = selectedMesh->localTransform.getScale();
+    std::stringstream str;
+    str << std::fixed << std::setprecision(1);
+    mft::vec2i textPos(12, 4);
 
     //  Scale
     transformPannel->getChild(1)->getChild(0)->texts.clear();
                    // slot2 1   // X
+    str << scale.x;
     transformPannel->getChild(1)->getChild(0)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getScale().x),
-        mft::vec2i(0, 0), 16.0f));
+        UIText(str.str(), textPos, 16.0f));
 
     transformPannel->getChild(1)->getChild(3)->texts.clear();
                // slot2 1   // Y
+    str.str("");
+    str << scale.y;
     transformPannel->getChild(1)->getChild(3)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getScale().y),
-            mft::vec2i(0, 0), 16.0f));
+        UIText(str.str(), textPos, 16.0f));
 
     transformPannel->getChild(1)->getChild(6)->texts.clear();
                     // slot2 1    // Z
+    str.str("");
+    str << scale.z;
     transformPannel->getChild(1)->getChild(6)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getScale().z),
-            mft::vec2i(0, 0), 16.0f));
+        UIText(str.str(), textPos, 16.0f));
 
     //  Rotation
     transformPannel->getChild(3)->getChild(0)->texts.clear();
                     // slot2 3   // X
+    str.str("");
+    str << scale.z;
     transformPannel->getChild(3)->getChild(0)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getScale().x),
-            mft::vec2i(0, 0), 16.0f));
+        UIText(str.str(), textPos, 16.0f));
 
     transformPannel->getChild(3)->getChild(3)->texts.clear();
                     // slot2 3   // Y
+    str.str("");
+    str << scale.y;
     transformPannel->getChild(3)->getChild(3)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getScale().y),
-            mft::vec2i(0, 0), 16.0f));
-
+        UIText(str.str(), textPos, 16.0f));
     transformPannel->getChild(3)->getChild(6)->texts.clear();
                  // slot2 3    // Z
+    str.str("");
+    str << scale.z;
     transformPannel->getChild(3)->getChild(6)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getScale().z),
-            mft::vec2i(0, 0), 16.0f));
+        UIText(str.str(), textPos, 16.0f));
 
     //  Location
     transformPannel->getChild(5)->getChild(0)->texts.clear();
                     // slot2 5   // X
+    str.str("");
+    str << pos.x;
     transformPannel->getChild(5)->getChild(0)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getPos().x),
-            mft::vec2i(0, 0), 16.0f));
+        UIText(str.str(), textPos, 16.0f));
 
     transformPannel->getChild(5)->getChild(3)->texts.clear();
                     // slot2 5   // Y
+    str.str("");
+    str << pos.y;
     transformPannel->getChild(5)->getChild(3)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getPos().y),
-            mft::vec2i(0, 0), 16.0f));
+        UIText(str.str(), textPos, 16.0f));
 
     transformPannel->getChild(5)->getChild(6)->texts.clear();
                     // slot2 5    // Z
+    str.str("");
+    str << pos.z;
     transformPannel->getChild(5)->getChild(6)->texts.push_back(
-        UIText(std::to_string(selectedMesh->localTransform.getPos().z),
-            mft::vec2i(0, 0), 16.0f));
+        UIText(str.str(), textPos, 16.0f));
 }
 
 void SelectMesh(std::shared_ptr<Mesh> mesh)
