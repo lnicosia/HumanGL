@@ -123,7 +123,7 @@ void UpdateModelPannel( void )
   modelPannel->clearChildren();
 
   mft::vec2i pos(20, 282);
-  AddMeshToModelPannel(assetManager, font, modelPannel, selectedObject->getMeshes()[0], pos);
+  //AddMeshToModelPannel(assetManager, font, modelPannel, selectedObject->getMeshes()[0], pos);
 }
 
 void InitUI()
@@ -245,20 +245,21 @@ void InitUI()
           N.setSize(mft::vec2i(40, 24));
           slot2.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
 
-          Button button(mft::vec2i(49 + 60 * j, 15),
+          Button button(mft::vec2i(49 + 60 * j, 16),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-          button.setText("+");
+          button.setText("");
+          button.setPos(mft::vec2i(10000, 100000));
           button.setFont(font12);
-          button.setAllSizes(mft::vec2i(12, 12));
+          button.setAllSizes(mft::vec2i(14, 14));
           slot2.addChild(std::shared_ptr<Button>(new Button(button)));
 
 
-          button.setPos(mft::vec2i(49 + 60 * j, 3));
+          button.setPos(mft::vec2i(49 + 60 * j, 1));
           button.setText("-");
           button.setFont(font12);
-          button.setAllSizes(mft::vec2i(12, 12));
+          button.setAllSizes(mft::vec2i(14, 14));
           slot2.addChild(std::shared_ptr<Button>(new Button(button)));
       }
       transformSlotsBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot2)));
