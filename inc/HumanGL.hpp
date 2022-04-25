@@ -50,4 +50,8 @@ void UpdateModelPannel( void );
 */
 void UpdateTransformPannel( void );
 
+/**	Update the color pannel printed data
+*/
+void UpdateColorPannel( void );
+
 #endif // !_HUMAN_GL_H_
