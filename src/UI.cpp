@@ -245,7 +245,7 @@ void UpdateTransformPannel( void )
     std::shared_ptr<UIElement> transformPannel = ui.elements[1]->getChild(3)->getChild(10);
     ui.elements[1]->getChild(3)->getChild(2)->texts.clear();
     ui.elements[1]->getChild(3)->getChild(2)->texts.push_back(
-      UIText(selectedMesh->getName(), mft::vec2i(20, 10), 16.0f));
+      UIText(selectedMesh->getName(), mft::vec2i(10, 10), 16.0f));
     const mft::vec3& pos = selectedMesh->localTransform.getPos();
     mft::quat rot = selectedMesh->localTransform.getRotation();
     mft::vec3 rotV = mft::quat::euler(mft::quat::normalized(rot));
@@ -328,6 +328,7 @@ void UpdateTransformPannel( void )
 void SelectMesh(std::shared_ptr<Mesh> mesh)
 {
     selectedMesh = mesh;
+    UpdateModelPannel();
     UpdateTransformPannel();
     UpdateTransformPannelButtons();
     UpdateColorPannel();
@@ -512,7 +513,7 @@ void InitUI()
   UIElement transformPannelSlot6(mft::vec2i(17, 135),
     assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
   transformPannelSlot6.setSize(mft::vec2i(98, 34));
-  transformPannelSlot6.texts.push_back(UIText("Color", mft::vec2i(20, 10), 16.0f));
+  transformPannelSlot6.texts.push_back(UIText("Color", mft::vec2i(10, 10), 16.0f));
   transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot6)));
   UIElement transformPannelSlot7(mft::vec2i(116, 135),
     assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
@@ -658,9 +659,9 @@ void InitUI()
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannel)));
 
   //    Right pannel pipe
-  UIElement rightPannelRightPipe(mft::vec2i(-2, 175),
+  UIElement rightPannelRightPipe(mft::vec2i(-2, 140),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-  rightPannelRightPipe.setSize(mft::vec2i(4, 685));
+  rightPannelRightPipe.setSize(mft::vec2i(4, 720));
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(rightPannelRightPipe)));
 
   ui.registerElement(std::shared_ptr<UIElement>(new UIElement(rightPannel)));

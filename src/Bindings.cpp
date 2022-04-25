@@ -94,6 +94,9 @@ void RenderBobby()
 
 	AssetManager& assetManager = AssetManager::getInstance();
 	selectedObject = assetManager.getAssetByName<GLObject>("Bobby");
+	SelectMesh(selectedObject->getMeshes()[0]);
+	ui.elements[0]->getChild(0)->texts[0] = UIText("Bobby",
+	mft::vec2i(780, 10), 16.0f);
 	selectedAnimation = bobbyAnimations[0];
 
 	std::vector<std::shared_ptr<GLObject>> objects =
@@ -124,7 +127,12 @@ void SelectModel()
 	if (rock != nullptr)
 		rock->visible = true;
 	if (selectedObject != nullptr)
+	{
 		selectedObject->visible = true;
+		SelectMesh(selectedObject->getMeshes()[0]);
+		ui.elements[0]->getChild(0)->texts[0] = UIText(selectedObject->getName(),
+		mft::vec2i(780, 10), 16.0f);
+	}
 }
 
 void RenderModel()
@@ -247,30 +255,30 @@ void ResetObjectPose()
 
 void ObjectLeft()
 {
-	if (selectedObject == nullptr)
+	if (selectedMesh == nullptr)
 		return ;
-	selectedObject->transform.move(mft::vec3(-0.05f, 0.0f, 0.0f));
+	selectedMesh->localTransform.move(mft::vec3(-0.05f, 0.0f, 0.0f));
 }
 
 void ObjectRight()
 {
-	if (selectedObject == nullptr)
+	if (selectedMesh == nullptr)
 		return ;
-	selectedObject->transform.move(mft::vec3(0.05f, 0.0f, 0.0f));
+	selectedMesh->localTransform.move(mft::vec3(0.05f, 0.0f, 0.0f));
 }
 
 void ObjectForward()
 {
-	if (selectedObject == nullptr)
+	if (selectedMesh == nullptr)
 		return ;
-	selectedObject->transform.move(mft::vec3(0.0f, 0.0f, -0.05f));
+	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, -0.05f));
 }
 
 void ObjectBackward()
 {
-	if (selectedObject == nullptr)
+	if (selectedMesh == nullptr)
 		return ;
-	selectedObject->transform.move(mft::vec3(0.0f, 0.0f, 0.05f));
+	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, 0.05f));
 }
 
 //  Init

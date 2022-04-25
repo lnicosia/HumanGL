@@ -54,4 +54,8 @@ void UpdateTransformPannel( void );
 */
 void UpdateColorPannel( void );
 
+/**	Select mesh
+*/
+void SelectMesh(std::shared_ptr<Mesh> mesh);
+
 #endif // !_HUMAN_GL_H_
