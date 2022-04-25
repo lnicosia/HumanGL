@@ -30,6 +30,7 @@ extern char*					modelPath;
 extern unsigned int		selectedBone;
 extern uint32_t				fps;
 extern uint32_t				lastFpsUpdate;
+extern mft::vec3			selectedMeshRotation;
 extern std::shared_ptr<GLObject> selectedObject;
 extern std::shared_ptr<Mesh> selectedMesh;
 extern std::shared_ptr<Animation> selectedAnimation;

@@ -140,7 +140,14 @@ void UpdateTransformPannel( void )
 {                                                // rightP     / transformP / backgroundP
     std::shared_ptr<UIElement> transformPannel = ui.elements[1]->getChild(3)->getChild(0);
     const mft::vec3& pos = selectedMesh->localTransform.getPos();
-    const mft::quat& rot = selectedMesh->localTransform.getRotation();
+    mft::quat rot = selectedMesh->localTransform.getRotation();
+    mft::vec3 rotV = mft::quat::euler(mft::quat::normalized(rot));
+    //std::cout << "Quat = " << rot << std::endl;
+    //std::cout << "Euler radians = " << rotV << std::endl;
+    rotV.x = mft::degrees(rotV.x);
+    rotV.y = mft::degrees(rotV.y);
+    rotV.z = mft::degrees(rotV.z);
+    //std::cout << "Euler degrees = " << rotV << std::endl;
     const mft::vec3& scale = selectedMesh->localTransform.getScale();
     std::stringstream str;
     str << std::fixed << std::setprecision(1);
@@ -171,20 +178,20 @@ void UpdateTransformPannel( void )
     transformPannel->getChild(3)->getChild(0)->texts.clear();
                     // slot2 3   // X
     str.str("");
-    str << scale.z;
+    str << rotV.x;
     transformPannel->getChild(3)->getChild(0)->texts.push_back(
         UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     transformPannel->getChild(3)->getChild(3)->texts.clear();
                     // slot2 3   // Y
     str.str("");
-    str << scale.y;
+    str << rotV.y;
     transformPannel->getChild(3)->getChild(3)->texts.push_back(
         UIText(str.str(), mft::vec2i(8, 4), 16.0f));
     transformPannel->getChild(3)->getChild(6)->texts.clear();
                  // slot2 3    // Z
     str.str("");
-    str << scale.z;
+    str << rotV.z;
     transformPannel->getChild(3)->getChild(6)->texts.push_back(
         UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
