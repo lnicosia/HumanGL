@@ -1,6 +1,141 @@
 #include "HumanGL.hpp"
 #include "UI/Button.class.hpp"
 
+void MoveSelectedMesh(mft::vec3 move)
+{
+  selectedMesh->localTransform.move(move);
+  UpdateTransformPannel();
+}
+
+void ScaleSelectedMesh(mft::vec3 scale)
+{
+  selectedMesh->localTransform.scale(scale);
+  UpdateTransformPannel();
+}
+
+void RotateSelectedMesh(mft::vec3 axis, float degrees)
+{
+  selectedMesh->localTransform.rotate(mft::quat::rotation(axis, mft::radians(degrees)));
+  UpdateTransformPannel();
+}
+
+void UpdateTransformPannelButtons( void )
+{
+  std::shared_ptr<UIElement> transformPannel = ui.elements[1]->getChild(3)->getChild(0);
+
+  //  Scale
+  //    X
+  std::shared_ptr<ActionWrapper> action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(ScaleSelectedMesh,
+      mft::vec3(0.1f, 0.0f, 0.0f)));
+  std::shared_ptr<Button> button =
+    dynamic_pointer_cast<Button>(transformPannel->getChild(1)->getChild(1));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(ScaleSelectedMesh,
+      mft::vec3(-0.1f, 0.0f, 0.0f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(1)->getChild(2));
+  button->setOnRelease(action);
+
+  //    Y
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(ScaleSelectedMesh,
+      mft::vec3(0.0f, 0.1f, 0.0f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(1)->getChild(4));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(ScaleSelectedMesh,
+      mft::vec3(0.0f, -0.1f, 0.0f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(1)->getChild(5));
+  button->setOnRelease(action);
+
+  //    Z
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(ScaleSelectedMesh,
+      mft::vec3(0.0f, 0.0f, 0.1f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(1)->getChild(7));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(ScaleSelectedMesh,
+      mft::vec3(0.0f, 0.0f, -0.1f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(1)->getChild(8));
+  button->setOnRelease(action);
+
+  //  Rotation
+  //    X
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3, float>(RotateSelectedMesh,
+      mft::vec3(1.0f, 0.0f, 0.0f), 10.0f));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(3)->getChild(1));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3, float>(RotateSelectedMesh,
+      mft::vec3(1.0f, 0.0f, 0.0f), -10.0f));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(3)->getChild(2));
+  button->setOnRelease(action);
+
+  //    Y
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3, float>(RotateSelectedMesh,
+      mft::vec3(0.0f, 1.0f, 0.0f), 10.0f));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(3)->getChild(4));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3, float>(RotateSelectedMesh,
+      mft::vec3(0.0f, 1.0f, 0.0f), -10.0f));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(3)->getChild(5));
+  button->setOnRelease(action);
+
+  //    Z
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3, float>(RotateSelectedMesh,
+      mft::vec3(0.0f, 0.0f, 1.0f), 10.0f));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(3)->getChild(7));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3, float>(RotateSelectedMesh,
+      mft::vec3(0.0f, 0.0f, 1.0f), -10.0f));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(3)->getChild(8));
+  button->setOnRelease(action);
+
+  //  Pos
+  //    X
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(MoveSelectedMesh,
+      mft::vec3(0.1f, 0.0f, 0.0f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(5)->getChild(1));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(MoveSelectedMesh,
+      mft::vec3(-0.1f, 0.0f, 0.0f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(5)->getChild(2));
+  button->setOnRelease(action);
+
+  //    Y
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(MoveSelectedMesh,
+      mft::vec3(0.0f, 0.1f, 0.0f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(5)->getChild(4));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(MoveSelectedMesh,
+      mft::vec3(0.0f, -0.1f, 0.0f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(5)->getChild(5));
+  button->setOnRelease(action);
+
+  //    Z
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(MoveSelectedMesh,
+      mft::vec3(0.0f, 0.0f, 0.1f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(5)->getChild(7));
+  button->setOnRelease(action);
+  action =
+    std::shared_ptr<ActionWrapper>(new Action<mft::vec3>(MoveSelectedMesh,
+      mft::vec3(0.0f, 0.0f, -0.1f)));
+  button = dynamic_pointer_cast<Button>(transformPannel->getChild(5)->getChild(8));
+  button->setOnRelease(action);
+}
+
 void UpdateTransformPannel( void )
 {                                                // rightP     / transformP / backgroundP
     std::shared_ptr<UIElement> transformPannel = ui.elements[1]->getChild(3)->getChild(0);
@@ -30,7 +165,7 @@ void UpdateTransformPannel( void )
     str.str("");
     str << scale.z;
     transformPannel->getChild(1)->getChild(6)->texts.push_back(
-        UIText(str.str(), mft::vec2i(8, 4), 16.0f));
+    UIText(str.str(), mft::vec2i(8, 4), 16.0f));
 
     //  Rotation
     transformPannel->getChild(3)->getChild(0)->texts.clear();
@@ -80,6 +215,7 @@ void SelectMesh(std::shared_ptr<Mesh> mesh)
 {
     selectedMesh = mesh;
     UpdateTransformPannel();
+    UpdateTransformPannelButtons();
 }
 
 void AddMeshToModelPannel(AssetManager& assetManager, std::shared_ptr<GLFont> font,
@@ -113,17 +249,14 @@ void UpdateModelPannel( void )
   if (selectedObject == nullptr)
     return ;
   AssetManager& assetManager = AssetManager::getInstance();
-  std::vector<std::shared_ptr<GLFont>> fonts =
-    assetManager.getAssetsOfType<GLFont>();
-  std::shared_ptr<GLFont> font = nullptr;
-  if (!fonts.empty())
-    font = fonts[0];
+  std::shared_ptr<GLFont> font =
+    assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 
   std::shared_ptr<UIElement> modelPannel = ui.elements[1]->getChild(1)->getChild(1);
   modelPannel->clearChildren();
 
   mft::vec2i pos(20, 282);
-  //AddMeshToModelPannel(assetManager, font, modelPannel, selectedObject->getMeshes()[0], pos);
+  AddMeshToModelPannel(assetManager, font, modelPannel, selectedObject->getMeshes()[0], pos);
 }
 
 void InitUI()
@@ -133,11 +266,10 @@ void InitUI()
 
   std::vector<std::shared_ptr<GLFont>> fonts =
       assetManager.getAssetsOfType<GLFont>();
-  std::shared_ptr<GLFont> font = nullptr;
-  if (!fonts.empty())
-      font = fonts[0];
+  std::shared_ptr<GLFont> font =
+    assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
   std::shared_ptr<GLFont> font12 =
-      assetManager.loadAsset<GLFont>("resources/fonts/Times-New-Roman-12.bff");
+      assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 
   //  Top pannel
 
@@ -199,7 +331,7 @@ void InitUI()
 
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannel)));
 
-  //  Transform border 
+  //  Transform border
   UIElement transformBorder(mft::vec2i(2, 477),
     assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
   transformBorder.setSize(mft::vec2i(260, 40));
@@ -245,12 +377,12 @@ void InitUI()
           N.setSize(mft::vec2i(40, 24));
           slot2.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
 
-          Button button(mft::vec2i(49 + 60 * j, 16),
+          Button button(mft::vec2i(49 + 60 * j, 15),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-          button.setText("");
-          button.setPos(mft::vec2i(10000, 100000));
+          button.setText("+");
+          //button.setPos(mft::vec2i(49 + 60 * j, 16));
           button.setFont(font12);
           button.setAllSizes(mft::vec2i(14, 14));
           slot2.addChild(std::shared_ptr<Button>(new Button(button)));
@@ -265,7 +397,7 @@ void InitUI()
       transformSlotsBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot2)));
   }
   transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformSlotsBackground)));
- 
+
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannel)));
 
   //    Right pannel pipe
@@ -283,5 +415,5 @@ void InitUI()
   ui.registerElement(std::shared_ptr<UIElement>(new UIElement(bottomPannel)));
 
   UpdateModelPannel();
-  UpdateTransformPannel();
+  SelectMesh(selectedMesh);
 }

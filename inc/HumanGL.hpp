@@ -45,4 +45,8 @@ void InitUI( void );
 */
 void UpdateModelPannel( void );
 
+/**	Update the transform pannel printed data
+*/
+void UpdateTransformPannel( void );
+
 #endif // !_HUMAN_GL_H_
