@@ -40,7 +40,7 @@ uniform DirLight	dirLight;
 uniform PointLight	pointLights[MAX_POINT_LIGHTS];
 
 uniform vec3	cameraPos;
-uniform vec3	baseColor;
+uniform vec4	baseColor;
 
 out vec4 FragColor;
 
@@ -63,7 +63,7 @@ vec3	computeDirLight(DirLight light, vec3 normal, vec3 cameraDir)
 	return (ambient + diffuse + specular);
 }
 
-vec3	computePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 cameraDir)
+vec4	computePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 cameraDir)
 {
 	vec3	lightDir = normalize(light.pos - FragPos);
 
@@ -72,7 +72,7 @@ vec3	computePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 cameraD
 
 	//	Diffuse
 	float	diff = max(dot(normal, lightDir), 0.0);
-	vec3	diffuse = light.diffuse * diff * baseColor;
+	vec4	diffuse = vec4(light.diffuse, 1.0) * diff * baseColor;
 
 	//	Specular
 	vec3	reflectDir = reflect(-lightDir, normal);
@@ -93,11 +93,11 @@ void main()
 
 	//No directional light for now
 	//vec3 res = computeDirLight(dirLight, norm, cameraDir);
-	vec3 res = vec3(0);
+	vec4 res = vec4(0);
 	for (int i = 0; i < MAX_POINT_LIGHTS; i++)
 		res += computePointLight(pointLights[i], norm, FragPos, cameraDir);
 
-	FragColor = vec4(res, 1.0);
+	FragColor = res;
 	//FragColor = texture(material.diffuse, TextCoord);
 
 }

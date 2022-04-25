@@ -408,9 +408,9 @@ void InitUI()
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannel)));
 
   //    Right pannel pipe
-  UIElement rightPannelRightPipe(mft::vec2i(-2, 180),
+  UIElement rightPannelRightPipe(mft::vec2i(-2, 175),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-  rightPannelRightPipe.setSize(mft::vec2i(4, 680));
+  rightPannelRightPipe.setSize(mft::vec2i(4, 685));
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(rightPannelRightPipe)));
 
   ui.registerElement(std::shared_ptr<UIElement>(new UIElement(rightPannel)));

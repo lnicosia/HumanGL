@@ -13,20 +13,20 @@ std::shared_ptr<GLObject> InitBobby(void)
   Mesh& torso = *mesh;
 
   torso.setName("Torso");
-  torso.setColor(mft::vec3(0.0f, 0.5f, 0.0f));
+  torso.setColor(mft::vec4(0.0f, 0.5f, 0.0f, 1.0f));
   torso.localTransform.setScale(mft::vec3(0.50f, 0.75f, 0.15f));
 
   torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh&	head = (*torso.getChildren()[0]);
   head.setName("Head");
-  head.setColor(mft::vec3(0.6f, 0.6f, 0.0f));
+  head.setColor(mft::vec4(0.6f, 0.6f, 0.0f, 1.0f));
   head.localTransform.move(mft::vec3(0.125f, 1.025f, -0.5f));
   head.localTransform.setScale(mft::vec3(0.75f, 0.45f, 2.0f));
 
   torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh& upperLeftArm = (*torso.getChildren()[1]);
   upperLeftArm.setName("Upper left arm");
-  upperLeftArm.setColor(mft::vec3(0.5f, 0.5f, 0.0f));
+  upperLeftArm.setColor(mft::vec4(0.5f, 0.5f, 0.0f, 1.0f));
   upperLeftArm.localTransform.move(mft::vec3(1.375f, 0.95f, 0.0f));
   upperLeftArm.localTransform.setScale(mft::vec3(0.35f, 0.475f, 1.0f));
   upperLeftArm.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
@@ -34,13 +34,13 @@ std::shared_ptr<GLObject> InitBobby(void)
   upperLeftArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh& lowerLeftArm = (*upperLeftArm.getChildren()[0]);
   lowerLeftArm.setName("Lower left arm");
-  lowerLeftArm.setColor(mft::vec3(0.6f, 0.6f, 0.0f));
+  lowerLeftArm.setColor(mft::vec4(0.6f, 0.6f, 0.0f, 1.0f));
   lowerLeftArm.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
 
   torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh&	upperRightArm = (*torso.getChildren()[2]);
   upperRightArm.setName("Upper right arm");
-  upperRightArm.setColor(mft::vec3(0.5f, 0.5f, 0.0f));
+  upperRightArm.setColor(mft::vec4(0.5f, 0.5f, 0.0f, 1.0f));
   upperRightArm.localTransform.move(mft::vec3(-0.025f, 0.95f, 0.0f));
   upperRightArm.localTransform.setScale(mft::vec3(0.35f, 0.475f, 1.0f));
   upperRightArm.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
@@ -48,13 +48,13 @@ std::shared_ptr<GLObject> InitBobby(void)
   upperRightArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh& lowerRightArm = (*upperRightArm.getChildren()[0]);
   lowerRightArm.setName("Lower right arm");
-  lowerRightArm.setColor(mft::vec3(0.6f, 0.6f, 0.0f));
+  lowerRightArm.setColor(mft::vec4(0.6f, 0.6f, 0.0f, 1.0f));
   lowerRightArm.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
 
   torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh&	leftThigh = (*torso.getChildren()[3]);
   leftThigh.setName("Left thigh");
-  leftThigh.setColor(mft::vec3(0.0f, 0.0f, 0.5f));
+  leftThigh.setColor(mft::vec4(0.0f, 0.0f, 0.5f, 1.0f));
   leftThigh.localTransform.move(mft::vec3(0.95f, 0.0f, 0.0f));
   leftThigh.localTransform.setScale(mft::vec3(0.35f, 0.5f, 1.0f));
   leftThigh.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
@@ -62,13 +62,13 @@ std::shared_ptr<GLObject> InitBobby(void)
   leftThigh.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh& leftCalf = (*leftThigh.getChildren()[0]);
   leftCalf.setName("Left calf");
-  leftCalf.setColor(mft::vec3(0.0f, 0.0f, 0.6f));
+  leftCalf.setColor(mft::vec4(0.0f, 0.0f, 0.6f, 1.0f));
   leftCalf.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
 
   torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh& rightThigh = (*torso.getChildren()[4]);
   rightThigh.setName("Right thigh");
-  rightThigh.setColor(mft::vec3(0.0f, 0.0f, 0.5f));
+  rightThigh.setColor(mft::vec4(0.0f, 0.0f, 0.5f, 1.0f));
   rightThigh.localTransform.move(mft::vec3(0.4f, 0.0f, 0.0f));
   rightThigh.localTransform.setScale(mft::vec3(0.35f, 0.5f, 1.0f));
   rightThigh.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
@@ -76,7 +76,7 @@ std::shared_ptr<GLObject> InitBobby(void)
   rightThigh.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
   Mesh& rightCalf = (*rightThigh.getChildren()[0]);
   rightCalf.setName("Right calf");
-  rightCalf.setColor(mft::vec3(0.0f, 0.0f, 0.6f));
+  rightCalf.setColor(mft::vec4(0.0f, 0.0f, 0.6f, 1.0f));
   rightCalf.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
 
   std::shared_ptr<GLObject>	character(new GLObject(meshes));
