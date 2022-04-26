@@ -24,8 +24,6 @@ void FillArmature(Armature& armature, std::shared_ptr<Mesh> mesh)
     if (mesh == nullptr)
         return;
     armature = Armature(mesh);
-    if (armature.name == "Left thigh" || armature.name == "Upper right arm")
-        armature.open = false;
     const std::vector<std::shared_ptr<Mesh>>& children = mesh->getChildren();
     for (const auto& child : children)
     {
@@ -418,7 +416,7 @@ void AddMeshToModelPannel(AssetManager& assetManager, std::shared_ptr<GLFont> fo
           assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
       closeArmatureTabButton.setText(armature.name);
       closeArmatureTabButton.setFont(font);
-      closeArmatureTabButton.setText("+");
+      closeArmatureTabButton.setText("-");
       closeArmatureTabButton.setAllSizes(mft::vec2i(30, 30));
       std::function<void(Armature&)> func2 = CloseArmature;
       action = std::shared_ptr<ActionWrapper>(new Action<Armature&>(func2, armature));
@@ -437,7 +435,7 @@ void AddMeshToModelPannel(AssetManager& assetManager, std::shared_ptr<GLFont> fo
           assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
       openArmatureTabButton.setText(armature.name);
       openArmatureTabButton.setFont(font);
-      openArmatureTabButton.setText("-");
+      openArmatureTabButton.setText("+");
       openArmatureTabButton.setAllSizes(mft::vec2i(30, 30));
       std::function<void(Armature&)> func2 = OpenArmature;
       action = std::shared_ptr<ActionWrapper>(new Action<Armature&>(func2, armature));
