@@ -132,6 +132,8 @@ void RenderLoop(GLContext_SDL& context)
 		//	Invert y-axis (SDL is Y- and OpenGL is Y+)
 		events.mousePos.y = WINDOW_HEIGHT - events.mousePos.y;
 		events.mouseGlobalPos.y = screenSize.y - events.mouseGlobalPos.y;
+
+		ui.update(events.mousePos, events.mouseState);
 		if (events.handle() == NRE_QUIT)
 			break ;
 
@@ -142,7 +144,6 @@ void RenderLoop(GLContext_SDL& context)
 		if (renderBones == true)
 			scene.renderBones();
 
-		ui.update(events.mousePos, events.mouseState);
 		ui.draw();
 
 		context.swapWindow();

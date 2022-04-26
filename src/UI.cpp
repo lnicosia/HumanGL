@@ -418,8 +418,37 @@ void InitUI()
   UIElement topPannel(mft::vec2i(0, 860),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-dark.png", "UI"));
   topPannel.setSize(mft::vec2i(1600, 40));
-  topPannel.texts.push_back(UIText("Bobby", mft::vec2i(780, 10), 16.0f));
-  
+
+  //    Bobby
+  Button bobbyTab(mft::vec2i(32, 0),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clear.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clearer.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clearer.png", "UI"));
+  bobbyTab.setAllSizes(mft::vec2i(100, 32));
+  bobbyTab.setText("Bobby");
+  bobbyTab.setFont(font);
+  std::shared_ptr<ActionWrapper> action =
+      std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobby)));
+  bobbyTab.onRelease = action;
+  topPannel.addChild(std::shared_ptr<Button>(new Button(bobbyTab)));
+
+  //    Object
+  std::shared_ptr<GLObject> obj = assetManager.getAsset<GLObject>(modelPath);
+  if (obj != nullptr)
+  {
+      Button objectTab(mft::vec2i(136, 0),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded.png", "UI"),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clearer.png", "UI"),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clearer.png", "UI"));
+      objectTab.setAllSizes(mft::vec2i(100, 32));
+      objectTab.setText(obj->getName());
+      objectTab.setFont(font);
+      action =
+          std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderModel)));
+      objectTab.onRelease = action;
+      topPannel.addChild(std::shared_ptr<Button>(new Button(objectTab)));
+  }
+
   ui.registerElement(std::shared_ptr<UIElement>(new UIElement(topPannel)));
 
 
@@ -436,7 +465,7 @@ void InitUI()
   button.setText("Filled");
   button.setFont(font);
   button.setAllSizes(mft::vec2i(64, 24));
-  std::shared_ptr<ActionWrapper> action =
+  action =
       std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode)));
   button.onRelease = action;
   scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));

@@ -104,8 +104,16 @@ void RenderBobby()
 	AssetManager& assetManager = AssetManager::getInstance();
 	selectedObject = assetManager.getAssetByName<GLObject>("Bobby");
 	SelectMesh(selectedObject->getMeshes()[0]);
-	ui.elements[0]->texts[0] = UIText("Bobby",
-	mft::vec2i(780, 10), 16.0f);
+	std::shared_ptr<Button> bobbyButton =
+		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(0));
+	if (bobbyButton)
+		bobbyButton->setReleasedImg(assetManager.loadAsset<Texture>(
+			"resources/UI/defaultUI-rounded-clear.png", "UI"));
+	std::shared_ptr<Button> modelButton =
+		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(1));
+	if (modelButton)
+		modelButton->setReleasedImg(assetManager.loadAsset<Texture>(
+			"resources/UI/defaultUI-rounded.png", "UI"));
 	selectedAnimation = bobbyAnimations[0];
 
 	std::vector<std::shared_ptr<GLObject>> objects =
@@ -139,8 +147,16 @@ void SelectModel()
 	{
 		selectedObject->visible = true;
 		SelectMesh(selectedObject->getMeshes()[0]);
-		ui.elements[0]->texts[0] = UIText(selectedObject->getName(),
-		mft::vec2i(780, 10), 16.0f);
+		std::shared_ptr<Button> bobbyButton =
+			dynamic_pointer_cast<Button>(ui.elements[0]->getChild(0));
+		if (bobbyButton)
+			bobbyButton->setReleasedImg(assetManager.loadAsset<Texture>(
+				"resources/UI/defaultUI-rounded.png", "UI"));
+		std::shared_ptr<Button> modelButton =
+			dynamic_pointer_cast<Button>(ui.elements[0]->getChild(1));
+		if (modelButton)
+			modelButton->setReleasedImg(assetManager.loadAsset<Texture>(
+				"resources/UI/defaultUI-rounded-clear.png", "UI"));
 	}
 }
 

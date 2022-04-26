@@ -66,4 +66,12 @@ void ChangeDrawMode( void );
 */
 void ChangeLightingMode( void );
 
+/**	Render model
+*/
+void RenderModel( void );
+
+/**	Render Bobby
+*/
+void RenderBobby( void );
+
 #endif // !_HUMAN_GL_H_
