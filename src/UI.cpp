@@ -1,6 +1,47 @@
 #include "HumanGL.hpp"
 #include "UI/Button.class.hpp"
 
+void PrintArmature(Armature& armature, int& count)
+{
+    for (int i = 0; i < count; i++)
+        std::cout << " ";
+    std::cout << armature.name << std::endl;
+    for (auto child : armature.children)
+    {
+        PrintArmature(child, ++count);
+    }
+    count--;
+}
+
+void PrintFullArmature()
+{
+    int count = 0;
+    PrintArmature(rootArmature, count);
+}
+
+void FillArmature(Armature& armature, std::shared_ptr<Mesh> mesh)
+{
+    if (mesh == nullptr)
+        return;
+    armature = Armature(mesh);
+    if (armature.name == "Left thigh" || armature.name == "Upper right arm")
+        armature.open = false;
+    const std::vector<std::shared_ptr<Mesh>>& children = mesh->getChildren();
+    for (const auto& child : children)
+    {
+        Armature a;
+        FillArmature(a, child);
+        armature.children.push_back(a);
+    }
+}
+
+void PopulateArmature()
+{
+    if (selectedObject == nullptr)
+        return;
+    FillArmature(rootArmature, selectedObject->getMeshes()[0]);
+}
+
 void SetSelectedMeshColor(mft::vec4 color)
 {
   mft::vec4 clamped = selectedMesh->getColor() + color;
@@ -33,7 +74,7 @@ void RotateSelectedMesh(mft::vec3 axis, float degrees)
 void UpdateColorPannelButtons( void )
 {
   //  Color
-  std::shared_ptr<UIElement> colorPannel = ui.elements[2]->getChild(3)->getChild(15)->getChild(0);
+  std::shared_ptr<UIElement> colorPannel = ui.elements[2]->getChild(2)->getChild(33)->getChild(0);
 
   //  Red
   std::shared_ptr<ActionWrapper> action =
@@ -87,7 +128,7 @@ void UpdateColorPannelButtons( void )
 
 void UpdateTransformPannelButtons( void )
 {
-  std::shared_ptr<UIElement> transformPannel = ui.elements[2]->getChild(3)->getChild(10);
+  std::shared_ptr<UIElement> transformPannel = ui.elements[2]->getChild(2)->getChild(32);
 
   //  Scale
   //    X
@@ -206,7 +247,7 @@ void UpdateTransformPannelButtons( void )
 void UpdateColorPannel( void )
 {
   //  Color
-  std::shared_ptr<UIElement> colorPannel = ui.elements[2]->getChild(3)->getChild(15)->getChild(0);
+  std::shared_ptr<UIElement> colorPannel = ui.elements[2]->getChild(2)->getChild(33)->getChild(0);
   const mft::vec4& color = selectedMesh->getColor();
   std::stringstream str;
   str << std::fixed << std::setprecision(1);
@@ -241,10 +282,11 @@ void UpdateColorPannel( void )
 }
 
 void UpdateTransformPannel( void )
-{                                                // rightP     / transformP / backgroundP
-    std::shared_ptr<UIElement> transformPannel = ui.elements[2]->getChild(3)->getChild(10);
-    ui.elements[2]->getChild(3)->getChild(2)->texts.clear();
-    ui.elements[2]->getChild(3)->getChild(2)->texts.push_back(
+{    
+                                                  // rightP     / transformP / backgroundP
+    std::shared_ptr<UIElement> transformPannel = ui.elements[2]->getChild(2)->getChild(32);
+    ui.elements[2]->getChild(2)->getChild(25)->texts.clear();
+    ui.elements[2]->getChild(2)->getChild(25)->texts.push_back(
       UIText(selectedMesh->getName(), mft::vec2i(10, 10), 16.0f));
     const mft::vec3& pos = selectedMesh->localTransform.getPos();
     mft::quat rot = selectedMesh->localTransform.getRotation();
@@ -335,30 +377,72 @@ void SelectMesh(std::shared_ptr<Mesh> mesh)
     UpdateColorPannelButtons();
 }
 
-void AddMeshToModelPannel(AssetManager& assetManager, std::shared_ptr<GLFont> font,
-    std::shared_ptr<UIElement> modelPannel, std::shared_ptr<Mesh> mesh, mft::vec2i& pos, int& count)
+void OpenArmature(Armature& armature)
 {
-  if (count >= 11)
+    armature.open = true;
+    mustUpdateModelPannel = true;
+}
+
+void CloseArmature(Armature& armature)
+{
+    armature.open = false;
+    mustUpdateModelPannel = true;
+}
+
+void AddMeshToModelPannel(AssetManager& assetManager, std::shared_ptr<GLFont> font,
+    std::shared_ptr<UIElement> modelPannel, Armature& armature, mft::vec2i& pos, int& count)
+{
+  if (count >= 9)
     return ;
   Button button(pos,
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-bordered.png", "UI"),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer-rounded-bordered.png", "UI"),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer-rounded-bordered.png", "UI"));
-  button.setText(mesh->getName());
+  button.setText(armature.name);
   button.setFont(font);
-  button.setAllSizes(mft::vec2i(100, 18));
+  button.setAllSizes(mft::vec2i(100, 29));
   std::function<void(std::shared_ptr<Mesh>)> func = SelectMesh;
   std::shared_ptr<ActionWrapper> action =
-      std::shared_ptr<ActionWrapper>(new Action<std::shared_ptr<Mesh>>(func, mesh));
+      std::shared_ptr<ActionWrapper>(new Action<std::shared_ptr<Mesh>>(func, armature.mesh));
   button.onRelease = action;
 
   modelPannel->addChild(std::shared_ptr<Button>(new Button(button)));
-  std::vector<std::shared_ptr<Mesh>> children = mesh->getChildren();
+  
   pos.x += 20;
-  pos.y -= 21;
-  for (auto child : children)
+  pos.y -= 32;
+  if (armature.open == true && !armature.children.empty())
   {
-      AddMeshToModelPannel(assetManager, font, modelPannel, child, pos, ++count);
+      Button closeArmatureTabButton(mft::vec2i(pos.x + 80, pos.y + 32),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+      closeArmatureTabButton.setText(armature.name);
+      closeArmatureTabButton.setFont(font);
+      closeArmatureTabButton.setText("+");
+      closeArmatureTabButton.setAllSizes(mft::vec2i(30, 30));
+      std::function<void(Armature&)> func2 = CloseArmature;
+      action = std::shared_ptr<ActionWrapper>(new Action<Armature&>(func2, armature));
+      closeArmatureTabButton.onRelease = action;
+      modelPannel->addChild(std::shared_ptr<Button>(new Button(closeArmatureTabButton)));
+      for (auto& child : armature.children)
+      {
+          AddMeshToModelPannel(assetManager, font, modelPannel, child, pos, ++count);
+      }
+  }
+  else if (armature.open == false)
+  {
+      Button openArmatureTabButton(mft::vec2i(pos.x + 80, pos.y + 32),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+      openArmatureTabButton.setText(armature.name);
+      openArmatureTabButton.setFont(font);
+      openArmatureTabButton.setText("-");
+      openArmatureTabButton.setAllSizes(mft::vec2i(30, 30));
+      std::function<void(Armature&)> func2 = OpenArmature;
+      action = std::shared_ptr<ActionWrapper>(new Action<Armature&>(func2, armature));
+      openArmatureTabButton.onRelease = action;
+      modelPannel->addChild(std::shared_ptr<Button>(new Button(openArmatureTabButton)));
   }
   pos.x -= 20;
 }
@@ -367,16 +451,17 @@ void UpdateModelPannel( void )
 {
   if (selectedObject == nullptr)
     return ;
+  mustUpdateModelPannel = false;
   AssetManager& assetManager = AssetManager::getInstance();
   std::shared_ptr<GLFont> font =
     assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 
-  std::shared_ptr<UIElement> modelPannel = ui.elements[2]->getChild(1)->getChild(1);
+  std::shared_ptr<UIElement> modelPannel = ui.elements[2]->getChild(0)->getChild(1);
   modelPannel->clearChildren();
 
-  mft::vec2i pos(30, 254);
+  mft::vec2i pos(30, 258);
   int count = 0;
-  AddMeshToModelPannel(assetManager, font, modelPannel, selectedObject->getMeshes()[0], pos, count);
+  AddMeshToModelPannel(assetManager, font, modelPannel, rootArmature, pos, count);
 }
 
 void IncreaseCameraSpeed(void)
@@ -421,9 +506,9 @@ void InitUI()
 
   //    Bobby
   Button bobbyTab(mft::vec2i(32, 0),
-      assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clear.png", "UI"),
-      assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clearer.png", "UI"),
-      assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clearer.png", "UI"));
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clear.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"));
   bobbyTab.setAllSizes(mft::vec2i(100, 32));
   bobbyTab.setText("Bobby");
   bobbyTab.setFont(font);
@@ -437,9 +522,9 @@ void InitUI()
   if (obj != nullptr)
   {
       Button objectTab(mft::vec2i(136, 0),
-          assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded.png", "UI"),
-          assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clearer.png", "UI"),
-          assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-clearer.png", "UI"));
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded.png", "UI"),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"));
       objectTab.setAllSizes(mft::vec2i(100, 32));
       objectTab.setText(obj->getName());
       objectTab.setFont(font);
@@ -522,14 +607,8 @@ void InitUI()
       assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
   rightPannel.setSize(mft::vec2i(320, 860));
 
-  //  Model border and pannel
-  UIElement modelBorder(mft::vec2i(2, 820),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer-cornered.png", "UI"));
-  modelBorder.setSize(mft::vec2i(260, 40));
-  modelBorder.texts.push_back(UIText("Model", mft::vec2i(105, 10), 16.0f));
-  rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(modelBorder)));
-
-  UIElement modelPannel(mft::vec2i(3, 524),
+  //    Model pannel
+  UIElement modelPannel(mft::vec2i(5, 511),
     assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
   modelPannel.setSize(mft::vec2i(316, 290));
   modelPannel.visible = false;
@@ -537,39 +616,39 @@ void InitUI()
   //    Model pannel background
   UIElement modelPannelBackground(mft::vec2i(0, 0),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  modelPannelBackground.setSize(mft::vec2i(316, 290));
+  modelPannelBackground.setSize(mft::vec2i(316, 280));
   modelPannelBackground.visible = false;
-  for (size_t i = 0; i < 14; i++)
+  for (size_t i = 0; i < 10; i++)
   {
-      UIElement slot(mft::vec2i(24, 1 + i * 21),
+      UIElement slot(mft::vec2i(24, 1 + i * 32),
           assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-      slot.setSize(mft::vec2i(263, 20));
+      slot.setSize(mft::vec2i(263, 31));
       modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot)));
-      UIElement modelPannelLeftBorder(mft::vec2i(0, 1 + i * 21),
+      UIElement modelPannelLeftBorder(mft::vec2i(0, 1 + i * 32),
           assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-      modelPannelLeftBorder.setSize(mft::vec2i(23, 20));
+      modelPannelLeftBorder.setSize(mft::vec2i(23, 31));
       modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelLeftBorder)));
-      UIElement modelPannelRightBorder(mft::vec2i(288, 1 + i * 21),
+      UIElement modelPannelRightBorder(mft::vec2i(288, 1 + i * 32),
           assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-      modelPannelRightBorder.setSize(mft::vec2i(23, 20));
+      modelPannelRightBorder.setSize(mft::vec2i(23, 31));
       modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelRightBorder)));
   }
   UIElement modelPannelLeftBorder(mft::vec2i(0, 1),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
   modelPannelLeftBorder.setSize(mft::vec2i(12, 293));
-  modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelLeftBorder)));
+  //modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelLeftBorder)));
   UIElement modelPannelRightBorder(mft::vec2i(301, 2),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
   modelPannelRightBorder.setSize(mft::vec2i(12, 292));
-  modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelRightBorder)));
+  //modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelRightBorder)));
   UIElement modelPannelLeftTop(mft::vec2i(0, 0),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
   modelPannelLeftTop.setSize(mft::vec2i(313, 10));
-  modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelLeftTop)));
+  //modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelLeftTop)));
   UIElement modelPannelBottomBorder(mft::vec2i(0, 284),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
   modelPannelBottomBorder.setSize(mft::vec2i(313, 10));
-  modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelBottomBorder)));
+ // modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelBottomBorder)));
 
   modelPannel.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelBackground)));
 
@@ -578,73 +657,62 @@ void InitUI()
   modelPannelSlots.visible = false;
   modelPannel.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelSlots)));
 
+
+
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannel)));
 
+  //  Model border
+  UIElement modelBorder(mft::vec2i(2, 800),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+  modelBorder.setSize(mft::vec2i(290, 31));
+  modelBorder.texts.push_back(UIText(">  Model", mft::vec2i(12, 6), 20.0f));
+
+  UIElement detailsBorder(mft::vec2i(0, 32),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear-cornered.png", "UI"));
+  detailsBorder.setSize(mft::vec2i(100, 26));
+  detailsBorder.texts.push_back(UIText("Details", mft::vec2i(14, 6), 16.0f));
+  modelBorder.addChild(std::shared_ptr<UIElement>(new UIElement(detailsBorder)));
+
+  rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(modelBorder)));
+
   //  Transform border
-  UIElement transformBorder(mft::vec2i(2, 477),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-  transformBorder.setSize(mft::vec2i(260, 40));
-  transformBorder.texts.push_back(UIText("Mesh", mft::vec2i(90, 10), 16.0f));
-  rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformBorder)));
 
   //    Transform pannel
-  UIElement transformPannel(mft::vec2i(3, 175),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+  UIElement transformPannel(mft::vec2i(4, 167),
+    assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
   transformPannel.setSize(mft::vec2i(312, 300));
 
-  UIElement transformPannelSlot(mft::vec2i(0, 0),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
-  transformPannelSlot.setSize(mft::vec2i(312, 300));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot)));
-
-  UIElement transformPannelSlot1(mft::vec2i(1, 266),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot1.setSize(mft::vec2i(15, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot1)));
-  UIElement transformPannelSlot2(mft::vec2i(17, 266),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot2.setSize(mft::vec2i(98, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot2)));
-  UIElement transformPannelSlot3(mft::vec2i(116, 266),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot3.setSize(mft::vec2i(185, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot3)));
-  UIElement transformPannelSlot3bis(mft::vec2i(302, 266),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot3bis.setSize(mft::vec2i(11, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot3bis)));
-
-  UIElement transformPannelSlot4(mft::vec2i(1, 170),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot4.setSize(mft::vec2i(312, 95));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot4)));
-
-  UIElement transformPannelSlot5(mft::vec2i(1, 135),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot5.setSize(mft::vec2i(15, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot5)));
-  UIElement transformPannelSlot6(mft::vec2i(17, 135),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot6.setSize(mft::vec2i(98, 34));
-  transformPannelSlot6.texts.push_back(UIText("Color", mft::vec2i(10, 10), 16.0f));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot6)));
-  UIElement transformPannelSlot7(mft::vec2i(116, 135),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot7.setSize(mft::vec2i(185, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot7)));
-  UIElement transformPannelSlot7bis(mft::vec2i(302, 135),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot7bis.setSize(mft::vec2i(11, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot7bis)));
+  //    Design bars
+  for (int i = 0; i < 8; i++)
+  {
+      UIElement transformPannelSlot1(mft::vec2i(1, i * 35 + 65),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+      transformPannelSlot1.setSize(mft::vec2i(16, 34));
+      transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot1)));
+      UIElement transformPannelSlot2(mft::vec2i(17, i * 35 + 65),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+      transformPannelSlot2.setSize(mft::vec2i(98, 34));
+      if (i == 2)
+          transformPannelSlot2.texts.push_back(UIText("Color", mft::vec2i(10, 10), 16.0f));
+      transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot2)));
+      UIElement transformPannelSlot3(mft::vec2i(116, i * 35 + 65),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+      transformPannelSlot3.setSize(mft::vec2i(185, 34));
+      transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot3)));
+      UIElement transformPannelSlot3bis(mft::vec2i(302, i * 35 + 65),
+          assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+      transformPannelSlot3bis.setSize(mft::vec2i(11, 34));
+      transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot3bis)));
+  }
 
   UIElement transformSlotsBackground(mft::vec2i(12, 169),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
-  transformSlotsBackground.setSize(mft::vec2i(290, 96));
+  transformSlotsBackground.setSize(mft::vec2i(290, 105));
   for (size_t i = 0; i < 3; i++)
   {
-      UIElement slot(mft::vec2i(5, 1 + i * 32),
+      UIElement slot(mft::vec2i(5, 1 + i * 35),
           assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-      slot.setSize(mft::vec2i(98, 31));
+      slot.setSize(mft::vec2i(98, 34));
       std::string str;
       if (i == 2)
           str = "Location";
@@ -652,16 +720,16 @@ void InitUI()
           str = "Rotation";
       else if (i == 0)
           str = "Scale";
-      slot.texts.push_back(UIText(str, mft::vec2i(20, 7), 16.0f));
+      slot.texts.push_back(UIText(str, mft::vec2i(20, 10), 16.0f));
       transformSlotsBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot)));
 
-      UIElement slot2(mft::vec2i(104, 1 + i * 32),
+      UIElement slot2(mft::vec2i(104, 1 + i * 35),
           assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-      slot2.setSize(mft::vec2i(185, 31));
+      slot2.setSize(mft::vec2i(185, 34));
 
       for (size_t j = 0; j < 3; j++)
       {
-          UIElement N(mft::vec2i(6 + j * 60, 3));
+          UIElement N(mft::vec2i(6 + j * 60, 5));
           if (j == 0)
               N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-X-Dark.png", "UI"));
           else if (j == 1)
@@ -671,43 +739,26 @@ void InitUI()
           N.setSize(mft::vec2i(40, 24));
           slot2.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
 
-          Button button(mft::vec2i(49 + 60 * j, 15),
+          Button button(mft::vec2i(49 + 60 * j, 17),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
           button.setText("+");
           //button.setPos(mft::vec2i(49 + 60 * j, 16));
           button.setFont(font12);
-          button.setAllSizes(mft::vec2i(14, 14));
+          button.setAllSizes(mft::vec2i(15, 15));
           slot2.addChild(std::shared_ptr<Button>(new Button(button)));
 
 
-          button.setPos(mft::vec2i(49 + 60 * j, 1));
+          button.setPos(mft::vec2i(49 + 60 * j, 3));
           button.setText("-");
           button.setFont(font12);
-          button.setAllSizes(mft::vec2i(14, 14));
+          button.setAllSizes(mft::vec2i(15, 15));
           slot2.addChild(std::shared_ptr<Button>(new Button(button)));
       }
       transformSlotsBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot2)));
   }
   transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformSlotsBackground)));
-
-  UIElement transformPannelSlot8(mft::vec2i(1, 100),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot8.setSize(mft::vec2i(15, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot8)));
-  UIElement transformPannelSlot9(mft::vec2i(17, 100),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot9.setSize(mft::vec2i(98, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot9)));
-  UIElement transformPannelSlot10(mft::vec2i(116, 100),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot10.setSize(mft::vec2i(185, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot10)));
-  UIElement transformPannelSlot11(mft::vec2i(302, 100),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot11.setSize(mft::vec2i(11, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot11)));
 
   UIElement colorPannel(mft::vec2i(12, 100),
     assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
@@ -752,29 +803,18 @@ void InitUI()
 
   transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(colorPannel)));
 
-  UIElement transformPannelSlot12(mft::vec2i(1, 65),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot12.setSize(mft::vec2i(15, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot12)));
-  UIElement transformPannelSlot13(mft::vec2i(17, 65),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot13.setSize(mft::vec2i(98, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot13)));
-  UIElement transformPannelSlot14(mft::vec2i(116, 65),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot14.setSize(mft::vec2i(185, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot14)));
-  UIElement transformPannelSlot15(mft::vec2i(302, 65),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  transformPannelSlot15.setSize(mft::vec2i(11, 34));
-  transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot15)));
-
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannel)));
 
+  UIElement transformBorder(mft::vec2i(2, 477),
+    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+  transformBorder.setSize(mft::vec2i(303, 34));
+  transformBorder.texts.push_back(UIText(">  Mesh", mft::vec2i(12, 6), 20.0f));
+  rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformBorder)));
+
   //    Right pannel pipe
-  UIElement rightPannelRightPipe(mft::vec2i(-2, 140),
+  UIElement rightPannelRightPipe(mft::vec2i(0, 140),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-  rightPannelRightPipe.setSize(mft::vec2i(4, 720));
+  rightPannelRightPipe.setSize(mft::vec2i(4, 718));
   rightPannel.addChild(std::shared_ptr<UIElement>(new UIElement(rightPannelRightPipe)));
 
   ui.registerElement(std::shared_ptr<UIElement>(new UIElement(rightPannel)));

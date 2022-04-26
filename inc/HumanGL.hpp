@@ -17,12 +17,26 @@ enum RenderingMode
 	BonesInfluence
 };
 
+struct Armature
+{
+	std::string name;
+	bool open;
+	std::shared_ptr<Mesh> mesh;
+	std::vector<Armature> children;
+	Armature(): name(), open(false), mesh(), children()
+	{}
+	Armature(std::shared_ptr<Mesh> mesh)
+		: name(mesh->getName()), open(true), mesh(mesh), children()
+	{}
+};
+
 //	Set of essential global variables
 extern mft::vec2i screenSize;
 extern RenderingMode  renderingMode;
 extern bool 				  renderBones;
 extern SDLEvents			events;
 extern bool					  running;
+extern bool				mustUpdateModelPannel;
 extern Scene          scene;
 extern uint32_t       timeSinceLastFrame;
 extern uint32_t       timeOfLastFrame;
@@ -36,6 +50,7 @@ extern std::shared_ptr<Mesh> selectedMesh;
 extern std::shared_ptr<Animation> selectedAnimation;
 extern std::vector<std::shared_ptr<Animation>> bobbyAnimations;
 extern std::vector<std::shared_ptr<Animation>> skeletalAnimations;
+extern Armature rootArmature;
 extern UIManager ui;
 
 /**	Init all the UI
@@ -73,5 +88,13 @@ void RenderModel( void );
 /**	Render Bobby
 */
 void RenderBobby( void );
+
+/**	Populate the printable armature from the currently selected object
+*/
+void PopulateArmature( void );
+
+/**	Print the full armature
+*/
+void PrintFullArmature( void );
 
 #endif // !_HUMAN_GL_H_

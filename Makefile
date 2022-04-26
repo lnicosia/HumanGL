@@ -10,7 +10,6 @@ define n
 endef
 
 CC = clang++ --std=c++20 -O3 -flto
-
 include project.mk
 
 ifneq ($L,)

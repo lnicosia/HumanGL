@@ -12,6 +12,7 @@ RenderingMode renderingMode;
 bool 					renderBones;
 SDLEvents			events;
 bool					running;
+bool					mustUpdateModelPannel = false;
 Scene					scene;
 uint32_t			timeSinceLastFrame;
 uint32_t			timeOfLastFrame;
@@ -24,6 +25,7 @@ std::shared_ptr<Mesh> selectedMesh;
 std::shared_ptr<Animation> selectedAnimation;
 std::vector<std::shared_ptr<Animation>> bobbyAnimations;
 std::vector<std::shared_ptr<Animation>> skeletalAnimations;
+Armature rootArmature;
 UIManager ui;
 
 //	Load/init all the wanted resources
@@ -82,6 +84,7 @@ void	InitResources(int ac, char **av)
 	selectedAnimation = bobbyIdle;
 	selectedObject = bobby;
 	selectedMesh = bobby->getMeshes()[0];
+	PopulateArmature();
 	bobby->setAnimation(bobbyIdle.get());
 	bobbyAnimations.push_back(bobbyIdle);
 	bobbyAnimations.push_back(bobbyWalking);
@@ -133,6 +136,8 @@ void RenderLoop(GLContext_SDL& context)
 		events.mousePos.y = WINDOW_HEIGHT - events.mousePos.y;
 		events.mouseGlobalPos.y = screenSize.y - events.mouseGlobalPos.y;
 
+		if (mustUpdateModelPannel == true)
+			UpdateModelPannel();
 		ui.update(events.mousePos, events.mouseState);
 		if (events.handle() == NRE_QUIT)
 			break ;
