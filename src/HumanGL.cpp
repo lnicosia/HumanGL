@@ -108,7 +108,7 @@ void UpdateTimers(uint32_t& fpsCount)
 	{
 		lastFpsUpdate = newTime;
 		fps = fpsCount;
-		ui.elements[0]->texts[0].text = std::string("FPS: " + std::to_string(fps));
+		ui.elements[1]->texts[0].text = std::string("FPS: " + std::to_string(fps));
 		fpsCount = 0;
 	}
 }
@@ -157,8 +157,6 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 	scene = Scene("Scene");
 
 	scene.drawGrid = true;
-
-	scene.setCameraSpeed(0.005f);
 
 	std::shared_ptr<GLObject> obj =
 		assetManager.getAsset<GLObject>(loadedObject);

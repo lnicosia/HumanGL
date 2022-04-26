@@ -33,7 +33,7 @@ void RotateSelectedMesh(mft::vec3 axis, float degrees)
 void UpdateColorPannelButtons( void )
 {
   //  Color
-  std::shared_ptr<UIElement> colorPannel = ui.elements[1]->getChild(3)->getChild(15)->getChild(0);
+  std::shared_ptr<UIElement> colorPannel = ui.elements[2]->getChild(3)->getChild(15)->getChild(0);
 
   //  Red
   std::shared_ptr<ActionWrapper> action =
@@ -87,7 +87,7 @@ void UpdateColorPannelButtons( void )
 
 void UpdateTransformPannelButtons( void )
 {
-  std::shared_ptr<UIElement> transformPannel = ui.elements[1]->getChild(3)->getChild(10);
+  std::shared_ptr<UIElement> transformPannel = ui.elements[2]->getChild(3)->getChild(10);
 
   //  Scale
   //    X
@@ -206,7 +206,7 @@ void UpdateTransformPannelButtons( void )
 void UpdateColorPannel( void )
 {
   //  Color
-  std::shared_ptr<UIElement> colorPannel = ui.elements[1]->getChild(3)->getChild(15)->getChild(0);
+  std::shared_ptr<UIElement> colorPannel = ui.elements[2]->getChild(3)->getChild(15)->getChild(0);
   const mft::vec4& color = selectedMesh->getColor();
   std::stringstream str;
   str << std::fixed << std::setprecision(1);
@@ -242,9 +242,9 @@ void UpdateColorPannel( void )
 
 void UpdateTransformPannel( void )
 {                                                // rightP     / transformP / backgroundP
-    std::shared_ptr<UIElement> transformPannel = ui.elements[1]->getChild(3)->getChild(10);
-    ui.elements[1]->getChild(3)->getChild(2)->texts.clear();
-    ui.elements[1]->getChild(3)->getChild(2)->texts.push_back(
+    std::shared_ptr<UIElement> transformPannel = ui.elements[2]->getChild(3)->getChild(10);
+    ui.elements[2]->getChild(3)->getChild(2)->texts.clear();
+    ui.elements[2]->getChild(3)->getChild(2)->texts.push_back(
       UIText(selectedMesh->getName(), mft::vec2i(10, 10), 16.0f));
     const mft::vec3& pos = selectedMesh->localTransform.getPos();
     mft::quat rot = selectedMesh->localTransform.getRotation();
@@ -371,12 +371,34 @@ void UpdateModelPannel( void )
   std::shared_ptr<GLFont> font =
     assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 
-  std::shared_ptr<UIElement> modelPannel = ui.elements[1]->getChild(1)->getChild(1);
+  std::shared_ptr<UIElement> modelPannel = ui.elements[2]->getChild(1)->getChild(1);
   modelPannel->clearChildren();
 
   mft::vec2i pos(30, 254);
   int count = 0;
   AddMeshToModelPannel(assetManager, font, modelPannel, selectedObject->getMeshes()[0], pos, count);
+}
+
+void IncreaseCameraSpeed(void)
+{
+    float cameraSpeed = scene.getCameraSpeed();
+    if (cameraSpeed >= 4.9f)
+        return;
+    scene.setCameraSpeed(cameraSpeed + 0.1f);
+    std::stringstream str;
+    str << std::fixed << std::setprecision(1) << scene.getCameraSpeed();
+    ui.elements[1]->getChild(2)->texts[0] = UIText("Camera speed " + str.str(), mft::vec2i(10, 4), 16.0f);
+}
+
+void DecreaseCameraSpeed(void)
+{
+    float cameraSpeed = scene.getCameraSpeed();
+    if (cameraSpeed <= 0.1f)
+        return;
+    scene.setCameraSpeed(cameraSpeed - 0.1f);
+    std::stringstream str;
+    str << std::fixed << std::setprecision(1) << scene.getCameraSpeed();
+    ui.elements[1]->getChild(2)->texts[0] = UIText("Camera speed " + str.str(), mft::vec2i(10, 4), 16.0f);
 }
 
 void InitUI()
@@ -391,17 +413,79 @@ void InitUI()
   std::shared_ptr<GLFont> font12 =
       assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 
-  //  Top pannel
+  //  Top pannel (Bobby, Object etc tabs)
 
-  UIElement topPannel(mft::vec2i(0, 860));
+  UIElement topPannel(mft::vec2i(0, 860),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-dark.png", "UI"));
   topPannel.setSize(mft::vec2i(1600, 40));
-  topPannel.texts.push_back(UIText("FPS:", mft::vec2i(10, -20), 16.0f));
-  UIElement topPannel2(mft::vec2i(0, 2),
-    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-  topPannel2.setSize(mft::vec2i(1600, 38));
-  topPannel2.texts.push_back(UIText("Bobby", mft::vec2i(780, 10), 16.0f));
-  topPannel.addChild(std::shared_ptr<UIElement>(new UIElement(topPannel2)));
+  topPannel.texts.push_back(UIText("Bobby", mft::vec2i(780, 10), 16.0f));
+  
   ui.registerElement(std::shared_ptr<UIElement>(new UIElement(topPannel)));
+
+
+  UIElement scenePannel(mft::vec2i(0, 830));
+  scenePannel.visible = false;
+  scenePannel.setSize(mft::vec2i(1600, 38));
+  scenePannel.texts.push_back(UIText("FPS:", mft::vec2i(330, 4), 16.0f));
+
+  //    Draw mode button
+  Button button(mft::vec2i(10, 0),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-bordered.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer-rounded-bordered.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer-rounded-bordered.png", "UI"));
+  button.setText("Filled");
+  button.setFont(font);
+  button.setAllSizes(mft::vec2i(64, 24));
+  std::shared_ptr<ActionWrapper> action =
+      std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode)));
+  button.onRelease = action;
+  scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));
+
+  //    Light button
+  button.setPos(mft::vec2i(84, 0));
+  button.setText("Unlit");
+  button.setAllSizes(mft::vec2i(64, 24));
+  action =
+      std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeLightingMode)));
+  button.onRelease = action;
+  scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));
+
+  //    Camera speed
+  UIElement cameraPannel(mft::vec2i(158, 0),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-rounded-bordered.png", "UI"));
+  cameraPannel.setSize(mft::vec2i(162, 24));
+  std::stringstream str;
+  str << std::fixed << std::setprecision(1) << scene.getCameraSpeed();
+  cameraPannel.texts.push_back(UIText("Camera speed " + str.str(), mft::vec2i(10, 4), 16.0f));
+
+  //    Increase speed button
+  Button buttonPlus(mft::vec2i(116, 3),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-dark.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-dark.png", "UI"));
+  buttonPlus.setText("+");
+  buttonPlus.setFont(font);
+  buttonPlus.setAllSizes(mft::vec2i(18, 18));
+  action =
+      std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(IncreaseCameraSpeed)));
+  buttonPlus.onRelease = action;
+  cameraPannel.addChild(std::shared_ptr<Button>(new Button(buttonPlus)));
+
+  //    Decrease speed button
+  Button buttonLess(mft::vec2i(136, 3),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-dark.png", "UI"),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-dark.png", "UI"));
+  buttonLess.setText("-");
+  buttonLess.setFont(font);
+  buttonLess.setAllSizes(mft::vec2i(18, 18));
+  action =
+      std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DecreaseCameraSpeed)));
+  buttonLess.onRelease = action;
+  cameraPannel.addChild(std::shared_ptr<Button>(new Button(buttonLess)));
+
+  scenePannel.addChild(std::shared_ptr<UIElement>(new UIElement(cameraPannel)));
+  ui.registerElement(std::shared_ptr<UIElement>(new UIElement(scenePannel)));
 
   //  Right pannel
 
@@ -550,11 +634,11 @@ void InitUI()
       {
           UIElement N(mft::vec2i(6 + j * 60, 3));
           if (j == 0)
-              N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-X.png", "UI"));
+              N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-X-Dark.png", "UI"));
           else if (j == 1)
-              N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Y.png", "UI"));
+              N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Y-Dark.png", "UI"));
           else if (j == 2)
-              N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Z.png", "UI"));
+              N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Z-Dark.png", "UI"));
           N.setSize(mft::vec2i(40, 24));
           slot2.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
 
@@ -608,13 +692,13 @@ void InitUI()
   {
       UIElement N(mft::vec2i(10 + j * 68, 4));
       if (j == 0)
-          N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-X.png", "UI"));
+          N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-X-Dark.png", "UI"));
       else if (j == 1)
-          N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Y.png", "UI"));
+          N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Y-Dark.png", "UI"));
       else if (j == 2)
-          N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Z.png", "UI"));
+          N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Z-Dark.png", "UI"));
       else if (j == 3)
-          N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Z.png", "UI"));
+          N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-A-Dark.png", "UI"));
       N.setSize(mft::vec2i(40, 24));
       colorPannelSlot.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
 

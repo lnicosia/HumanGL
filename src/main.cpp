@@ -9,9 +9,9 @@ int		HumanGL(int ac, char **av);
 
 int		main(int ac, char **av)
 {
-	if (ac < 2 || ac > 5)
+	if (ac < 2 || ac > 7)
 	{
-		std::cout << "Usage: humangl [OBJECT-FILE] [UP TO 3 ANIMATIONS]..." << std::endl;
+		std::cout << "Usage: humangl [OBJECT-FILE] [UP TO 5 ANIMATIONS]..." << std::endl;
 		std::cout << "3D Engine demo for playing animation" << std::endl;
 		return 1;
 	}

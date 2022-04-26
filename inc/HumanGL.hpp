@@ -58,4 +58,12 @@ void UpdateColorPannel( void );
 */
 void SelectMesh(std::shared_ptr<Mesh> mesh);
 
+/**	Swap between wireframe and fill modes
+*/
+void ChangeDrawMode( void );
+
+/**	Swap between lit and unlit modes
+*/
+void ChangeLightingMode( void );
+
 #endif // !_HUMAN_GL_H_

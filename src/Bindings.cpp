@@ -1,6 +1,7 @@
 #include "HumanGL.hpp"
 #include "Object/AssetManager.class.hpp"
 #include "GLContext.class.hpp"
+#include "UI/Button.class.hpp"
 
 //  Input functions
 
@@ -63,10 +64,18 @@ void LeftClickRelease()
 
 void ChangeDrawMode()
 {
+	std::shared_ptr<Button> button =
+		dynamic_pointer_cast<Button>(ui.elements[1]->getChild(0));
 	if (scene.getDrawMode() != DrawMode::Wireframe)
+	{
 		scene.setDrawMode(DrawMode::Wireframe);
+		button->setText("Wireframe");
+	}
 	else
+	{
 		scene.setDrawMode(DrawMode::Fill);
+		button->setText("Filled");
+	}
 }
 
 void PlayAnimation()
@@ -95,7 +104,7 @@ void RenderBobby()
 	AssetManager& assetManager = AssetManager::getInstance();
 	selectedObject = assetManager.getAssetByName<GLObject>("Bobby");
 	SelectMesh(selectedObject->getMeshes()[0]);
-	ui.elements[0]->getChild(0)->texts[0] = UIText("Bobby",
+	ui.elements[0]->texts[0] = UIText("Bobby",
 	mft::vec2i(780, 10), 16.0f);
 	selectedAnimation = bobbyAnimations[0];
 
@@ -130,7 +139,7 @@ void SelectModel()
 	{
 		selectedObject->visible = true;
 		SelectMesh(selectedObject->getMeshes()[0]);
-		ui.elements[0]->getChild(0)->texts[0] = UIText(selectedObject->getName(),
+		ui.elements[0]->texts[0] = UIText(selectedObject->getName(),
 		mft::vec2i(780, 10), 16.0f);
 	}
 }
@@ -241,10 +250,18 @@ void Previous()
 
 void ChangeLightingMode()
 {
+	std::shared_ptr<Button> button =
+		dynamic_pointer_cast<Button>(ui.elements[1]->getChild(1));
 	if (scene.getLightingMode() == LightingMode::Lit)
+	{
 		scene.setLightingMode(LightingMode::Unlit);
+		button->setText("Unlit");
+	}
 	else
+	{
 		scene.setLightingMode(LightingMode::Lit);
+		button->setText("Lit");
+	}
 }
 
 void ResetObjectPose()
@@ -323,7 +340,7 @@ void InitBindings()
 	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Quit))));
 
 	//  Left
-	AddBinding("Left", 0, SDLK_a, false,
+	AddBinding("Left", 0, SDLK_q, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Left))), nullptr, nullptr, nullptr);
 
 	//  Right
@@ -331,7 +348,7 @@ void InitBindings()
 		std::shared_ptr<ActionWrapper>( new Action(std::function<void()>(Right))), nullptr, nullptr, nullptr);
 
 	//  Forward
-	AddBinding("Forward", 0, SDLK_w, false,
+	AddBinding("Forward", 0, SDLK_z, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Forward))), nullptr, nullptr, nullptr);
 
 	//  Backward
@@ -351,7 +368,7 @@ void InitBindings()
 	ref.onRelease = std::shared_ptr<ActionWrapper>(new Action(func8));
 
 	//  Draw mode: wireframe/fill
-	AddBinding("Change draw mode", SDLK_z, 0, false,
+	AddBinding("Change draw mode", SDLK_w, 0, false,
 	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode))));
 
 	//  Play/pause animation
@@ -359,15 +376,15 @@ void InitBindings()
 	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(PlayAnimation))));
 
 	//	Render model
-	AddBinding("Render model", SDLK_m, 0, false,
+	AddBinding("Render model", SDLK_m, SDLK_2, false,
 	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderModel))));
 
 	//	Render bones influence
-	AddBinding("Render bones influence", SDLK_i, 0, false,
+	AddBinding("Render bones influence", SDLK_i, SDLK_3, false,
 	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBonesInfluence))));
 
 	//	Render Bobby
-	AddBinding("Render Bobby", SDLK_b, 0, false,
+	AddBinding("Render Bobby", SDLK_b, SDLK_1, false,
 	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobby))));
 
 	//	Previous
