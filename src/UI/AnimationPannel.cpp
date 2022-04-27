@@ -60,7 +60,7 @@ void InitAnimationPannel( void )
     {
         UIElement nameSlot1(mft::vec2i(0, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-        nameSlot1.setSize(mft::vec2i(100, 34));
+        nameSlot1.setSize(mft::vec2i(99, 34));
         if (slot == 2)
             nameSlot1.texts.push_back(UIText("Name", mft::vec2i(16, 10), 16.0f));
         else if (slot == 1)
@@ -74,7 +74,7 @@ void InitAnimationPannel( void )
         animationDetailsPannel.addChild(std::shared_ptr<UIElement>(new UIElement(valueSlot1)));
         UIElement nameSlot2(mft::vec2i(201, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-        nameSlot2.setSize(mft::vec2i(100, 34));
+        nameSlot2.setSize(mft::vec2i(99, 34));
         if (slot == 2)
             nameSlot2.texts.push_back(UIText("Ticks per second", mft::vec2i(16, 10), 16.0f));
         else if (slot == 1)
