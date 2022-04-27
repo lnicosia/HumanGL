@@ -4,6 +4,8 @@
 
 void UpdateAnimationSpeedText( void )
 {
+    if (selectedObject == nullptr)
+        return ;
     std::shared_ptr<UIElement> speedSlot =
 		ui.elements[3]->getChild(0)->getChild(1)->getChild(4)->getChild(0);
     std::stringstream str;

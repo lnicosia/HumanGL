@@ -153,9 +153,6 @@ void SelectModel()
 	if (selectedObject != nullptr && selectedAnimation != nullptr)
 		selectedObject->setAnimation(selectedAnimation.get());
 
-	std::vector<std::shared_ptr<GLObject>> objects =
-		assetManager.getAssetsOfType<GLObject>();
-
 	assetManager.getAssetByName<GLObject>("Bobby")->visible = false;
 	std::shared_ptr<GLObject> rock =
 		assetManager.getAsset<GLObject>("resources/objects/Rock/rock.dae");

@@ -31,20 +31,20 @@ struct Armature
 };
 
 //	Set of essential global variables
-extern mft::vec2i screenSize;
-extern RenderingMode  renderingMode;
-extern bool 				  renderBones;
-extern SDLEvents			events;
-extern bool					  running;
+extern mft::vec2i		screenSize;
+extern RenderingMode	renderingMode;
+extern bool 			renderBones;
+extern SDLEvents		events;
+extern bool				running;
 extern bool				mustUpdateModelPannel;
-extern Scene          scene;
-extern uint32_t       timeSinceLastFrame;
-extern uint32_t       timeOfLastFrame;
-extern char*					modelPath;
+extern Scene			scene;
+extern uint32_t			timeSinceLastFrame;
+extern uint32_t			timeOfLastFrame;
+extern std::string		modelPath;
 extern unsigned int		selectedBone;
-extern uint32_t				fps;
-extern uint32_t				lastFpsUpdate;
-extern mft::vec3			selectedMeshRotation;
+extern uint32_t			fps;
+extern uint32_t			lastFpsUpdate;
+extern mft::vec3		selectedMeshRotation;
 extern std::shared_ptr<GLObject> selectedObject;
 extern std::shared_ptr<Mesh> selectedMesh;
 extern std::shared_ptr<Animation> selectedAnimation;

@@ -8,19 +8,19 @@
 using namespace notrealengine;
 
 //	Set of essential global variables
-mft::vec2i screenSize;
-RenderingMode renderingMode;
-bool 					renderBones;
-SDLEvents			events;
-bool					running;
-bool					mustUpdateModelPannel = false;
-Scene					scene;
-uint32_t			timeSinceLastFrame;
-uint32_t			timeOfLastFrame;
-char*					modelPath;
+mft::vec2i		screenSize;
+RenderingMode	renderingMode;
+bool 			renderBones;
+SDLEvents		events;
+bool			running;
+bool			mustUpdateModelPannel = false;
+Scene			scene;
+uint32_t		timeSinceLastFrame;
+uint32_t		timeOfLastFrame;
+std::string		modelPath;
 unsigned int	selectedBone;
-uint32_t			fps;
-uint32_t			lastFpsUpdate;
+uint32_t		fps;
+uint32_t		lastFpsUpdate;
 std::shared_ptr<GLObject> selectedObject;
 std::shared_ptr<Mesh> selectedMesh;
 std::shared_ptr<Animation> selectedAnimation;
@@ -38,26 +38,21 @@ void	InitResources(int ac, char **av)
 	//	Objects
 
 	std::shared_ptr<GLObject> bobby = InitBobby();
-	//bobby->visible = false;
 
-	std::shared_ptr<GLObject> obj =
-		assetManager.loadAsset<GLObject>(av[1]);
+	std::shared_ptr<GLObject> obj = nullptr;
 
 	//	Import animation given in the arguments
 	std::vector<std::shared_ptr<Animation>> readAnimations;
-	if (ac == 2)
+	if (ac >= 2)
 	{
-		readAnimations = LoadAnimations(av[1]);
-
-	}
-	else
-	{
+		obj = assetManager.loadAsset<GLObject>(av[1]);
 		for (int i = 1; i < ac; i++)
 		{
 			std::vector<std::shared_ptr<Animation>> anims = LoadAnimations(av[i]);
 			readAnimations.insert(readAnimations.end(), anims.begin(), anims.end());
 		}
 	}
+
 	//	Copy read animations into our global skeletal animations array
 	skeletalAnimations.insert(skeletalAnimations.end(),
 		readAnimations.begin(), readAnimations.end());
@@ -159,7 +154,7 @@ void RenderLoop(GLContext_SDL& context)
 	}
 }
 
-void	Render(char* loadedObject, GLContext_SDL& context)
+void	Render(GLContext_SDL& context)
 {
 	AssetManager& assetManager = AssetManager::getInstance();
 
@@ -169,7 +164,7 @@ void	Render(char* loadedObject, GLContext_SDL& context)
 	scene.drawGrid = true;
 
 	std::shared_ptr<GLObject> obj =
-		assetManager.getAsset<GLObject>(loadedObject);
+		assetManager.getAsset<GLObject>(modelPath);
 	if (obj != nullptr)
 		scene.addObject(obj);
 	std::shared_ptr<GLObject> rock =
@@ -205,7 +200,10 @@ void ReleasePointers()
 
 int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 {
-	modelPath = av[1];
+	if (ac < 2)
+		modelPath = "";
+	else
+		modelPath = av[1];
 
 	//	Write OpenGL version
 
@@ -229,7 +227,7 @@ int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)
 	InitBindings();
 	InitUI();
 
-	Render(av[1], context);
+	Render(context);
 
 	ReleasePointers();
 	return 0;
