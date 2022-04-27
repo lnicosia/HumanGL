@@ -53,7 +53,10 @@ void	InitResources(int ac, char **av)
 	else
 	{
 		for (int i = 1; i < ac; i++)
-			readAnimations = LoadAnimations(av[i]);
+		{
+			std::vector<std::shared_ptr<Animation>> anims = LoadAnimations(av[i]);
+			readAnimations.insert(readAnimations.end(), anims.begin(), anims.end());
+		}
 	}
 	//	Copy read animations into our global skeletal animations array
 	skeletalAnimations.insert(skeletalAnimations.end(),

@@ -102,6 +102,8 @@ void RenderBobby()
 {
 	renderingMode = Bobby;
 
+	if (selectedObject != nullptr)
+		selectedObject->pauseAnimation();
 	AssetManager& assetManager = AssetManager::getInstance();
 	selectedObject = assetManager.getAssetByName<GLObject>("Bobby");
 	PopulateArmature();
@@ -117,6 +119,8 @@ void RenderBobby()
 		modelButton->setReleasedImg(assetManager.loadAsset<Texture>(
 			"resources/UI/defaultUI-topRounded.png", "UI"));
 	selectedAnimation = bobbyAnimations[0];
+	if (selectedObject != nullptr && selectedAnimation != nullptr)
+		selectedObject->setAnimation(selectedAnimation.get());
 
 	std::vector<std::shared_ptr<GLObject>> objects =
 		assetManager.getAssetsOfType<GLObject>();
@@ -126,16 +130,21 @@ void RenderBobby()
 		object->visible = false;
 	}
 	selectedObject->visible = true;
+	UpdateAnimationPannel();
 }
 
 void SelectModel()
 {
+	if (selectedObject != nullptr)
+		selectedObject->pauseAnimation();
 	AssetManager& assetManager = AssetManager::getInstance();
 	selectedObject = assetManager.getAsset<GLObject>(modelPath);
 	if (skeletalAnimations.empty())
 		selectedAnimation = nullptr;
 	else
 		selectedAnimation = skeletalAnimations[0];
+	if (selectedObject != nullptr && selectedAnimation != nullptr)
+		selectedObject->setAnimation(selectedAnimation.get());
 
 	std::vector<std::shared_ptr<GLObject>> objects =
 		assetManager.getAssetsOfType<GLObject>();
@@ -161,12 +170,13 @@ void SelectModel()
 			modelButton->setReleasedImg(assetManager.loadAsset<Texture>(
 				"resources/UI/defaultUI-topRounded-clear.png", "UI"));
 	}
+	UpdateAnimationPannel();
 }
 
 void RenderModel()
 {
-	SelectModel();
 	renderingMode = Model;
+	SelectModel();
 	if (selectedObject == nullptr)
 		return ;
 	if (scene.getLightingMode() == LightingMode::Lit)

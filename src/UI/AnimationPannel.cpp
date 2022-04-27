@@ -38,7 +38,12 @@ void UpdateAnimationList( void )
 	}
     for (int i = 0; i < 6; i++)
     {
-        animationListPannel->getChild(i * 3 + 1)->active = false;
+        std::shared_ptr<Button> button =
+            dynamic_pointer_cast<Button>(animationListPannel->getChild(i * 3 + 1));
+        button->active = false;
+        button->setText("");
+        button->setReleasedImg(AssetManager::getInstance().loadAsset<Texture>(
+            "resources/UI/defaultUI-clear.png", "UI"));
     }
     for (size_t i = 0; i < animations.size(); i++)
     {
@@ -46,8 +51,10 @@ void UpdateAnimationList( void )
             dynamic_pointer_cast<Button>(
                 animationListPannel->getChild(18 - (2 + i) * 3 + 1));
         button->active = true;
-        std::cout << "Setting button " << i << " text to " << animations[i]->getName() << std::endl;
         button->setText(animations[i]->getName());
+        if (selectedAnimation != nullptr && selectedAnimation == animations[i])
+            button->setReleasedImg(AssetManager::getInstance().loadAsset<Texture>(
+            "resources/UI/defaultUI.png", "UI"));
         std::function<void(std::shared_ptr<Animation>, std::shared_ptr<Button>)>
             func = SelectAnimation;
         std::shared_ptr<ActionWrapper> action =
