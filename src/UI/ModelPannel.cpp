@@ -2,6 +2,84 @@
 #include "UI/Button.class.hpp"
 #include "UI.hpp"
 
+void InitModelPannel( void )
+{
+    AssetManager& assetManager = AssetManager::getInstance();
+
+    std::vector<std::shared_ptr<GLFont>> fonts =
+        assetManager.getAssetsOfType<GLFont>();
+    std::shared_ptr<GLFont> font =
+      assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+    std::shared_ptr<GLFont> font12 =
+        assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+
+    //    Model pannel
+    UIElement modelPannel(mft::vec2i(5, 511),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+    modelPannel.setSize(mft::vec2i(316, 290));
+    modelPannel.visible = false;
+
+    //    Model pannel background
+    UIElement modelPannelBackground(mft::vec2i(0, 0),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+    modelPannelBackground.setSize(mft::vec2i(316, 280));
+    modelPannelBackground.visible = false;
+    for (size_t i = 0; i < 10; i++)
+    {
+        UIElement slot(mft::vec2i(24, 1 + i * 32),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+        slot.setSize(mft::vec2i(263, 31));
+        modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot)));
+        UIElement modelPannelLeftBorder(mft::vec2i(0, 1 + i * 32),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+        modelPannelLeftBorder.setSize(mft::vec2i(23, 31));
+        modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelLeftBorder)));
+        UIElement modelPannelRightBorder(mft::vec2i(288, 1 + i * 32),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+        modelPannelRightBorder.setSize(mft::vec2i(23, 31));
+        modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelRightBorder)));
+    }
+    UIElement modelPannelLeftBorder(mft::vec2i(0, 1),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+    modelPannelLeftBorder.setSize(mft::vec2i(12, 293));
+    //modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelLeftBorder)));
+    UIElement modelPannelRightBorder(mft::vec2i(301, 2),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+    modelPannelRightBorder.setSize(mft::vec2i(12, 292));
+    //modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelRightBorder)));
+    UIElement modelPannelLeftTop(mft::vec2i(0, 0),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+    modelPannelLeftTop.setSize(mft::vec2i(313, 10));
+    //modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelLeftTop)));
+    UIElement modelPannelBottomBorder(mft::vec2i(0, 284),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+    modelPannelBottomBorder.setSize(mft::vec2i(313, 10));
+   // modelPannelBackground.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelBottomBorder)));
+
+    modelPannel.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelBackground)));
+
+    UIElement modelPannelSlots(mft::vec2i(0, 0),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+    modelPannelSlots.visible = false;
+    modelPannel.addChild(std::shared_ptr<UIElement>(new UIElement(modelPannelSlots)));
+
+    ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(modelPannel)));
+
+    //  Model border
+    UIElement modelBorder(mft::vec2i(2, 800),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+    modelBorder.setSize(mft::vec2i(291, 31));
+    modelBorder.texts.push_back(UIText(">  Model", mft::vec2i(12, 6), 20.0f));
+
+    UIElement detailsBorder(mft::vec2i(0, 32),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear-cornered.png", "UI"));
+    detailsBorder.setSize(mft::vec2i(100, 26));
+    detailsBorder.texts.push_back(UIText("Details", mft::vec2i(14, 6), 16.0f));
+    modelBorder.addChild(std::shared_ptr<UIElement>(new UIElement(detailsBorder)));
+
+    ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(modelBorder)));
+}
+
 void PrintArmature(Armature& armature, int& count)
 {
     for (int i = 0; i < count; i++)

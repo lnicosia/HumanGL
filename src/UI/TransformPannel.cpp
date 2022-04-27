@@ -2,6 +2,151 @@
 #include "UI/Button.class.hpp"
 #include "UI.hpp"
 
+void InitTransformPannel( void )
+{
+    AssetManager& assetManager = AssetManager::getInstance();
+
+    std::vector<std::shared_ptr<GLFont>> fonts =
+        assetManager.getAssetsOfType<GLFont>();
+    std::shared_ptr<GLFont> font =
+      assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+    std::shared_ptr<GLFont> font12 =
+        assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+
+    //    Transform pannel
+    UIElement transformPannel(mft::vec2i(4, 167),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
+    transformPannel.setSize(mft::vec2i(312, 300));
+
+    //    Design bars
+    for (int i = 0; i < 8; i++)
+    {
+        UIElement transformPannelSlot1(mft::vec2i(1, i * 35 + 65),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+        transformPannelSlot1.setSize(mft::vec2i(16, 34));
+        transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot1)));
+        UIElement transformPannelSlot2(mft::vec2i(17, i * 35 + 65),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+        transformPannelSlot2.setSize(mft::vec2i(98, 34));
+        if (i == 2)
+            transformPannelSlot2.texts.push_back(UIText("Color", mft::vec2i(10, 10), 16.0f));
+        transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot2)));
+        UIElement transformPannelSlot3(mft::vec2i(116, i * 35 + 65),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+        transformPannelSlot3.setSize(mft::vec2i(185, 34));
+        transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot3)));
+        UIElement transformPannelSlot3bis(mft::vec2i(302, i * 35 + 65),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
+        transformPannelSlot3bis.setSize(mft::vec2i(11, 34));
+        transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot3bis)));
+    }
+
+    UIElement transformSlotsBackground(mft::vec2i(12, 169),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
+    transformSlotsBackground.setSize(mft::vec2i(290, 105));
+    for (size_t i = 0; i < 3; i++)
+    {
+        UIElement slot(mft::vec2i(5, 1 + i * 35),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+        slot.setSize(mft::vec2i(98, 34));
+        std::string str;
+        if (i == 2)
+            str = "Location";
+        else if (i == 1)
+            str = "Rotation";
+        else if (i == 0)
+            str = "Scale";
+        slot.texts.push_back(UIText(str, mft::vec2i(20, 10), 16.0f));
+        transformSlotsBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot)));
+
+        UIElement slot2(mft::vec2i(104, 1 + i * 35),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+        slot2.setSize(mft::vec2i(185, 34));
+
+        for (size_t j = 0; j < 3; j++)
+        {
+            UIElement N(mft::vec2i(6 + j * 60, 5));
+            if (j == 0)
+                N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-X-Dark.png", "UI"));
+            else if (j == 1)
+                N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Y-Dark.png", "UI"));
+            else if (j == 2)
+                N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Z-Dark.png", "UI"));
+            N.setSize(mft::vec2i(40, 24));
+            slot2.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
+
+            Button button(mft::vec2i(49 + 60 * j, 17),
+                assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
+                assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"),
+                assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+            button.setText("+");
+            //button.setPos(mft::vec2i(49 + 60 * j, 16));
+            button.setFont(font12);
+            button.setAllSizes(mft::vec2i(15, 15));
+            slot2.addChild(std::shared_ptr<Button>(new Button(button)));
+
+
+            button.setPos(mft::vec2i(49 + 60 * j, 3));
+            button.setText("-");
+            button.setFont(font12);
+            button.setAllSizes(mft::vec2i(15, 15));
+            slot2.addChild(std::shared_ptr<Button>(new Button(button)));
+        }
+        transformSlotsBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot2)));
+    }
+    transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformSlotsBackground)));
+
+    UIElement colorPannel(mft::vec2i(12, 100),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
+    colorPannel.setSize(mft::vec2i(290, 34));
+
+    UIElement colorPannelSlot(mft::vec2i(5, 0),
+      assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+    colorPannelSlot.setSize(mft::vec2i(284, 34));
+
+    for (size_t j = 0; j < 4; j++)
+    {
+        UIElement N(mft::vec2i(10 + j * 68, 4));
+        if (j == 0)
+            N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-X-Dark.png", "UI"));
+        else if (j == 1)
+            N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Y-Dark.png", "UI"));
+        else if (j == 2)
+            N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Z-Dark.png", "UI"));
+        else if (j == 3)
+            N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-A-Dark.png", "UI"));
+        N.setSize(mft::vec2i(40, 24));
+        colorPannelSlot.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
+
+        Button button(mft::vec2i(53 + 68 * j, 16),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+        button.setText("+");
+        button.setFont(font12);
+        button.setAllSizes(mft::vec2i(14, 14));
+        colorPannelSlot.addChild(std::shared_ptr<Button>(new Button(button)));
+
+
+        button.setPos(mft::vec2i(53 + 68 * j, 2));
+        button.setText("-");
+        button.setFont(font12);
+        button.setAllSizes(mft::vec2i(14, 14));
+        colorPannelSlot.addChild(std::shared_ptr<Button>(new Button(button)));
+    }
+    colorPannel.addChild(std::shared_ptr<UIElement>(new UIElement(colorPannelSlot)));
+
+    transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(colorPannel)));
+
+    ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(transformPannel)));
+
+    UIElement transformBorder(mft::vec2i(2, 477),
+    assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
+    transformBorder.setSize(mft::vec2i(304, 34));
+    transformBorder.texts.push_back(UIText(">  Mesh", mft::vec2i(12, 6), 20.0f));
+    ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(transformBorder)));
+}
+
 void SetSelectedMeshColor(mft::vec4 color)
 {
   mft::vec4 clamped = selectedMesh->getColor() + color;

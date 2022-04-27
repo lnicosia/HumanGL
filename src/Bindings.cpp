@@ -84,17 +84,24 @@ void PlayAnimation()
 	if (selectedObject == nullptr)
 		return ;
 	AnimationState animState = selectedObject->getAnimationState();
+	std::shared_ptr<UIElement> animationControlPannel =
+		ui.elements[3]->getChild(0)->getChild(1);
+	std::shared_ptr<Button> playButton =
+		dynamic_pointer_cast<Button>(animationControlPannel->getChild(7)->getChild(0));
 	if (animState == AnimationState::Stopped)
 	{
 		selectedObject->playAnimation(selectedAnimation.get());
+		playButton->setText("Pause");
 	}
 	else if (animState == AnimationState::Playing)
 	{
 		selectedObject->pauseAnimation();
+		playButton->setText("Play");
 	}
 	else if (animState == AnimationState::Paused)
 	{
 		selectedObject->resumeAnimation();
+		playButton->setText("Pause");
 	}
 }
 
@@ -297,6 +304,11 @@ void ResetObjectPose()
 {
 	if (selectedObject != nullptr)
 		selectedObject->resetPose();
+	std::shared_ptr<UIElement> animationControlPannel =
+		ui.elements[3]->getChild(0)->getChild(1);
+	std::shared_ptr<Button> playButton =
+		dynamic_pointer_cast<Button>(animationControlPannel->getChild(7)->getChild(0));
+	playButton->setText("Play");
 }
 
 void ObjectLeft()

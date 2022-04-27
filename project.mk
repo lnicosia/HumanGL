@@ -11,6 +11,7 @@ SRC =	$S/main.cpp \
 			$S/UI/InitUI.cpp \
 			$S/UI/TransformPannel.cpp \
 			$S/UI/ModelPannel.cpp \
+			$S/UI/AnimationListPannel.cpp \
 			$S/UI/AnimationPannel.cpp \
 
 CPPFLAGS = --std=c++20 -O3
