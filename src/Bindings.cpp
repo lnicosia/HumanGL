@@ -110,6 +110,7 @@ void PlayAnimation()
 		selectedObject->resumeAnimation();
 		playButton->setText("Pause");
 	}
+	UpdateAnimationStatusText();
 }
 
 void RenderBobby()
@@ -325,6 +326,7 @@ void ResetObjectPose()
 	std::shared_ptr<Button> playButton =
 		dynamic_pointer_cast<Button>(animationControlPannel->getChild(7)->getChild(0));
 	playButton->setText("Play");
+	UpdateAnimationStatusText();
 }
 
 void ObjectLeft()

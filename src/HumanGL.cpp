@@ -137,6 +137,9 @@ void RenderLoop(GLContext_SDL& context)
 
 		if (mustUpdateModelPannel == true)
 			UpdateModelPannel();
+		if (selectedObject != nullptr
+			&& selectedObject->getAnimationState() == AnimationState::Playing)
+			UpdateAnimationTimeText();
 		ui.update(events.mousePos, events.mouseState);
 		if (events.handle() == NRE_QUIT)
 			break ;

@@ -62,11 +62,11 @@ void InitAnimationPannel( void )
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         nameSlot1.setSize(mft::vec2i(99, 34));
         if (slot == 2)
-            nameSlot1.texts.push_back(UIText("Name", mft::vec2i(16, 10), 16.0f));
+            nameSlot1.texts.push_back(UIText("Name", mft::vec2i(14, 10), 16.0f));
         else if (slot == 1)
-            nameSlot1.texts.push_back(UIText("Type", mft::vec2i(16, 10), 16.0f));
+            nameSlot1.texts.push_back(UIText("Type", mft::vec2i(14, 10), 16.0f));
         else if (slot == 0)
-            nameSlot1.texts.push_back(UIText("Duration", mft::vec2i(16, 10), 16.0f));
+            nameSlot1.texts.push_back(UIText("Duration (ms)", mft::vec2i(14, 10), 16.0f));
         animationDetailsPannel.addChild(std::shared_ptr<UIElement>(new UIElement(nameSlot1)));
         UIElement valueSlot1(mft::vec2i(100, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
@@ -76,11 +76,11 @@ void InitAnimationPannel( void )
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         nameSlot2.setSize(mft::vec2i(99, 34));
         if (slot == 2)
-            nameSlot2.texts.push_back(UIText("Ticks per second", mft::vec2i(16, 10), 16.0f));
+            nameSlot2.texts.push_back(UIText("Ticks per second", mft::vec2i(14, 10), 16.0f));
         else if (slot == 1)
-            nameSlot2.texts.push_back(UIText("Time", mft::vec2i(16, 10), 16.0f));
+            nameSlot2.texts.push_back(UIText("Time", mft::vec2i(14, 10), 16.0f));
         else if (slot == 0)
-            nameSlot2.texts.push_back(UIText("Status", mft::vec2i(16, 10), 16.0f));
+            nameSlot2.texts.push_back(UIText("Status", mft::vec2i(14, 10), 16.0f));
         animationDetailsPannel.addChild(std::shared_ptr<UIElement>(new UIElement(nameSlot2)));
         UIElement valueSlot2(mft::vec2i(301, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
@@ -211,10 +211,80 @@ void InitAnimationPannel( void )
     ui.registerElement(std::shared_ptr<UIElement>(new UIElement(bottomPannel)));
 }
 
+void UpdateAnimationTimeText( void )
+{
+    if (selectedObject == nullptr)
+        return ;
+    std::shared_ptr<UIElement> animationDetailsPannel =
+		ui.elements[3]->getChild(0)->getChild(0);
+    std::stringstream str;
+    str << std::fixed << std::setprecision(1) << selectedObject->getCurrentTime();
+    animationDetailsPannel->getChild(7)->texts.clear();
+    animationDetailsPannel->getChild(7)->texts.push_back(UIText(str.str(),
+        mft::vec2i(26, 10), 16.0f));
+}
+
+void UpdateAnimationStatusText( void )
+{
+    std::shared_ptr<UIElement> animationDetailsPannel =
+		ui.elements[3]->getChild(0)->getChild(0);
+    std::string str;
+    if (selectedObject->getAnimationState() == AnimationState::Playing)
+        str = "Playing";
+    else if (selectedObject->getAnimationState() == AnimationState::Paused)
+        str = "Paused";
+    else if (selectedObject->getAnimationState() == AnimationState::Stopped)
+        str = "Stopped";
+    animationDetailsPannel->getChild(3)->texts.clear();
+    animationDetailsPannel->getChild(3)->texts.push_back(UIText(str,
+        mft::vec2i(26, 10), 16.0f));
+}
 
 void UpdateAnimationPannel( void )
 {
     UpdateAnimationList();
     UpdateAnimationSpeedText();
     ResetObjectPose();
+
+    if (selectedAnimation == nullptr)
+        return ;
+    std::stringstream str;
+    str << std::fixed << std::setprecision(1);
+    std::shared_ptr<UIElement> animationDetailsPannel =
+		ui.elements[3]->getChild(0)->getChild(0);
+
+    //  Name
+    animationDetailsPannel->getChild(9)->texts.clear();
+    animationDetailsPannel->getChild(9)->texts.push_back(UIText(
+        selectedAnimation->getName(), mft::vec2i(26, 10), 16.0f));
+
+    //  Type
+    str.str("");
+    if (selectedAnimation->getType() == Animation::AnimType::Skeletal)
+        str << "Skeletal";
+    else if (selectedAnimation->getType() == Animation::AnimType::Solid)
+        str << "Solid";
+    animationDetailsPannel->getChild(5)->texts.clear();
+    animationDetailsPannel->getChild(5)->texts.push_back(UIText(str.str(),
+        mft::vec2i(26, 10), 16.0f));
+
+    //  Duration
+    str.str("");
+    str << selectedAnimation->getDuration();
+    animationDetailsPannel->getChild(1)->texts.clear();
+    animationDetailsPannel->getChild(1)->texts.push_back(UIText(str.str(),
+        mft::vec2i(26, 10), 16.0f));
+
+    //  Ticks per second
+    str.str("");
+    str << selectedAnimation->getTicksPerSecond();
+    animationDetailsPannel->getChild(11)->texts.clear();
+    animationDetailsPannel->getChild(11)->texts.push_back(UIText(
+        selectedAnimation->getName(), mft::vec2i(26, 10), 16.0f));
+
+    //  Time
+    UpdateAnimationTimeText();
+
+    //  Status
+    UpdateAnimationStatusText();
 }

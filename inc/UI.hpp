@@ -89,8 +89,16 @@ void ResetObjectPose( void );
 */
 void UpdateAnimationSpeedText( void );
 
-/**	Update animation list 
+/**	Update animation list
 */
 void UpdateAnimationList( void );
+
+/**	Update animation time text
+*/
+void UpdateAnimationTimeText( void );
+
+/**	Update animation status text
+*/
+void UpdateAnimationStatusText( void );
 
 #endif // !_UI_H_
