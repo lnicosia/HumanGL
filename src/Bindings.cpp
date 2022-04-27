@@ -3,6 +3,7 @@
 #include "GLContext.class.hpp"
 #include "UI/Button.class.hpp"
 #include "UI.hpp"
+#include "NotRealEngine.hpp"
 
 //  Input functions
 
@@ -35,6 +36,9 @@ void LeftClickPress(mft::vec2i& mouseStart)
 {
 	//	Check UI
 
+	if (isMouseOnUI == true)
+		return ;
+
 	//	If not on UI, move camera
 
 	mouseStart = events.mouseGlobalPos;
@@ -44,6 +48,9 @@ void LeftClickPress(mft::vec2i& mouseStart)
 void LeftClickPressed(mft::vec2i& mouseStart)
 {
 	//	Check UI
+
+	if (SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE)
+		return ;
 
 	//	If not on UI, move camera
 

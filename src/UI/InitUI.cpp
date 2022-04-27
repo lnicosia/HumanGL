@@ -171,6 +171,8 @@ void InitUI()
   std::shared_ptr<GLFont> font12 =
       assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
 
+      ui.freeZones.push_back(Rectangle(mft::vec2i(0, 140), mft::vec2i(1280, 720)));
+
   InitTopPannel();
   InitScenePannel();
 
