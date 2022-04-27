@@ -199,11 +199,12 @@ void RenderModel()
 
 void RenderBonesInfluence()
 {
-	SelectModel();
 	renderingMode = BonesInfluence;
+	SelectModel();
 	if (selectedObject == nullptr)
 		return ;
 	selectedObject->setShader(GLContext::getShader("bonesInfluence"));
+	selectedObject->bindBones();
 }
 
 void NextAnim()
@@ -241,7 +242,12 @@ void Next()
 {
 	if (renderingMode == BonesInfluence)
 	{
-
+		if (selectedObject == nullptr)
+			return ;
+		selectedBone++;
+		if (selectedBone > selectedObject->getNbBones())
+			selectedBone = 0;
+		bindInt(GLContext::getShader("bonesInfluence")->programID, "selectedBone", selectedBone);
 	}
 	else
 		NextAnim();
@@ -282,7 +288,13 @@ void Previous()
 {
 	if (renderingMode == BonesInfluence)
 	{
-
+		if (selectedObject == nullptr)
+			return ;
+		if (selectedBone == 0)
+			selectedBone = selectedObject->getNbBones() - 1;
+		else
+			selectedBone--;
+		bindInt(GLContext::getShader("bonesInfluence")->programID, "selectedBone", selectedBone);
 	}
 	else
 		PreviousAnim();
