@@ -14,7 +14,8 @@ enum RenderingMode
 {
 	Model,
 	Bobby,
-	BonesInfluence
+	BonesInfluence,
+	ThirdPerson
 };
 
 struct Armature

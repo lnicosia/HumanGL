@@ -303,7 +303,6 @@ std::shared_ptr<Animation> InitBobbyJumping(void)
   return anim;
 }
 
-
 std::shared_ptr<Animation> InitBobbyIdle(void)
 {
   std::map<std::string, Bone> bones;

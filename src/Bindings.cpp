@@ -14,22 +14,22 @@ void Quit()
 
 void Left()
 {
-  scene.left(timeSinceLastFrame);
+	scene.left(timeSinceLastFrame);
 }
 
 void Right()
 {
-  scene.right(timeSinceLastFrame);
+	scene.right(timeSinceLastFrame);
 }
 
 void Forward()
 {
-  scene.forward(timeSinceLastFrame);
+	scene.forward(timeSinceLastFrame);
 }
 
 void Backward()
 {
-  scene.backward(timeSinceLastFrame);
+	scene.backward(timeSinceLastFrame);
 }
 
 void LeftClickPress(mft::vec2i& mouseStart)
@@ -237,6 +237,8 @@ void NextAnim()
 		selectedAnimation = nullptr;
 	if (selectedObject != nullptr && selectedAnimation != nullptr)
 		selectedObject->setAnimation(selectedAnimation.get());
+	UpdateAnimationPannel();
+	UpdateAnimationList();
 }
 
 void Next()
@@ -283,6 +285,8 @@ void PreviousAnim()
 		selectedAnimation = nullptr;
 	if (selectedObject != nullptr && selectedAnimation != nullptr)
 		selectedObject->setAnimation(selectedAnimation.get());
+	UpdateAnimationPannel();
+	UpdateAnimationList();
 }
 
 void Previous()
@@ -357,6 +361,27 @@ void ObjectBackward()
 	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, 0.05f));
 }
 
+void ThirdPersonMode()
+{
+	if (renderingMode == ThirdPerson)
+	{
+		renderingMode = Bobby;
+	}
+	else
+	{
+		RenderBobby();
+		renderingMode = ThirdPerson;
+		mft::vec3 angle = mft::quat::euler(selectedObject->transform.getRotation());
+
+		scene.setCameraPos(selectedObject->transform.getPos()
+			+ mft::vec3(0.0f, 2.0f * selectedObject->transform.getScale().y, 0.0f));
+		scene.setYaw(angle.y + 90.0f);
+		scene.setPitch(0.0f);
+		scene.backward(3.0f * selectedObject->transform.getScale().z);
+		scene.setPitch(15.0f);
+	}
+}
+
 //  Init
 
 void AddBinding(std::string name, uint32_t key1, uint32_t key2, bool editable,
@@ -393,26 +418,30 @@ void AddMouseBinding(std::string name, uint32_t key1, uint32_t key2, bool editab
 
 void InitBindings()
 {
-
 	//  Quit
 	AddBinding("Quit", SDLK_ESCAPE, 0, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Quit))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Quit))));
 
 	//  Left
 	AddBinding("Left", 0, SDLK_a, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Left))), nullptr, nullptr, nullptr);
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Left))),
+		nullptr, nullptr, nullptr);
 
 	//  Right
 	AddBinding("Right", 0, SDLK_d, false,
-		std::shared_ptr<ActionWrapper>( new Action(std::function<void()>(Right))), nullptr, nullptr, nullptr);
+		std::shared_ptr<ActionWrapper>( new Action(std::function<void()>(Right))),
+		nullptr, nullptr, nullptr);
 
 	//  Forward
 	AddBinding("Forward", 0, SDLK_w, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Forward))), nullptr, nullptr, nullptr);
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Forward))),
+		nullptr, nullptr, nullptr);
 
 	//  Backward
 	AddBinding("Backward", 0, SDLK_s, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Backward))), nullptr, nullptr, nullptr);
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Backward))),
+		nullptr, nullptr, nullptr);
 
 	//	Mouse
 
@@ -428,54 +457,72 @@ void InitBindings()
 
 	//  Draw mode: wireframe/fill
 	AddBinding("Change draw mode", SDLK_z, 0, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode))));
 
 	//  Play/pause animation
 	AddBinding("Play/Pause animation", SDLK_p, 0, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(PlayAnimation))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(PlayAnimation))));
 
 	//	Render model
 	AddBinding("Render model", SDLK_m, SDLK_2, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderModel))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderModel))));
 
 	//	Render bones influence
 	AddBinding("Render bones influence", SDLK_i, SDLK_3, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBonesInfluence))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBonesInfluence))));
 
 	//	Render Bobby
 	AddBinding("Render Bobby", SDLK_b, SDLK_1, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobby))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobby))));
 
 	//	Previous
 	AddBinding("Previous", SDLK_KP_MINUS, 0, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Previous))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Previous))));
 
 	//	Next
 	AddBinding("Next", SDLK_KP_PLUS, 0, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Next))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Next))));
 
 	//	Change lighting
 	AddBinding("Change lighting mode", SDLK_l, 0, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeLightingMode))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeLightingMode))));
 
 	//	Reset pose
 	AddBinding("Reset pose", SDLK_r, 0, false,
-	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ResetObjectPose))));
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ResetObjectPose))));
 
 	//  Move object left
 	AddBinding("Left", SDLK_LEFT, 0, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectLeft))), nullptr, nullptr, nullptr);
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectLeft))),
+		nullptr, nullptr, nullptr);
 
 	//  Move object right
 	AddBinding("Right", SDLK_RIGHT, 0, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectRight))), nullptr, nullptr, nullptr);
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectRight))),
+		nullptr, nullptr, nullptr);
 
 	//  Move object forward
 	AddBinding("Forward", SDLK_UP, 0, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectForward))), nullptr, nullptr, nullptr);
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectForward))),
+		nullptr, nullptr, nullptr);
 
 	//  Move object backward
 	AddBinding("Backward", SDLK_DOWN, 0, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectBackward))), nullptr, nullptr, nullptr);
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectBackward))),
+		nullptr, nullptr, nullptr);
+
+	//  Third person mode
+	AddBinding("Third person", SDLK_RETURN, 0, false,
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ThirdPersonMode))));
 
 }

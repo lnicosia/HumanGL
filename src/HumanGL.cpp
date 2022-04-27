@@ -140,7 +140,8 @@ void RenderLoop(GLContext_SDL& context)
 		if (selectedObject != nullptr
 			&& selectedObject->getAnimationState() == AnimationState::Playing)
 			UpdateAnimationTimeText();
-		ui.update(events.mousePos, events.mouseState);
+		if (renderingMode != ThirdPerson)
+			ui.update(events.mousePos, events.mouseState);
 		if (events.handle() == NRE_QUIT)
 			break ;
 
@@ -151,7 +152,8 @@ void RenderLoop(GLContext_SDL& context)
 		if (renderBones == true)
 			scene.renderBones();
 
-		ui.draw();
+		if (renderingMode != ThirdPerson)
+			ui.draw();
 
 		context.swapWindow();
 	}
