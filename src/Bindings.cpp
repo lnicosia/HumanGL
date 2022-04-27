@@ -2,6 +2,7 @@
 #include "Object/AssetManager.class.hpp"
 #include "GLContext.class.hpp"
 #include "UI/Button.class.hpp"
+#include "UI.hpp"
 
 //  Input functions
 
@@ -358,7 +359,7 @@ void InitBindings()
 	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Quit))));
 
 	//  Left
-	AddBinding("Left", 0, SDLK_q, false,
+	AddBinding("Left", 0, SDLK_a, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Left))), nullptr, nullptr, nullptr);
 
 	//  Right
@@ -366,7 +367,7 @@ void InitBindings()
 		std::shared_ptr<ActionWrapper>( new Action(std::function<void()>(Right))), nullptr, nullptr, nullptr);
 
 	//  Forward
-	AddBinding("Forward", 0, SDLK_z, false,
+	AddBinding("Forward", 0, SDLK_w, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Forward))), nullptr, nullptr, nullptr);
 
 	//  Backward
@@ -386,7 +387,7 @@ void InitBindings()
 	ref.onRelease = std::shared_ptr<ActionWrapper>(new Action(func8));
 
 	//  Draw mode: wireframe/fill
-	AddBinding("Change draw mode", SDLK_w, 0, false,
+	AddBinding("Change draw mode", SDLK_z, 0, false,
 	nullptr, nullptr, nullptr, std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode))));
 
 	//  Play/pause animation

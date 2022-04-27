@@ -8,7 +8,10 @@ SRC =	$S/main.cpp \
 			$S/HumanGL.cpp \
 			$S/InitBobby.cpp \
 			$S/Bindings.cpp \
-			$S/UI.cpp \
+			$S/UI/InitUI.cpp \
+			$S/UI/TransformPannel.cpp \
+			$S/UI/ModelPannel.cpp \
+			$S/UI/AnimationPannel.cpp \
 
 CPPFLAGS = --std=c++20 -O3
 LDFLAGS = -lpthread -ldl -lGL

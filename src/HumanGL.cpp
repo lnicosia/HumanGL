@@ -3,6 +3,7 @@
 #include "InitBobby.hpp"
 #include "Bindings.hpp"
 #include "HumanGL.hpp"
+#include "UI.hpp"
 
 using namespace notrealengine;
 
