@@ -166,7 +166,7 @@ void ChangeDrawMode()
 
 void PlayAnimation()
 {
-	if (selectedObject == nullptr)
+	if (selectedObject == nullptr || renderingMode == ThirdPerson)
 		return ;
 	AnimationState animState = selectedObject->getAnimationState();
 	std::shared_ptr<UIElement> animationControlPannel =
@@ -193,6 +193,8 @@ void PlayAnimation()
 
 void RenderBobby()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	renderingMode = Bobby;
 
 	if (selectedObject != nullptr)
@@ -228,6 +230,8 @@ void RenderBobby()
 
 void SelectModel()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	if (selectedObject != nullptr)
 		selectedObject->pauseAnimation();
 	AssetManager& assetManager = AssetManager::getInstance();
@@ -265,6 +269,8 @@ void SelectModel()
 
 void RenderModel()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	renderingMode = Model;
 	SelectModel();
 	if (selectedObject == nullptr)
@@ -278,6 +284,8 @@ void RenderModel()
 
 void RenderBonesInfluence()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	renderingMode = BonesInfluence;
 	SelectModel();
 	if (selectedObject == nullptr)
@@ -288,6 +296,8 @@ void RenderBonesInfluence()
 
 void NextAnim()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	std::vector<std::shared_ptr<Animation>> animations;
 	if (renderingMode == Bobby)
 	{
@@ -321,6 +331,8 @@ void NextAnim()
 
 void Next()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	if (renderingMode == BonesInfluence)
 	{
 		if (selectedObject == nullptr)
@@ -336,6 +348,8 @@ void Next()
 
 void PreviousAnim()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	std::vector<std::shared_ptr<Animation>> animations;
 	if (renderingMode == Bobby)
 	{
@@ -369,6 +383,8 @@ void PreviousAnim()
 
 void Previous()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	if (renderingMode == BonesInfluence)
 	{
 		if (selectedObject == nullptr)
@@ -401,6 +417,8 @@ void ChangeLightingMode()
 
 void ResetObjectPose()
 {
+	if (renderingMode == ThirdPerson)
+		return;
 	if (selectedObject != nullptr)
 		selectedObject->resetPose();
 	std::shared_ptr<UIElement> animationControlPannel =
@@ -429,14 +447,14 @@ void ObjectForward()
 {
 	if (selectedMesh == nullptr)
 		return ;
-	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, -0.05f));
+	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, 0.05f));
 }
 
 void ObjectBackward()
 {
 	if (selectedMesh == nullptr)
 		return ;
-	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, 0.05f));
+	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, -0.05f));
 }
 
 void ThirdPersonMode()
