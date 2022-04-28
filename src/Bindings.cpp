@@ -12,24 +12,94 @@ void Quit()
 	running = 0;
 }
 
+void SetCameraBehindPlayer()
+{
+	mft::vec3 angle = mft::quat::euler(selectedObject->transform.getRotation());
+
+	scene.setCameraPos(selectedObject->transform.getPos()
+		+ mft::vec3(0.0f, 2.0f * selectedObject->transform.getScale().y, 0.0f));
+	scene.setYaw(mft::degrees(-angle.y) - 90.0f - 180.f);
+	scene.setPitch(0.0f);
+	scene.backward(3.0f);
+	scene.setPitch(-15.0f);
+}
+
 void Left()
 {
-	scene.left(timeSinceLastFrame);
+	if (renderingMode == ThirdPerson)
+	{
+		if (selectedObject->getAnimationState() == AnimationState::Stopped)
+			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(1.0f)));
+
+		SetCameraBehindPlayer();
+	}
+	else
+		scene.left(timeSinceLastFrame);
 }
 
 void Right()
 {
-	scene.right(timeSinceLastFrame);
+	if (renderingMode == ThirdPerson)
+	{
+		if (selectedObject->getAnimationState() == AnimationState::Stopped)
+			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(-1.0f)));
+
+		SetCameraBehindPlayer();
+	}
+	else
+		scene.right(timeSinceLastFrame);
 }
 
 void Forward()
 {
-	scene.forward(timeSinceLastFrame);
+	if (renderingMode == ThirdPerson)
+	{
+		if (selectedObject->getAnimationState() == AnimationState::Stopped)
+			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+
+		mft::vec3 rot = mft::quat::euler(selectedObject->transform.getRotation());
+		
+		rot.y = mft::degrees(-rot.y) - 90.0f;
+		mft::vec3 front;
+		front.x = cosf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
+		front.y = sinf(mft::radians(0.0f));
+		front.z = sinf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
+		front = mft::vec3::normalized(front);
+		mft::vec3 newPos = selectedObject->transform.getPos() - 0.005f * front;
+		selectedObject->transform.setPos(newPos);
+		SetCameraBehindPlayer();
+	}
+	else
+	{
+		scene.forward(timeSinceLastFrame);
+	}
 }
 
 void Backward()
 {
-	scene.backward(timeSinceLastFrame);
+	if (renderingMode == ThirdPerson)
+	{
+		if (selectedObject->getAnimationState() == AnimationState::Stopped)
+			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+
+		mft::vec3 rot = mft::quat::euler(selectedObject->transform.getRotation());
+		
+		rot.y = mft::degrees(-rot.y) + 90.0f;
+		mft::vec3 front;
+		front.x = cosf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
+		front.y = sinf(mft::radians(0.0f));
+		front.z = sinf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
+		front = mft::vec3::normalized(front);
+		mft::vec3 newPos = selectedObject->transform.getPos() - 0.005f * front;
+		selectedObject->transform.setPos(newPos);
+		SetCameraBehindPlayer();
+	}
+	else
+	{
+		scene.backward(timeSinceLastFrame);
+	}
 }
 
 void LeftClickPress(mft::vec2i& mouseStart)
@@ -54,10 +124,18 @@ void LeftClickPressed(mft::vec2i& mouseStart)
 
 	//	If not on UI, move camera
 
-	scene.setYaw(scene.getYaw()
-		+ (float)(mouseStart.x - events.mouseGlobalPos.x) * scene.getCamera().sensitivity);
-	scene.setPitch(scene.getPitch()
-		+ (float)(mouseStart.y - events.mouseGlobalPos.y) * scene.getCamera().sensitivity);
+	float newYaw = (float)(events.mouseGlobalPos.x - mouseStart.x) * scene.getCamera().sensitivity;
+	if (renderingMode == ThirdPerson)
+	{
+		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(-newYaw)));
+		SetCameraBehindPlayer();
+	}
+	else
+	{
+		scene.setYaw(scene.getYaw() + newYaw);
+		scene.setPitch(scene.getPitch()
+			+ (float)(events.mouseGlobalPos.y - mouseStart.y) * scene.getCamera().sensitivity);
+	}
 	mouseStart = events.mouseGlobalPos;
 }
 
@@ -97,7 +175,7 @@ void PlayAnimation()
 		dynamic_pointer_cast<Button>(animationControlPannel->getChild(7)->getChild(0));
 	if (animState == AnimationState::Stopped)
 	{
-		selectedObject->playAnimation(selectedAnimation.get());
+		selectedObject->playAnimation(selectedAnimation);
 		playButton->setText("Pause");
 	}
 	else if (animState == AnimationState::Playing)
@@ -135,7 +213,7 @@ void RenderBobby()
 			"resources/UI/defaultUI-topRounded.png", "UI"));
 	selectedAnimation = bobbyAnimations[0];
 	if (selectedObject != nullptr && selectedAnimation != nullptr)
-		selectedObject->setAnimation(selectedAnimation.get());
+		selectedObject->setAnimation(selectedAnimation);
 
 	std::vector<std::shared_ptr<GLObject>> objects =
 		assetManager.getAssetsOfType<GLObject>();
@@ -159,7 +237,7 @@ void SelectModel()
 	else
 		selectedAnimation = skeletalAnimations[0];
 	if (selectedObject != nullptr && selectedAnimation != nullptr)
-		selectedObject->setAnimation(selectedAnimation.get());
+		selectedObject->setAnimation(selectedAnimation);
 
 	assetManager.getAssetByName<GLObject>("Bobby")->visible = false;
 	std::shared_ptr<GLObject> rock =
@@ -236,7 +314,7 @@ void NextAnim()
 	else
 		selectedAnimation = nullptr;
 	if (selectedObject != nullptr && selectedAnimation != nullptr)
-		selectedObject->setAnimation(selectedAnimation.get());
+		selectedObject->setAnimation(selectedAnimation);
 	UpdateAnimationPannel();
 	UpdateAnimationList();
 }
@@ -284,7 +362,7 @@ void PreviousAnim()
 	else
 		selectedAnimation = nullptr;
 	if (selectedObject != nullptr && selectedAnimation != nullptr)
-		selectedObject->setAnimation(selectedAnimation.get());
+		selectedObject->setAnimation(selectedAnimation);
 	UpdateAnimationPannel();
 	UpdateAnimationList();
 }
@@ -371,14 +449,36 @@ void ThirdPersonMode()
 	{
 		RenderBobby();
 		renderingMode = ThirdPerson;
-		mft::vec3 angle = mft::quat::euler(selectedObject->transform.getRotation());
+		SetCameraBehindPlayer();
+	}
+}
 
-		scene.setCameraPos(selectedObject->transform.getPos()
-			+ mft::vec3(0.0f, 2.0f * selectedObject->transform.getScale().y, 0.0f));
-		scene.setYaw(angle.y + 90.0f);
-		scene.setPitch(0.0f);
-		scene.backward(3.0f * selectedObject->transform.getScale().z);
-		scene.setPitch(15.0f);
+void StartWalking()
+{
+	if (renderingMode == ThirdPerson
+		&& selectedObject->getAnimation() != bobbyAnimations[2])
+	{
+		//	Launch animation
+		selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+	}
+}
+
+void StopWalking()
+{
+	if (renderingMode == ThirdPerson
+		&& selectedObject->getAnimation() != bobbyAnimations[2])
+	{
+		selectedObject->resetPose();
+	}
+}
+
+void Jump()
+{
+	if (renderingMode != ThirdPerson)
+		return;
+	if (selectedObject->getAnimation() != bobbyAnimations[2])
+	{
+		selectedObject->playAnimation(bobbyAnimations[2], AnimationRepeat::ResetPose);
 	}
 }
 
@@ -424,24 +524,37 @@ void InitBindings()
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Quit))));
 
 	//  Left
-	AddBinding("Left", 0, SDLK_a, false,
+	AddBinding("Left", 0, SDLK_q, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Left))),
-		nullptr, nullptr, nullptr);
+		nullptr, 
+		nullptr, 
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
 
 	//  Right
 	AddBinding("Right", 0, SDLK_d, false,
 		std::shared_ptr<ActionWrapper>( new Action(std::function<void()>(Right))),
-		nullptr, nullptr, nullptr);
+		nullptr, 
+		nullptr, 
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
 
 	//  Forward
-	AddBinding("Forward", 0, SDLK_w, false,
+	AddBinding("Forward", 0, SDLK_z, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Forward))),
-		nullptr, nullptr, nullptr);
+		nullptr, 
+		nullptr, 
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
 
 	//  Backward
 	AddBinding("Backward", 0, SDLK_s, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Backward))),
-		nullptr, nullptr, nullptr);
+		nullptr, 
+		nullptr, 
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
+
+	//  Jump
+	AddBinding("Jump", 0, SDLK_SPACE, false,
+		nullptr, nullptr, nullptr, 
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Jump))));
 
 	//	Mouse
 
@@ -456,7 +569,7 @@ void InitBindings()
 	ref.onRelease = std::shared_ptr<ActionWrapper>(new Action(func8));
 
 	//  Draw mode: wireframe/fill
-	AddBinding("Change draw mode", SDLK_z, 0, false,
+	AddBinding("Change draw mode", SDLK_w, 0, false,
 		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode))));
 
@@ -501,22 +614,22 @@ void InitBindings()
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ResetObjectPose))));
 
 	//  Move object left
-	AddBinding("Left", SDLK_LEFT, 0, false,
+	AddBinding("Move object left", SDLK_LEFT, 0, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectLeft))),
 		nullptr, nullptr, nullptr);
 
 	//  Move object right
-	AddBinding("Right", SDLK_RIGHT, 0, false,
+	AddBinding("Move object right", SDLK_RIGHT, 0, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectRight))),
 		nullptr, nullptr, nullptr);
 
 	//  Move object forward
-	AddBinding("Forward", SDLK_UP, 0, false,
+	AddBinding("Move object forward", SDLK_UP, 0, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectForward))),
 		nullptr, nullptr, nullptr);
 
 	//  Move object backward
-	AddBinding("Backward", SDLK_DOWN, 0, false,
+	AddBinding("Move object backward", SDLK_DOWN, 0, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectBackward))),
 		nullptr, nullptr, nullptr);
 

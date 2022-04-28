@@ -60,10 +60,10 @@ void	InitResources(int ac, char **av)
 
 	if (obj != nullptr)
 	{
-		obj->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(180.0f)));
+		//obj->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(180.0f)));
 		obj->visible = false;
 		if (!skeletalAnimations.empty())
-			obj->setAnimation(skeletalAnimations[0].get());
+			obj->setAnimation(skeletalAnimations[0]);
 	}
 
 
@@ -84,7 +84,7 @@ void	InitResources(int ac, char **av)
 	selectedObject = bobby;
 	selectedMesh = bobby->getMeshes()[0];
 	PopulateArmature();
-	bobby->setAnimation(bobbyIdle.get());
+	bobby->setAnimation(bobbyIdle);
 	bobbyAnimations.push_back(bobbyIdle);
 	bobbyAnimations.push_back(bobbyWalking);
 	bobbyAnimations.push_back(bobbyJumping);
@@ -182,7 +182,7 @@ void	Render(GLContext_SDL& context)
 
 	std::shared_ptr<Light>	light1(new Light(LightType::Point));
 	assetManager.addAsset(light1);
-	light1->move(mft::vec3(0.0f, 3.0f, -5.0f));
+	light1->move(mft::vec3(0.0f, 3.0f, 5.0f));
 
 	scene.addLight(light1);
 	scene.setLightingMode(LightingMode::Unlit);

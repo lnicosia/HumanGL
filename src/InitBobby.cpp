@@ -83,6 +83,7 @@ std::shared_ptr<GLObject> InitBobby(void)
   character->setName("Bobby");
   character->setShader(GLContext::getShader("color"));
   character->transform.move(mft::vec3(-0.25f, 1.15f, 0.0f));
+  torso.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(180.0f)));
 
   AssetManager::getInstance().addAsset(character);
 
@@ -96,8 +97,8 @@ std::shared_ptr<Animation> InitBobbyWalking(void)
   std::vector<QuatKeyFrame> rotations = std::vector<QuatKeyFrame>();
   std::vector<VecKeyFrame> scales = std::vector<VecKeyFrame>();
 
-  positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, 0.0f), 0.0));
-  positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, -3.0f), 4000.0));
+  //positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, 0.0f), 0.0));
+  //positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, -3.0f), 4000.0));
   Bone torso("Torso", positions, rotations, scales);
   bones["Torso"] = torso;
 

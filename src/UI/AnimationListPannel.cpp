@@ -56,7 +56,7 @@ void SelectAnimation(std::shared_ptr<Animation> anim,
     //  Select anim
     selectedAnimation = anim;
     if (selectedObject != nullptr && selectedAnimation != nullptr)
-		selectedObject->setAnimation(selectedAnimation.get());
+		selectedObject->setAnimation(selectedAnimation);
 
     //  Set buttons to released and this one to pressed
     std::shared_ptr<UIElement> animationListPannel = ui.elements[2]->getChild(5);
