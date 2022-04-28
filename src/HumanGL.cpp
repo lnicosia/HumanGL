@@ -187,6 +187,22 @@ void	Render(GLContext_SDL& context)
 	scene.addLight(light1);
 	scene.setLightingMode(LightingMode::Unlit);
 
+	//	Skybox
+
+	std::string paths[] =
+	{
+		"resources/images/skybox/right.png",
+		"resources/images/skybox/left.png",
+		"resources/images/skybox/top.png",
+		"resources/images/skybox/bottom.png",
+		"resources/images/skybox/front.png",
+		"resources/images/skybox/back.png"
+	};
+	std::shared_ptr<Skybox> skybox =
+		assetManager.loadAsset<Skybox>("resources/images/skybox/right.png", paths);
+	scene.setSkybox(skybox);
+	scene.drawSkybox = true;
+
 	std::cout << "Asset manager content:" << std::endl;
 	assetManager.printContent();
 
