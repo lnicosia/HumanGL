@@ -95,7 +95,8 @@ void InitScenePannel( void )
     UIElement scenePannel(mft::vec2i(0, 830));
     scenePannel.visible = false;
     scenePannel.setSize(mft::vec2i(1600, 38));
-    scenePannel.texts.push_back(UIText("FPS:", mft::vec2i(330, 4), 16.0f));
+    //  FPS
+    scenePannel.texts.push_back(UIText("FPS:", mft::vec2i(540, 4), 16.0f));
 
     //    Draw mode button
     Button button(mft::vec2i(10, 0),
@@ -154,6 +155,24 @@ void InitScenePannel( void )
     cameraPannel.addChild(std::shared_ptr<Button>(new Button(buttonLess)));
 
     scenePannel.addChild(std::shared_ptr<UIElement>(new UIElement(cameraPannel)));
+
+    //    Grid button
+    button.setPos(mft::vec2i(340, 0));
+    button.setText("Grid: ON");
+    button.setAllSizes(mft::vec2i(64, 24));
+    action =
+        std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DrawGrid)));
+    button.onRelease = action;
+    scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));
+
+    //    Grid button
+    button.setPos(mft::vec2i(424, 0));
+    button.setText("Cubemap: ON");
+    button.setAllSizes(mft::vec2i(104, 24));
+    action =
+        std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DrawCubemap)));
+    button.onRelease = action;
+    scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));
 
     ui.registerElement(std::shared_ptr<UIElement>(new UIElement(scenePannel)));
 }

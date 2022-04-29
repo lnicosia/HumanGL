@@ -469,6 +469,7 @@ void ThirdPersonMode()
 		renderingMode = ThirdPerson;
 		SetCameraBehindPlayer();
 	}
+	isMouseOnUI = false;
 }
 
 void StartWalking()
@@ -497,6 +498,38 @@ void Jump()
 	if (selectedObject->getAnimation() != bobbyAnimations[2])
 	{
 		selectedObject->playAnimation(bobbyAnimations[2], AnimationRepeat::ResetPose);
+	}
+}
+
+void DrawGrid()
+{
+	std::shared_ptr<Button> button =
+		dynamic_pointer_cast<Button>(ui.elements[1]->getChild(3));
+	if (scene.drawGrid == true)
+	{
+		scene.drawGrid = false;
+		button->setText("Grid: OFF");
+	}
+	else
+	{
+		scene.drawGrid = true;
+		button->setText("Grid: ON");
+	}
+}
+
+void DrawCubemap()
+{
+	std::shared_ptr<Button> button =
+		dynamic_pointer_cast<Button>(ui.elements[1]->getChild(4));
+	if (scene.drawSkybox == true)
+	{
+		scene.drawSkybox = false;
+		button->setText("Cubemap: OFF");
+	}
+	else
+	{
+		scene.drawSkybox = true;
+		button->setText("Cubemap: ON");
 	}
 }
 
@@ -655,5 +688,13 @@ void InitBindings()
 	AddBinding("Third person", SDLK_RETURN, 0, false,
 		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ThirdPersonMode))));
+
+	AddBinding("Draw grid", SDLK_g, 0, false,
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DrawGrid))));
+
+	AddBinding("Draw cubemap", SDLK_c, 0, false,
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DrawCubemap))));
 
 }

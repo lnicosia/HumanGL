@@ -135,11 +135,17 @@ cmd.exe /c "GetNRE.bat"</Command>
     <ClCompile Include="src\InitBobby.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\UI.cpp" />
+    <ClCompile Include="src\UI\AnimationListPannel.cpp" />
+    <ClCompile Include="src\UI\AnimationPannel.cpp" />
+    <ClCompile Include="src\UI\InitUI.cpp" />
+    <ClCompile Include="src\UI\ModelPannel.cpp" />
+    <ClCompile Include="src\UI\TransformPannel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Bindings.hpp" />
     <ClInclude Include="inc\HumanGL.hpp" />
     <ClInclude Include="inc\InitBobby.hpp" />
+    <ClInclude Include="inc\UI.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

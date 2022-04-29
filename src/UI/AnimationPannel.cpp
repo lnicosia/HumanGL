@@ -244,7 +244,7 @@ void UpdateAnimationPannel( void )
 {
     UpdateAnimationList();
     UpdateAnimationSpeedText();
-    ResetObjectPose();
+    //ResetObjectPose();
 
     if (selectedAnimation == nullptr)
         return ;

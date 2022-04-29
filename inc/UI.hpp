@@ -29,6 +29,14 @@ void ChangeDrawMode( void );
 */
 void ChangeLightingMode( void );
 
+/**	Enable/Disable grid
+*/
+void DrawGrid( void );
+
+/**	Enable/Disable Cubemap
+*/
+void DrawCubemap( void );
+
 /**	Render model
 */
 void RenderModel( void );
