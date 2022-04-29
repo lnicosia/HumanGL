@@ -83,7 +83,6 @@ std::shared_ptr<GLObject> InitBobby(void)
   character->setName("Bobby");
   character->setShader(GLContext::getShader("color"));
   character->transform.move(mft::vec3(-0.25f, 1.15f, 0.0f));
-  torso.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(180.0f)));
 
   AssetManager::getInstance().addAsset(character);
 
@@ -92,113 +91,148 @@ std::shared_ptr<GLObject> InitBobby(void)
 
 std::shared_ptr<Animation> InitBobbyWalking(void)
 {
-  std::map<std::string, Bone> bones;
-  std::vector<VecKeyFrame> positions = std::vector<VecKeyFrame>();
-  std::vector<QuatKeyFrame> rotations = std::vector<QuatKeyFrame>();
-  std::vector<VecKeyFrame> scales = std::vector<VecKeyFrame>();
+    std::map<std::string, Bone> bones;
+    std::vector<VecKeyFrame> positions = std::vector<VecKeyFrame>();
+    std::vector<QuatKeyFrame> rotations = std::vector<QuatKeyFrame>();
+    std::vector<VecKeyFrame> scales = std::vector<VecKeyFrame>();
 
-  //positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, 0.0f), 0.0));
-  //positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, -3.0f), 4000.0));
-  Bone torso("Torso", positions, rotations, scales);
-  bones["Torso"] = torso;
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, -0.1f, 0.025f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, -0.2f, 0.0f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, -0.1f, -0.03f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, 0.0f, -0.07f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, 0.1f, -0.025f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, 0.2f, 0.0f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, 0.1f, 0.03f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, 0.0f, 0.07f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.05f, -0.1f, 0.025f)), 800.0));
+    Bone torso("Torso", positions, rotations, scales);
+    bones["Torso"] = torso;
 
-  positions.clear();
-  rotations.clear();
-  scales.clear();
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 0.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(15.0f)), 1000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 2000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(15.0f)), 3000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 4000.0));
-  Bone upperRightArm("Upper right arm", positions, rotations, scales);
-  bones["Upper right arm"] = upperRightArm;
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, -0.9f, -0.1f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.8f, -0.5f, -0.05f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.3f, -0.2f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.7f, 0.0f, 0.0f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.8f, 0.0f, 0.0f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.03f, 0.0f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.4f, 0.0f, 0.0f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, -0.9f, -0.1f)), 800.0));
+    Bone upperRightArm("Upper right arm", positions, rotations, scales);
+    bones["Upper right arm"] = upperRightArm;
 
-  positions.clear();
-  rotations.clear();
-  scales.clear();
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 0.0f), mft::radians(0.0f)), 0.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 1000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 2000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 3000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 4000.0));
-  Bone lowerRightArm("Lower right arm", positions, rotations, scales);
-  bones["Lower right arm"] = lowerRightArm;
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.5f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.3f, 0.0f, 0.0f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.3f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.3f, 0.0f, 0.0f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, 0.0f, 0.0f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.3f, 0.0f, 0.0f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.25f, 0.0f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.2f, 0.0f, 0.0f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.5f, 0.0f, 0.0f)), 800.0));
+    Bone lowerRightArm("Lower right arm", positions, rotations, scales);
+    bones["Lower right arm"] = lowerRightArm;
 
-  positions.clear();
-  rotations.clear();
-  scales.clear();
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(15.0f)), 0.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 1000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(15.0f)), 2000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 3000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(15.0f)), 4000.0));
-  Bone upperLeftArm("Upper left arm", positions, rotations, scales);
-  bones["Upper left arm"] = upperLeftArm;
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.7f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.8f, 0.0f, 0.0f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.03f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.4f, 0.0f, 0.0f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, 0.9f, 0.1f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.8f, 0.5f, 0.05f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.3f, 0.2f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.7f, 0.0f, 0.0f)), 800.0));
+    Bone upperLeftArm("Upper left arm", positions, rotations, scales);
+    bones["Upper left arm"] = upperLeftArm;
 
-  positions.clear();
-  rotations.clear();
-  scales.clear();
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 0.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 1000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 2000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-15.0f)), 3000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 4000.0));
-  Bone lowerLeftArm("Lower left arm", positions, rotations, scales);
-  bones["Lower left arm"] = lowerLeftArm;
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.6f, 0.0f, 0.0f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.25f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.2f, 0.0f, 0.0f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.5f, 0.0f, 0.0f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.6f, 0.0f, 0.0f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.3f, 0.0f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.3f, 0.0f, 0.0f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, 0.0f, 0.0f)), 800.0));
+    Bone lowerLeftArm("Lower left arm", positions, rotations, scales);
+    bones["Lower left arm"] = lowerLeftArm;
 
-  positions.clear();
-  rotations.clear();
-  scales.clear();
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-20.0f)), 0.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(20.0f)), 1000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-20.0f)), 2000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(20.0f)), 3000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-20.0f)), 4000.0));
-  Bone rightThigh("Right thigh", positions, rotations, scales);
-  bones["Right thigh"] = rightThigh;
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.4f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.6f, 0.0f, 0.0f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.5f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.9f, 0.0f, 0.0f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, 0.0f, 0.0f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.8f, 0.0f, 0.0f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.1f, 0.0f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.4f, 0.0f, 0.0f)), 800.0));
+    Bone rightThigh("Right thigh", positions, rotations, scales);
+    bones["Right thigh"] = rightThigh;
 
-  positions.clear();
-  rotations.clear();
-  scales.clear();
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(30.0f)), 0.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 1000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(30.0f)), 1750.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 2000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 3000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(30.0f)), 3750.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 4000.0));
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.8f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.2f, 0.0f, 0.0f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.1f, 0.0f, 0.0f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.8f, 0.0f, 0.0f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.1f, 0.0f, 0.0f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 800.0));
 
-  Bone rightCalf("Right calf", positions, rotations, scales);
-  bones["Right calf"] = rightCalf;
+    Bone rightCalf("Right calf", positions, rotations, scales);
+    bones["Right calf"] = rightCalf;
 
-  positions.clear();
-  rotations.clear();
-  scales.clear();
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(20.0f)), 0.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-20.0f)), 1000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(20.0f)), 2000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(-20.0f)), 3000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(20.0f)), 4000.0));
-  Bone leftThigh("Left thigh", positions, rotations, scales);
-  bones["Left thigh"] = leftThigh;
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.8f, 0.0f, 0.0f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.1f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.4f, 0.0f, 0.0f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.6f, 0.0f, 0.0f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.5f, 0.0f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.9f, 0.0f, 0.0f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.7f, 0.0f, 0.0f)), 800.0));
+    Bone leftThigh("Left thigh", positions, rotations, scales);
+    bones["Left thigh"] = leftThigh;
 
-  positions.clear();
-  rotations.clear();
-  scales.clear();
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 0.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(30.0f)), 750.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 1000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 2000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(30.0f)), 2750.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 3000.0));
-  rotations.push_back(QuatKeyFrame(mft::quat::rotation(mft::vec3(1.0f, 0.0f, 0.0f), mft::radians(0.0f)), 4000.0));
-  Bone leftCalf("Left calf", positions, rotations, scales);
-  bones["Left calf"] = leftCalf;
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.1f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.8f, 0.0f, 0.0f)), 100.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.1f, 0.0f, 0.0f)), 300.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 500.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.8f, 0.0f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.2f, 0.0f, 0.0f)), 700.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.1f, 0.0f, 0.0f)), 800.0));
+    Bone leftCalf("Left calf", positions, rotations, scales);
+    bones["Left calf"] = leftCalf;
 
-  std::shared_ptr<Animation> anim =
-    std::shared_ptr<Animation>(new Animation("Bobby walking", bones));
-  AssetManager::getInstance().addAsset(anim);
-  return anim;
+    std::shared_ptr<Animation> anim =
+        std::shared_ptr<Animation>(new Animation("Bobby walking", bones));
+    AssetManager::getInstance().addAsset(anim);
+    return anim;
 }
 
 std::shared_ptr<Animation> InitBobbyJumping(void)
@@ -339,4 +373,183 @@ std::shared_ptr<Animation> InitBobbyIdle(void)
     std::shared_ptr<Animation>(new Animation("Bobby idle", bones));
   AssetManager::getInstance().addAsset(anim);
   return anim;
+}
+
+/*
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 200.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 400.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 600.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 800.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1000.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1200.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1400.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+*/
+
+std::shared_ptr<Animation> InitBobbyBackflip(void)
+{
+    std::map<std::string, Bone> bones;
+    std::vector<VecKeyFrame> positions = std::vector<VecKeyFrame>();
+    std::vector<QuatKeyFrame> rotations = std::vector<QuatKeyFrame>();
+    std::vector<VecKeyFrame> scales = std::vector<VecKeyFrame>();
+
+    positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, 0.0f), 000.0));
+    positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, 0.0f), 200.0));
+    positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.3f, -0.1f), 400.0));
+    positions.push_back(VecKeyFrame(mft::vec3(0.0f, 1.3f, -0.4f), 600.0));
+    positions.push_back(VecKeyFrame(mft::vec3(0.0f, 1.5f, -1.0f), 800.0));
+    positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.9f, -1.5f), 1000.0));
+    positions.push_back(VecKeyFrame(mft::vec3(0.0f, 0.0f, -2.2f), 1200.0));
+
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.6f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.8f, 0.0f, 0.0f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.0f, 0.0f, 0.0f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-2.0f, 0.0f, 0.0f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-3.7f, 0.0f, 0.0f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-4.8f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-5.3f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-6.28f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+    Bone torso("Torso", positions, rotations, scales);
+    bones["Torso"] = torso;
+
+    // Upper boddy
+
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.95f, 0.0f, -0.2f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-3.14f, 0.4f, -0.3f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.6f, 0.0f, -0.1f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.6f, 0.0f, -0.08f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.9f, 0.0f, -0.1f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.3f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.6f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+
+    Bone upperRightArm("Upper right arm", positions, rotations, scales);
+    bones["Upper right arm"] = upperRightArm;
+
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.17f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, -0.2f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.97f, 0.0f, -0.6f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.97f, 0.0f, -0.56f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.1f, 0.0f, -0.3f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.2f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.0f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+    Bone lowerRightArm("Lower right arm", positions, rotations, scales);
+    bones["Lower right arm"] = lowerRightArm;
+
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.95f, 0.0f, 0.2f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-3.14f, -0.4f, 0.3f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.8f, 0.0f, 0.1f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.7f, 0.0f, 0.08f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.9f, 0.0f, 0.08f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.3f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.6f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+    Bone upperLeftArm("Upper left arm", positions, rotations, scales);
+    bones["Upper left arm"] = upperLeftArm;
+
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.17f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.2f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.97f, 0.0f, 0.6f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.97f, 0.0f, 0.56f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.1f, 0.0f, 0.4f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.2f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.0f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+    Bone lowerLeftArm("Lower left arm", positions, rotations, scales);
+    bones["Lower left arm"] = lowerLeftArm;
+
+    //  Lower boddy
+
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.1f, 0.0f, 0.15f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.4f, 0.0f, 0.07f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.4f, 0.0f, 0.07f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.5f, 0.0f, 0.07f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.9f, 0.0f, 0.0f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.48f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.4f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+    Bone leftThigh("Left thigh", positions, rotations, scales);
+    bones["Left thigh"] = leftThigh;
+
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.3f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.35f, 0.0f, 0.07f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-2.3f, 0.0f, 0.07f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-2.3f, 0.0f, 0.07f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.3f, 0.0f, 0.0f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.8f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+    Bone leftCalf("Left calf", positions, rotations, scales);
+    bones["Left calf"] = leftCalf;
+
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.1f, 0.0f, -0.15f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.4f, 0.0f, 0.07f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.6f, 0.0f, -0.07f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.6f, 0.0f, -0.07f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.9f, 0.0f, 0.0f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.48f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(1.4f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+    Bone rightThigh("Right thigh", positions, rotations, scales);
+    bones["Right thigh"] = rightThigh;
+
+    positions.clear();
+    rotations.clear();
+    scales.clear();
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 0.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.3f, 0.0f, 0.0f)), 200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.35f, 0.0f, 0.07f)), 400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-2.3f, 0.0f, 0.07f)), 600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-2.3f, 0.0f, 0.07f)), 800.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-1.3f, 0.0f, 0.0f)), 1000.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.2f, 0.0f, 0.0f)), 1200.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(-0.8f, 0.0f, 0.0f)), 1400.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1600.0));
+    rotations.push_back(QuatKeyFrame(mft::quat::rotate(mft::vec3(0.0f, 0.0f, 0.0f)), 1800.0));
+    Bone rightCalf("Right calf", positions, rotations, scales);
+    bones["Right calf"] = rightCalf;
+    std::shared_ptr<Animation> anim =
+        std::shared_ptr<Animation>(new Animation("Bobby backflip", bones));
+    AssetManager::getInstance().addAsset(anim);
+    return anim;
 }

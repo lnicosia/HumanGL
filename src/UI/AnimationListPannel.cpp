@@ -61,7 +61,10 @@ void SelectAnimation(std::shared_ptr<Animation> anim,
             || selectedObject->getAnimationState() == AnimationState::Paused)
             selectedObject->setAnimation(selectedAnimation);
         else
+        {
+            selectedObject->resetPose();
             selectedObject->playAnimation(selectedAnimation);
+        }
     }
 
     //  Set buttons to released and this one to pressed

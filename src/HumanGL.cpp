@@ -71,7 +71,7 @@ void	InitResources(int ac, char **av)
 		assetManager.loadAsset<GLObject>("resources/objects/Rock/rock.dae");
 	if (rock != nullptr)
 	{
-		rock->transform.move(mft::vec3(5.0f, 0.0f, 5.0f));
+		rock->transform.move(mft::vec3(5.0f, 0.0f, -5.0f));
 		rock->visible = false;
 	}
 
@@ -80,6 +80,7 @@ void	InitResources(int ac, char **av)
 	std::shared_ptr<Animation> bobbyWalking = InitBobbyWalking();
 	std::shared_ptr<Animation> bobbyJumping = InitBobbyJumping();
 	std::shared_ptr<Animation> bobbyIdle = InitBobbyIdle();
+	std::shared_ptr<Animation> bobbyBackflip = InitBobbyBackflip();
 	selectedAnimation = bobbyIdle;
 	selectedObject = bobby;
 	selectedMesh = bobby->getMeshes()[0];
@@ -88,6 +89,7 @@ void	InitResources(int ac, char **av)
 	bobbyAnimations.push_back(bobbyIdle);
 	bobbyAnimations.push_back(bobbyWalking);
 	bobbyAnimations.push_back(bobbyJumping);
+	bobbyAnimations.push_back(bobbyBackflip);
 
 	//	Fonts
 

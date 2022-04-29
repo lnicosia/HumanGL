@@ -29,7 +29,7 @@ void Left()
 	if (renderingMode == ThirdPerson)
 	{
 		if (selectedObject->getAnimationState() == AnimationState::Stopped)
-			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::Stop);
 		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(1.0f)));
 
 		SetCameraBehindPlayer();
@@ -43,7 +43,7 @@ void Right()
 	if (renderingMode == ThirdPerson)
 	{
 		if (selectedObject->getAnimationState() == AnimationState::Stopped)
-			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::Stop);
 		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(-1.0f)));
 
 		SetCameraBehindPlayer();
@@ -57,7 +57,7 @@ void Forward()
 	if (renderingMode == ThirdPerson)
 	{
 		if (selectedObject->getAnimationState() == AnimationState::Stopped)
-			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::Stop);
 
 		mft::vec3 rot = mft::quat::euler(selectedObject->transform.getRotation());
 		
@@ -67,7 +67,7 @@ void Forward()
 		front.y = sinf(mft::radians(0.0f));
 		front.z = sinf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
 		front = mft::vec3::normalized(front);
-		mft::vec3 newPos = selectedObject->transform.getPos() - 0.005f * front;
+		mft::vec3 newPos = selectedObject->transform.getPos() - 0.050f * front;
 		selectedObject->transform.setPos(newPos);
 		SetCameraBehindPlayer();
 	}
@@ -82,7 +82,7 @@ void Backward()
 	if (renderingMode == ThirdPerson)
 	{
 		if (selectedObject->getAnimationState() == AnimationState::Stopped)
-			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
+			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::Stop);
 
 		mft::vec3 rot = mft::quat::euler(selectedObject->transform.getRotation());
 		
@@ -92,7 +92,7 @@ void Backward()
 		front.y = sinf(mft::radians(0.0f));
 		front.z = sinf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
 		front = mft::vec3::normalized(front);
-		mft::vec3 newPos = selectedObject->transform.getPos() - 0.005f * front;
+		mft::vec3 newPos = selectedObject->transform.getPos() - 0.050f * front;
 		selectedObject->transform.setPos(newPos);
 		SetCameraBehindPlayer();
 	}
