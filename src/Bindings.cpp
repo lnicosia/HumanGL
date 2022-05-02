@@ -554,32 +554,36 @@ void ResetObjectPose()
 	UpdateAnimationStatusText();
 }
 
-void ObjectLeft()
+void MeshLeft()
 {
 	if (selectedMesh == nullptr)
 		return ;
 	selectedMesh->localTransform.move(mft::vec3(-0.05f, 0.0f, 0.0f));
+	UpdateTransformPannel();
 }
 
-void ObjectRight()
+void MeshRight()
 {
 	if (selectedMesh == nullptr)
 		return ;
 	selectedMesh->localTransform.move(mft::vec3(0.05f, 0.0f, 0.0f));
+	UpdateTransformPannel();
 }
 
-void ObjectForward()
+void MeshForward()
 {
 	if (selectedMesh == nullptr)
 		return ;
 	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, 0.05f));
+	UpdateTransformPannel();
 }
 
-void ObjectBackward()
+void MeshBackward()
 {
 	if (selectedMesh == nullptr)
 		return ;
 	selectedMesh->localTransform.move(mft::vec3(0.0f, 0.0f, -0.05f));
+	UpdateTransformPannel();
 }
 
 void ThirdPersonMode()
@@ -836,22 +840,22 @@ void InitBindings()
 
 	//  Move object left
 	AddBinding("Move object left", SDLK_LEFT, 0, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectLeft))),
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(MeshLeft))),
 		nullptr, nullptr, nullptr);
 
 	//  Move object right
 	AddBinding("Move object right", SDLK_RIGHT, 0, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectRight))),
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(MeshRight))),
 		nullptr, nullptr, nullptr);
 
 	//  Move object forward
 	AddBinding("Move object forward", SDLK_UP, 0, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectForward))),
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(MeshForward))),
 		nullptr, nullptr, nullptr);
 
 	//  Move object backward
 	AddBinding("Move object backward", SDLK_DOWN, 0, false,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ObjectBackward))),
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(MeshBackward))),
 		nullptr, nullptr, nullptr);
 
 	//  Third person mode
