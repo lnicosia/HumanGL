@@ -281,6 +281,9 @@ void RenderBobbyPlus()
 	}
 	selectedObject->visible = true;
 	UpdateAnimationPannel();
+	scene.setCameraPos(mft::vec3(0.0f, 3.0f, 5.0f));
+	scene.setYaw(-90.0f);
+	scene.setPitch(-15.0f);
 }
 
 void RenderBobby()
@@ -323,6 +326,9 @@ void RenderBobby()
 	}
 	selectedObject->visible = true;
 	UpdateAnimationPannel();
+	scene.setCameraPos(mft::vec3(0.0f, 3.0f, 5.0f));
+	scene.setYaw(-90.0f);
+	scene.setPitch(-15.0f);
 }
 
 void SelectModel()
@@ -383,6 +389,10 @@ void RenderModel()
 	else
 		selectedObject->setShader(GLContext::getShader("unlit"));
 	selectedObject->bindBones();
+	mft::vec3 angle = mft::quat::euler(selectedObject->transform.getRotation());
+	scene.setCameraPos(mft::vec3(0.0f, 3.0f, 5.0f));
+	scene.setYaw(-90.0f);
+	scene.setPitch(-15.0f);
 }
 
 void RenderBonesInfluence()
@@ -395,6 +405,10 @@ void RenderBonesInfluence()
 		return ;
 	selectedObject->setShader(GLContext::getShader("bonesInfluence"));
 	selectedObject->bindBones();
+	mft::vec3 angle = mft::quat::euler(selectedObject->transform.getRotation());
+	scene.setCameraPos(mft::vec3(0.0f, 3.0f, 5.0f));
+	scene.setYaw(-90.0f);
+	scene.setPitch(-15.0f);
 }
 
 void NextAnim()
@@ -780,10 +794,15 @@ void InitBindings()
 		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBonesInfluence))));
 
-	//	Render Bobby
-	AddBinding("Render Bobby", SDLK_b, SDLK_1, false,
+	//	Render bones
+	AddBinding("Draw bones", SDLK_b, 0, false,
 		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DrawBones))));
+
+	//	Render Bobby
+	AddBinding("Render Bobby", SDLK_1, 0, false,
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobby))));
 
 	//	Render Bobby plus
 	AddBinding("Render Bobby Plus", 0, SDLK_2, false,
