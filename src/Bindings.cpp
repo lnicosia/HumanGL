@@ -591,7 +591,7 @@ void ThirdPersonMode()
 			RenderBobbyPlus();
 			renderingMode = ThirdPersonPlus;
 			SetCameraBehindPlayer();
-		}	
+		}
 	}
 	isMouseOnUI = false;
 }
@@ -672,6 +672,11 @@ void DrawCubemap()
 		scene.drawSkybox = true;
 		button->setText("Cubemap: ON");
 	}
+}
+
+void DrawBones()
+{
+	renderBones = renderBones == true ? false : true;
 }
 
 //  Init
@@ -778,7 +783,7 @@ void InitBindings()
 	//	Render Bobby
 	AddBinding("Render Bobby", SDLK_b, SDLK_1, false,
 		nullptr, nullptr, nullptr,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobby))));
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DrawBones))));
 
 	//	Render Bobby plus
 	AddBinding("Render Bobby Plus", 0, SDLK_2, false,
