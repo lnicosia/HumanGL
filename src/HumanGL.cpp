@@ -84,11 +84,15 @@ void	InitResources(int ac, char **av)
 	std::shared_ptr<Animation> bobbyJumping = InitBobbyJumping();
 	std::shared_ptr<Animation> bobbyIdle = InitBobbyIdle();
 	std::shared_ptr<Animation> bobbyBackflip = InitBobbyBackflip();
+	std::shared_ptr<Animation> bobbyDance = InitBobbyDance();
+	std::shared_ptr<Animation> bobbyKungFu = InitBobbyKungFu();
 
 	std::shared_ptr<Animation> bobbyPlusWalking = InitBobbyPlusWalking();
 	std::shared_ptr<Animation> bobbyPlusJumping = InitBobbyPlusJumping();
 	std::shared_ptr<Animation> bobbyPlusIdle = InitBobbyPlusIdle();
 	std::shared_ptr<Animation> bobbyPlusBackflip = InitBobbyPlusBackflip();
+	std::shared_ptr<Animation> bobbyPlusDance = InitBobbyPlusDance();
+	std::shared_ptr<Animation> bobbyPlusKungFu = InitBobbyKungFu();
 	selectedAnimation = bobbyIdle;
 	selectedObject = bobby;
 	selectedMesh = bobby->getMeshes()[0];
@@ -99,11 +103,15 @@ void	InitResources(int ac, char **av)
 	bobbyAnimations.push_back(bobbyWalking);
 	bobbyAnimations.push_back(bobbyJumping);
 	bobbyAnimations.push_back(bobbyBackflip);
+	bobbyAnimations.push_back(bobbyDance);
+	bobbyAnimations.push_back(bobbyKungFu);
 
 	bobbyPlusAnimations.push_back(bobbyPlusIdle);
 	bobbyPlusAnimations.push_back(bobbyPlusWalking);
 	bobbyPlusAnimations.push_back(bobbyPlusJumping);
 	bobbyPlusAnimations.push_back(bobbyPlusBackflip);
+	bobbyPlusAnimations.push_back(bobbyPlusDance);
+	bobbyPlusAnimations.push_back(bobbyPlusKungFu);
 
 	//	Fonts
 
