@@ -213,17 +213,17 @@ void InitUI()
   InitTransformPannel();
 
   //    Right pannel left pipe
-  UIElement rightPannelLeftPipe(mft::vec2i(0, 22),
+  UIElement rightPannelLeftPipe(mft::vec2i(0, 1),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-  rightPannelLeftPipe.setSize(mft::vec2i(4, 836));
+  rightPannelLeftPipe.setSize(mft::vec2i(4, 857));
   ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(rightPannelLeftPipe)));
 
   InitAnimationListPannel();
 
   //    Right pannel right pipe
-  UIElement rightPannelRightPipe(mft::vec2i(312, 22),
+  UIElement rightPannelRightPipe(mft::vec2i(312, 1),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-  rightPannelRightPipe.setSize(mft::vec2i(6, 809));
+  rightPannelRightPipe.setSize(mft::vec2i(6, 830));
   ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(rightPannelRightPipe)));
 
   InitAnimationPannel();

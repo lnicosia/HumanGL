@@ -20,30 +20,30 @@ void InitAnimationListPannel( void )
       animationListPannel.setSize(mft::vec2i(312, 200));
 
     //    Design bars
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 7; i++)
     {
-        UIElement left(mft::vec2i(0, 22 + i * 35),
+        UIElement left(mft::vec2i(0, 1 + i * 33),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-        left.setSize(mft::vec2i(23, 34));
+        left.setSize(mft::vec2i(23, 32));
         animationListPannel.addChild(std::shared_ptr<UIElement>(new UIElement(left)));
-        Button center(mft::vec2i(24, 22 + i * 35),
+        Button center(mft::vec2i(24, 1 + i * 33),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-        center.setSize(mft::vec2i(263, 34));
+        center.setSize(mft::vec2i(263, 32));
         center.active = false;
         center.setFont(font);
         animationListPannel.addChild(std::shared_ptr<Button>(new Button(center)));
-        UIElement right(mft::vec2i(288, 22 + i * 35),
+        UIElement right(mft::vec2i(288, 1 + i * 33),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
-        right.setSize(mft::vec2i(23, 34));
+        right.setSize(mft::vec2i(23, 32));
         animationListPannel.addChild(std::shared_ptr<UIElement>(new UIElement(right)));
     }
 
-    UIElement animationListBorder(mft::vec2i(-1, 5 * 35 + 22),
+    UIElement animationListBorder(mft::vec2i(-1, 6 * 33 + 1),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
-    animationListBorder.setSize(mft::vec2i(289, 34));
-    animationListBorder.texts.push_back(UIText(">  Animations", mft::vec2i(12, 6), 20.0f));
+    animationListBorder.setSize(mft::vec2i(289, 32));
+    animationListBorder.texts.push_back(UIText(">  Animations", mft::vec2i(12, 6), 16.0f));
 
     animationListPannel.addChild(std::shared_ptr<UIElement>(new UIElement(animationListBorder)));
 
@@ -112,7 +112,7 @@ void UpdateAnimationList( void )
     {
         std::shared_ptr<Button> button =
             dynamic_pointer_cast<Button>(
-                animationListPannel->getChild(18 - (2 + i) * 3 + 1));
+                animationListPannel->getChild(18 - (1 + i) * 3 + 1));
         button->active = true;
         button->setText(animations[i]->getName());
         if (selectedAnimation != nullptr && selectedAnimation == animations[i])
