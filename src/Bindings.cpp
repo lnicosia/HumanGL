@@ -34,6 +34,14 @@ void Left()
 
 		SetCameraBehindPlayer();
 	}
+	else if (renderingMode == ThirdPersonPlus)
+	{
+		if (selectedObject->getAnimationState() == AnimationState::Stopped)
+			selectedObject->playAnimation(bobbyPlusAnimations[1], AnimationRepeat::Stop);
+		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(1.0f)));
+
+		SetCameraBehindPlayer();
+	}
 	else
 		scene.left(timeSinceLastFrame);
 }
@@ -44,6 +52,14 @@ void Right()
 	{
 		if (selectedObject->getAnimationState() == AnimationState::Stopped)
 			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::Stop);
+		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(-1.0f)));
+
+		SetCameraBehindPlayer();
+	}
+	else if (renderingMode == ThirdPersonPlus)
+	{
+		if (selectedObject->getAnimationState() == AnimationState::Stopped)
+			selectedObject->playAnimation(bobbyPlusAnimations[1], AnimationRepeat::Stop);
 		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(-1.0f)));
 
 		SetCameraBehindPlayer();
@@ -60,7 +76,24 @@ void Forward()
 			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::Stop);
 
 		mft::vec3 rot = mft::quat::euler(selectedObject->transform.getRotation());
-		
+
+		rot.y = mft::degrees(-rot.y) - 90.0f;
+		mft::vec3 front;
+		front.x = cosf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
+		front.y = sinf(mft::radians(0.0f));
+		front.z = sinf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
+		front = mft::vec3::normalized(front);
+		mft::vec3 newPos = selectedObject->transform.getPos() - 0.050f * front;
+		selectedObject->transform.setPos(newPos);
+		SetCameraBehindPlayer();
+	}
+	else if (renderingMode == ThirdPersonPlus)
+	{
+		if (selectedObject->getAnimationState() == AnimationState::Stopped)
+			selectedObject->playAnimation(bobbyPlusAnimations[1], AnimationRepeat::Stop);
+
+		mft::vec3 rot = mft::quat::euler(selectedObject->transform.getRotation());
+
 		rot.y = mft::degrees(-rot.y) - 90.0f;
 		mft::vec3 front;
 		front.x = cosf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
@@ -85,7 +118,24 @@ void Backward()
 			selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::Stop);
 
 		mft::vec3 rot = mft::quat::euler(selectedObject->transform.getRotation());
-		
+
+		rot.y = mft::degrees(-rot.y) + 90.0f;
+		mft::vec3 front;
+		front.x = cosf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
+		front.y = sinf(mft::radians(0.0f));
+		front.z = sinf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
+		front = mft::vec3::normalized(front);
+		mft::vec3 newPos = selectedObject->transform.getPos() - 0.050f * front;
+		selectedObject->transform.setPos(newPos);
+		SetCameraBehindPlayer();
+	}
+	else if (renderingMode == ThirdPersonPlus)
+	{
+		if (selectedObject->getAnimationState() == AnimationState::Stopped)
+			selectedObject->playAnimation(bobbyPlusAnimations[1], AnimationRepeat::Stop);
+
+		mft::vec3 rot = mft::quat::euler(selectedObject->transform.getRotation());
+
 		rot.y = mft::degrees(-rot.y) + 90.0f;
 		mft::vec3 front;
 		front.x = cosf(mft::radians(rot.y)) * cosf(mft::radians(0.0f));
@@ -125,7 +175,7 @@ void LeftClickPressed(mft::vec2i& mouseStart)
 	//	If not on UI, move camera
 
 	float newYaw = (float)(events.mouseGlobalPos.x - mouseStart.x) * scene.getCamera().sensitivity;
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 	{
 		selectedObject->transform.rotate(mft::quat::rotation(mft::vec3(0.0f, 1.0f, 0.0f), mft::radians(-newYaw)));
 		SetCameraBehindPlayer();
@@ -166,7 +216,8 @@ void ChangeDrawMode()
 
 void PlayAnimation()
 {
-	if (selectedObject == nullptr || renderingMode == ThirdPerson)
+	if (selectedObject == nullptr
+		|| renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return ;
 	AnimationState animState = selectedObject->getAnimationState();
 	std::shared_ptr<UIElement> animationControlPannel =
@@ -191,9 +242,50 @@ void PlayAnimation()
 	UpdateAnimationStatusText();
 }
 
+void RenderBobbyPlus()
+{
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
+		return;
+	renderingMode = BobbyPlus;
+	if (selectedObject != nullptr)
+		selectedObject->pauseAnimation();
+	AssetManager& assetManager = AssetManager::getInstance();
+	selectedObject = assetManager.getAssetByName<GLObject>("Bobby Plus");
+	PopulateArmature();
+	SelectMesh(selectedObject->getMeshes()[0]);
+	std::shared_ptr<Button> bobbyButton =
+		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(0));
+	if (bobbyButton)
+		bobbyButton->setReleasedImg(assetManager.loadAsset<Texture>(
+			"resources/UI/defaultUI-topRounded-clear.png", "UI"));
+	std::shared_ptr<Button> bobbyPlusButton =
+		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(1));
+	if (bobbyPlusButton)
+		bobbyPlusButton->setReleasedImg(assetManager.loadAsset<Texture>(
+			"resources/UI/defaultUI-topRounded.png", "UI"));
+	std::shared_ptr<Button> modelButton =
+		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(2));
+	if (modelButton)
+		modelButton->setReleasedImg(assetManager.loadAsset<Texture>(
+			"resources/UI/defaultUI-topRounded-clear.png", "UI"));
+	selectedAnimation = bobbyPlusAnimations[0];
+	if (selectedObject != nullptr && selectedAnimation != nullptr)
+		selectedObject->setAnimation(selectedAnimation);
+
+	std::vector<std::shared_ptr<GLObject>> objects =
+		assetManager.getAssetsOfType<GLObject>();
+
+	for (auto& object: objects)
+	{
+		object->visible = false;
+	}
+	selectedObject->visible = true;
+	UpdateAnimationPannel();
+}
+
 void RenderBobby()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	renderingMode = Bobby;
 
@@ -207,12 +299,17 @@ void RenderBobby()
 		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(0));
 	if (bobbyButton)
 		bobbyButton->setReleasedImg(assetManager.loadAsset<Texture>(
+			"resources/UI/defaultUI-topRounded.png", "UI"));
+	std::shared_ptr<Button> bobbyPlusButton =
+		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(1));
+	if (bobbyPlusButton)
+		bobbyPlusButton->setReleasedImg(assetManager.loadAsset<Texture>(
 			"resources/UI/defaultUI-topRounded-clear.png", "UI"));
 	std::shared_ptr<Button> modelButton =
-		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(1));
+		dynamic_pointer_cast<Button>(ui.elements[0]->getChild(2));
 	if (modelButton)
 		modelButton->setReleasedImg(assetManager.loadAsset<Texture>(
-			"resources/UI/defaultUI-topRounded.png", "UI"));
+			"resources/UI/defaultUI-topRounded-clear.png", "UI"));
 	selectedAnimation = bobbyAnimations[0];
 	if (selectedObject != nullptr && selectedAnimation != nullptr)
 		selectedObject->setAnimation(selectedAnimation);
@@ -230,7 +327,7 @@ void RenderBobby()
 
 void SelectModel()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	if (selectedObject != nullptr)
 		selectedObject->pauseAnimation();
@@ -244,6 +341,7 @@ void SelectModel()
 		selectedObject->setAnimation(selectedAnimation);
 
 	assetManager.getAssetByName<GLObject>("Bobby")->visible = false;
+	assetManager.getAssetByName<GLObject>("Bobby Plus")->visible = false;
 	std::shared_ptr<GLObject> rock =
 		assetManager.getAsset<GLObject>("resources/objects/Rock/rock.dae");
 	if (rock != nullptr)
@@ -257,19 +355,24 @@ void SelectModel()
 			dynamic_pointer_cast<Button>(ui.elements[0]->getChild(0));
 		if (bobbyButton)
 			bobbyButton->setReleasedImg(assetManager.loadAsset<Texture>(
-				"resources/UI/defaultUI-topRounded.png", "UI"));
-		std::shared_ptr<Button> modelButton =
+				"resources/UI/defaultUI-topRounded-clear.png", "UI"));
+		std::shared_ptr<Button> bobbyPlusButton =
 			dynamic_pointer_cast<Button>(ui.elements[0]->getChild(1));
+		if (bobbyPlusButton)
+			bobbyPlusButton->setReleasedImg(assetManager.loadAsset<Texture>(
+				"resources/UI/defaultUI-topRounded-clear.png", "UI"));
+		std::shared_ptr<Button> modelButton =
+			dynamic_pointer_cast<Button>(ui.elements[0]->getChild(2));
 		if (modelButton)
 			modelButton->setReleasedImg(assetManager.loadAsset<Texture>(
-				"resources/UI/defaultUI-topRounded-clear.png", "UI"));
+				"resources/UI/defaultUI-topRounded.png", "UI"));
 	}
 	UpdateAnimationPannel();
 }
 
 void RenderModel()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	renderingMode = Model;
 	SelectModel();
@@ -284,7 +387,7 @@ void RenderModel()
 
 void RenderBonesInfluence()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	renderingMode = BonesInfluence;
 	SelectModel();
@@ -296,12 +399,16 @@ void RenderBonesInfluence()
 
 void NextAnim()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	std::vector<std::shared_ptr<Animation>> animations;
 	if (renderingMode == Bobby)
 	{
 		animations = bobbyAnimations;
+	}
+	else if (renderingMode == BobbyPlus)
+	{
+		animations = bobbyPlusAnimations;
 	}
 	else if (renderingMode == Model || renderingMode == BonesInfluence)
 	{
@@ -331,7 +438,7 @@ void NextAnim()
 
 void Next()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	if (renderingMode == BonesInfluence)
 	{
@@ -348,12 +455,16 @@ void Next()
 
 void PreviousAnim()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	std::vector<std::shared_ptr<Animation>> animations;
 	if (renderingMode == Bobby)
 	{
 		animations = bobbyAnimations;
+	}
+	else if (renderingMode == BobbyPlus)
+	{
+		animations = bobbyPlusAnimations;
 	}
 	else if (renderingMode == Model || renderingMode == BonesInfluence)
 	{
@@ -383,7 +494,7 @@ void PreviousAnim()
 
 void Previous()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	if (renderingMode == BonesInfluence)
 	{
@@ -417,7 +528,7 @@ void ChangeLightingMode()
 
 void ResetObjectPose()
 {
-	if (renderingMode == ThirdPerson)
+	if (renderingMode == ThirdPerson || renderingMode == ThirdPersonPlus)
 		return;
 	if (selectedObject != nullptr)
 		selectedObject->resetPose();
@@ -463,11 +574,24 @@ void ThirdPersonMode()
 	{
 		renderingMode = Bobby;
 	}
+	else if (renderingMode == ThirdPersonPlus)
+	{
+		renderingMode = BobbyPlus;
+	}
 	else
 	{
-		RenderBobby();
-		renderingMode = ThirdPerson;
-		SetCameraBehindPlayer();
+		if (renderingMode == Bobby)
+		{
+			RenderBobby();
+			renderingMode = ThirdPerson;
+			SetCameraBehindPlayer();
+		}
+		else if (renderingMode == BobbyPlus)
+		{
+			RenderBobbyPlus();
+			renderingMode = ThirdPersonPlus;
+			SetCameraBehindPlayer();
+		}	
 	}
 	isMouseOnUI = false;
 }
@@ -480,6 +604,12 @@ void StartWalking()
 		//	Launch animation
 		selectedObject->playAnimation(bobbyAnimations[1], AnimationRepeat::ResetPose);
 	}
+	else if (renderingMode == ThirdPersonPlus
+		&& selectedObject->getAnimation() != bobbyPlusAnimations[2])
+	{
+		//	Launch animation
+		selectedObject->playAnimation(bobbyPlusAnimations[1], AnimationRepeat::ResetPose);
+	}
 }
 
 void StopWalking()
@@ -489,15 +619,26 @@ void StopWalking()
 	{
 		selectedObject->resetPose();
 	}
+	else if (renderingMode == ThirdPersonPlus
+		&& selectedObject->getAnimation() != bobbyPlusAnimations[2])
+	{
+		selectedObject->resetPose();
+	}
 }
 
 void Jump()
 {
-	if (renderingMode != ThirdPerson)
+	if (renderingMode != ThirdPerson && renderingMode != ThirdPersonPlus)
 		return;
-	if (selectedObject->getAnimation() != bobbyAnimations[2])
+	if (renderingMode == ThirdPerson
+		&& selectedObject->getAnimation() != bobbyAnimations[2])
 	{
 		selectedObject->playAnimation(bobbyAnimations[2], AnimationRepeat::ResetPose);
+	}
+	if (renderingMode == ThirdPersonPlus
+		&& selectedObject->getAnimation() != bobbyPlusAnimations[2])
+	{
+		selectedObject->playAnimation(bobbyPlusAnimations[2], AnimationRepeat::ResetPose);
 	}
 }
 
@@ -575,36 +716,36 @@ void InitBindings()
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Quit))));
 
 	//  Left
-	AddBinding("Left", 0, SDLK_q, false,
+	AddBinding("Left", 0, SDLK_a, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Left))),
-		nullptr, 
-		nullptr, 
+		nullptr,
+		nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
 
 	//  Right
 	AddBinding("Right", 0, SDLK_d, false,
 		std::shared_ptr<ActionWrapper>( new Action(std::function<void()>(Right))),
-		nullptr, 
-		nullptr, 
+		nullptr,
+		nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
 
 	//  Forward
-	AddBinding("Forward", 0, SDLK_z, false,
+	AddBinding("Forward", 0, SDLK_w, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Forward))),
-		nullptr, 
-		nullptr, 
+		nullptr,
+		nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
 
 	//  Backward
 	AddBinding("Backward", 0, SDLK_s, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Backward))),
-		nullptr, 
-		nullptr, 
+		nullptr,
+		nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
 
 	//  Jump
 	AddBinding("Jump", 0, SDLK_SPACE, false,
-		nullptr, nullptr, nullptr, 
+		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Jump))));
 
 	//	Mouse
@@ -620,7 +761,7 @@ void InitBindings()
 	ref.onRelease = std::shared_ptr<ActionWrapper>(new Action(func8));
 
 	//  Draw mode: wireframe/fill
-	AddBinding("Change draw mode", SDLK_w, 0, false,
+	AddBinding("Change draw mode", SDLK_z, 0, false,
 		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode))));
 
@@ -628,11 +769,6 @@ void InitBindings()
 	AddBinding("Play/Pause animation", SDLK_p, 0, false,
 		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(PlayAnimation))));
-
-	//	Render model
-	AddBinding("Render model", SDLK_m, SDLK_2, false,
-		nullptr, nullptr, nullptr,
-		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderModel))));
 
 	//	Render bones influence
 	AddBinding("Render bones influence", SDLK_i, SDLK_3, false,
@@ -643,6 +779,16 @@ void InitBindings()
 	AddBinding("Render Bobby", SDLK_b, SDLK_1, false,
 		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobby))));
+
+	//	Render Bobby plus
+	AddBinding("Render Bobby Plus", 0, SDLK_2, false,
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobbyPlus))));
+
+	//	Render model
+	AddBinding("Render model", SDLK_m, SDLK_3, false,
+		nullptr, nullptr, nullptr,
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderModel))));
 
 	//	Previous
 	AddBinding("Previous", SDLK_KP_MINUS, 0, false,

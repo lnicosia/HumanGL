@@ -45,6 +45,10 @@ void RenderModel( void );
 */
 void RenderBobby( void );
 
+/**	Render Bobby plus
+*/
+void RenderBobbyPlus( void );
+
 /**	Populate the printable armature from the currently selected object
 */
 void PopulateArmature( void );

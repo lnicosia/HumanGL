@@ -79,7 +79,7 @@ void SelectAnimation(std::shared_ptr<Animation> anim,
     }
     sourceButton->setReleasedImg(AssetManager::getInstance().loadAsset<Texture>(
         "resources/UI/defaultUI.png", "UI"));
-    
+
     UpdateAnimationPannel();
 }
 
@@ -91,6 +91,10 @@ void UpdateAnimationList( void )
 	{
 		animations = bobbyAnimations;
 	}
+    else if (renderingMode == BobbyPlus)
+    {
+        animations = bobbyPlusAnimations;
+    }
 	else if (renderingMode == Model || renderingMode == BonesInfluence)
 	{
 		animations = skeletalAnimations;

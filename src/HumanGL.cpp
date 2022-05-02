@@ -25,6 +25,7 @@ std::shared_ptr<GLObject> selectedObject;
 std::shared_ptr<Mesh> selectedMesh;
 std::shared_ptr<Animation> selectedAnimation;
 std::vector<std::shared_ptr<Animation>> bobbyAnimations;
+std::vector<std::shared_ptr<Animation>> bobbyPlusAnimations;
 std::vector<std::shared_ptr<Animation>> skeletalAnimations;
 Armature rootArmature;
 UIManager ui;
@@ -38,6 +39,8 @@ void	InitResources(int ac, char **av)
 	//	Objects
 
 	std::shared_ptr<GLObject> bobby = InitBobby();
+	std::shared_ptr<GLObject> bobbyPlus = InitBobbyPlus();
+	bobbyPlus->visible = false;
 
 	std::shared_ptr<GLObject> obj = nullptr;
 
@@ -81,15 +84,26 @@ void	InitResources(int ac, char **av)
 	std::shared_ptr<Animation> bobbyJumping = InitBobbyJumping();
 	std::shared_ptr<Animation> bobbyIdle = InitBobbyIdle();
 	std::shared_ptr<Animation> bobbyBackflip = InitBobbyBackflip();
+
+	std::shared_ptr<Animation> bobbyPlusWalking = InitBobbyPlusWalking();
+	std::shared_ptr<Animation> bobbyPlusJumping = InitBobbyPlusJumping();
+	std::shared_ptr<Animation> bobbyPlusIdle = InitBobbyPlusIdle();
+	std::shared_ptr<Animation> bobbyPlusBackflip = InitBobbyPlusBackflip();
 	selectedAnimation = bobbyIdle;
 	selectedObject = bobby;
 	selectedMesh = bobby->getMeshes()[0];
 	PopulateArmature();
 	bobby->setAnimation(bobbyIdle);
+
 	bobbyAnimations.push_back(bobbyIdle);
 	bobbyAnimations.push_back(bobbyWalking);
 	bobbyAnimations.push_back(bobbyJumping);
 	bobbyAnimations.push_back(bobbyBackflip);
+
+	bobbyPlusAnimations.push_back(bobbyPlusIdle);
+	bobbyPlusAnimations.push_back(bobbyPlusWalking);
+	bobbyPlusAnimations.push_back(bobbyPlusJumping);
+	bobbyPlusAnimations.push_back(bobbyPlusBackflip);
 
 	//	Fonts
 
@@ -142,7 +156,7 @@ void RenderLoop(GLContext_SDL& context)
 		if (selectedObject != nullptr
 			&& selectedObject->getAnimationState() == AnimationState::Playing)
 			UpdateAnimationTimeText();
-		if (renderingMode != ThirdPerson)
+		if (renderingMode != ThirdPerson && renderingMode != ThirdPersonPlus)
 			ui.update(events.mousePos, events.mouseState);
 		if (events.handle() == NRE_QUIT)
 			break ;
@@ -154,7 +168,7 @@ void RenderLoop(GLContext_SDL& context)
 		if (renderBones == true)
 			scene.renderBones();
 
-		if (renderingMode != ThirdPerson)
+		if (renderingMode != ThirdPerson && renderingMode != ThirdPersonPlus)
 			ui.draw();
 
 		context.swapWindow();
@@ -179,6 +193,7 @@ void	Render(GLContext_SDL& context)
 	if (rock != nullptr)
 		scene.addObject(rock);
 	scene.addObject(assetManager.getAssetByName<GLObject>("Bobby")); // Bobby
+	scene.addObject(assetManager.getAssetByName<GLObject>("Bobby Plus")); // Bobby plus
 
 	//	Light
 
@@ -218,6 +233,7 @@ void ReleasePointers()
 	selectedObject.reset();
 	selectedAnimation.reset();
 	bobbyAnimations.clear();
+	bobbyPlusAnimations.clear();
 	skeletalAnimations.clear();
 }
 

@@ -50,7 +50,7 @@ void InitTopPannel( void )
 
     //    Bobby
     Button bobbyTab(mft::vec2i(32, 0),
-        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clear.png", "UI"),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded.png", "UI"),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"));
     bobbyTab.setAllSizes(mft::vec2i(100, 32));
@@ -61,12 +61,25 @@ void InitTopPannel( void )
     bobbyTab.onRelease = action;
     topPannel.addChild(std::shared_ptr<Button>(new Button(bobbyTab)));
 
+    //    Bobby plus
+    Button bobbyPlusTab(mft::vec2i(136, 0),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clear.png", "UI"),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"));
+    bobbyPlusTab.setAllSizes(mft::vec2i(100, 32));
+    bobbyPlusTab.setText("Bobby Plus");
+    bobbyPlusTab.setFont(font);
+    action =
+        std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobbyPlus)));
+    bobbyPlusTab.onRelease = action;
+    topPannel.addChild(std::shared_ptr<Button>(new Button(bobbyPlusTab)));
+
     //    Object
     std::shared_ptr<GLObject> obj = assetManager.getAsset<GLObject>(modelPath);
     if (obj != nullptr)
     {
-        Button objectTab(mft::vec2i(136, 0),
-            assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded.png", "UI"),
+        Button objectTab(mft::vec2i(240, 0),
+            assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clear.png", "UI"),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"));
         objectTab.setAllSizes(mft::vec2i(100, 32));

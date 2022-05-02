@@ -7,6 +7,7 @@ EXEC_TARGET = humangl
 SRC =	$S/main.cpp \
 			$S/HumanGL.cpp \
 			$S/InitBobby.cpp \
+			$S/InitBobbyPlus.cpp \
 			$S/Bindings.cpp \
 			$S/UI/InitUI.cpp \
 			$S/UI/TransformPannel.cpp \

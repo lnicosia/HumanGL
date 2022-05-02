@@ -14,8 +14,10 @@ enum RenderingMode
 {
 	Model,
 	Bobby,
+	BobbyPlus,
 	BonesInfluence,
-	ThirdPerson
+	ThirdPerson,
+	ThirdPersonPlus
 };
 
 struct Armature
@@ -50,6 +52,7 @@ extern std::shared_ptr<GLObject> selectedObject;
 extern std::shared_ptr<Mesh> selectedMesh;
 extern std::shared_ptr<Animation> selectedAnimation;
 extern std::vector<std::shared_ptr<Animation>> bobbyAnimations;
+extern std::vector<std::shared_ptr<Animation>> bobbyPlusAnimations;
 extern std::vector<std::shared_ptr<Animation>> skeletalAnimations;
 extern Armature rootArmature;
 extern UIManager ui;
