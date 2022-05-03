@@ -49,6 +49,14 @@ void RenderBobby( void );
 */
 void RenderBobbyPlus( void );
 
+/**	Render Roundy
+*/
+void RenderRoundy( void );
+
+/**	Render Roundy plus
+*/
+void RenderRoundyPlus( void );
+
 /**	Populate the printable armature from the currently selected object
 */
 void PopulateArmature( void );

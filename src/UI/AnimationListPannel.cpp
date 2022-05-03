@@ -87,11 +87,11 @@ void UpdateAnimationList( void )
 {
     std::shared_ptr<UIElement> animationListPannel = ui.elements[2]->getChild(5);
     std::vector<std::shared_ptr<Animation>> animations;
-	if (renderingMode == Bobby)
+	if (renderingMode == Bobby || renderingMode == Roundy)
 	{
 		animations = bobbyAnimations;
 	}
-    else if (renderingMode == BobbyPlus)
+    else if (renderingMode == BobbyPlus || renderingMode == RoundyPlus)
     {
         animations = bobbyPlusAnimations;
     }

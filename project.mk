@@ -8,6 +8,8 @@ SRC =	$S/main.cpp \
 			$S/HumanGL.cpp \
 			$S/InitBobby.cpp \
 			$S/InitBobbyPlus.cpp \
+			$S/InitRoundy.cpp \
+			$S/InitRoundyPlus.cpp \
 			$S/Bindings.cpp \
 			$S/UI/InitUI.cpp \
 			$S/UI/TransformPannel.cpp \

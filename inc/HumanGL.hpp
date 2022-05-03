@@ -15,9 +15,13 @@ enum RenderingMode
 	Model,
 	Bobby,
 	BobbyPlus,
+	Roundy,
+	RoundyPlus,
 	BonesInfluence,
-	ThirdPerson,
-	ThirdPersonPlus
+	ThirdPersonBobby,
+	ThirdPersonBobbyPlus,
+	ThirdPersonRoundy,
+	ThirdPersonRoundyPlus
 };
 
 struct Armature

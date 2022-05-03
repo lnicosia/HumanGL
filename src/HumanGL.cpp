@@ -40,7 +40,11 @@ void	InitResources(int ac, char **av)
 
 	std::shared_ptr<GLObject> bobby = InitBobby();
 	std::shared_ptr<GLObject> bobbyPlus = InitBobbyPlus();
+	std::shared_ptr<GLObject> roundy = InitRoundy();
+	std::shared_ptr<GLObject> roundyPlus = InitRoundyPlus();
 	bobbyPlus->visible = false;
+	roundy->visible = false;
+	roundyPlus->visible = false;
 
 	std::shared_ptr<GLObject> obj = nullptr;
 
@@ -164,7 +168,8 @@ void RenderLoop(GLContext_SDL& context)
 		if (selectedObject != nullptr
 			&& selectedObject->getAnimationState() == AnimationState::Playing)
 			UpdateAnimationTimeText();
-		if (renderingMode != ThirdPerson && renderingMode != ThirdPersonPlus)
+		if (renderingMode != ThirdPersonBobby && renderingMode != ThirdPersonBobbyPlus
+			&& renderingMode != ThirdPersonRoundy && renderingMode != ThirdPersonRoundyPlus)
 			ui.update(events.mousePos, events.mouseState);
 		if (events.handle() == NRE_QUIT)
 			break ;
@@ -176,7 +181,8 @@ void RenderLoop(GLContext_SDL& context)
 		if (renderBones == true)
 			scene.renderBones();
 
-		if (renderingMode != ThirdPerson && renderingMode != ThirdPersonPlus)
+		if (renderingMode != ThirdPersonBobby && renderingMode != ThirdPersonBobbyPlus
+			&& renderingMode != ThirdPersonRoundy && renderingMode != ThirdPersonRoundyPlus)
 			ui.draw();
 
 		context.swapWindow();
@@ -202,6 +208,8 @@ void	Render(GLContext_SDL& context)
 		scene.addObject(rock);
 	scene.addObject(assetManager.getAssetByName<GLObject>("Bobby")); // Bobby
 	scene.addObject(assetManager.getAssetByName<GLObject>("Bobby Plus")); // Bobby plus
+	scene.addObject(assetManager.getAssetByName<GLObject>("Roundy")); // Roundy
+	scene.addObject(assetManager.getAssetByName<GLObject>("Roundy Plus")); // Roundy plus
 
 	//	Light
 

@@ -74,11 +74,37 @@ void InitTopPannel( void )
     bobbyPlusTab.onRelease = action;
     topPannel.addChild(std::shared_ptr<Button>(new Button(bobbyPlusTab)));
 
+    //    Roundy
+    Button roundyTab(mft::vec2i(240, 0),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clear.png", "UI"),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"));
+    roundyTab.setAllSizes(mft::vec2i(100, 32));
+    roundyTab.setText("Roundy");
+    roundyTab.setFont(font);
+    action =
+        std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderRoundy)));
+    roundyTab.onRelease = action;
+    topPannel.addChild(std::shared_ptr<Button>(new Button(roundyTab)));
+
+    //    Roundy plus
+    Button roundyPlusTab(mft::vec2i(344, 0),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clear.png", "UI"),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"),
+        assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"));
+    roundyPlusTab.setAllSizes(mft::vec2i(100, 32));
+    roundyPlusTab.setText("Roundy  Plus");
+    roundyPlusTab.setFont(font);
+    action =
+        std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderRoundyPlus)));
+    roundyPlusTab.onRelease = action;
+    topPannel.addChild(std::shared_ptr<Button>(new Button(roundyPlusTab)));
+
     //    Object
     std::shared_ptr<GLObject> obj = assetManager.getAsset<GLObject>(modelPath);
     if (obj != nullptr)
     {
-        Button objectTab(mft::vec2i(240, 0),
+        Button objectTab(mft::vec2i(448, 0),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clear.png", "UI"),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-topRounded-clearer.png", "UI"));
