@@ -133,6 +133,9 @@ cmd.exe /c "GetNRE.bat"</Command>
     <ClCompile Include="src\Bindings.cpp" />
     <ClCompile Include="src\HumanGL.cpp" />
     <ClCompile Include="src\InitBobby.cpp" />
+    <ClCompile Include="src\InitBobbyPlus.cpp" />
+    <ClCompile Include="src\InitRoundy.cpp" />
+    <ClCompile Include="src\InitRoundyPlus.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\UI.cpp" />
     <ClCompile Include="src\UI\AnimationListPannel.cpp" />
