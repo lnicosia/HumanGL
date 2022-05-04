@@ -8,4 +8,9 @@
     <LocalDebuggerWorkingDirectory>../</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommandArguments>resources/objects/Vampire/untitled.dae</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerWorkingDirectory>../</LocalDebuggerWorkingDirectory>
+  </PropertyGroup>
 </Project>

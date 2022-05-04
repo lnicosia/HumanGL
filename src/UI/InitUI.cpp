@@ -222,7 +222,7 @@ void InitUI()
 
   AssetManager& assetManager = AssetManager::getInstance();
 
-      ui.freeZones.push_back(Rectangle(mft::vec2i(0, 140), mft::vec2i(1280, 720)));
+      ui.freeZones.push_back(notrealengine::Rectangle(mft::vec2i(0, 140), mft::vec2i(1280, 720)));
 
   InitTopPannel();
   InitScenePannel();
