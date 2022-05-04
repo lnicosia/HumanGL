@@ -59,7 +59,7 @@ void InitTopPannel( void )
     std::shared_ptr<ActionWrapper> action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobby)));
     bobbyTab.onRelease = action;
-    topPannel.addChild(std::shared_ptr<Button>(new Button(bobbyTab)));
+    topPannel.addChild(std::make_shared<Button>(bobbyTab));
 
     //    Bobby plus
     Button bobbyPlusTab(mft::vec2i(136, 0),
@@ -72,7 +72,7 @@ void InitTopPannel( void )
     action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderBobbyPlus)));
     bobbyPlusTab.onRelease = action;
-    topPannel.addChild(std::shared_ptr<Button>(new Button(bobbyPlusTab)));
+    topPannel.addChild(std::make_shared<Button>(bobbyPlusTab));
 
     //    Roundy
     Button roundyTab(mft::vec2i(240, 0),
@@ -85,7 +85,7 @@ void InitTopPannel( void )
     action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderRoundy)));
     roundyTab.onRelease = action;
-    topPannel.addChild(std::shared_ptr<Button>(new Button(roundyTab)));
+    topPannel.addChild(std::make_shared<Button>(roundyTab));
 
     //    Roundy plus
     Button roundyPlusTab(mft::vec2i(344, 0),
@@ -98,7 +98,7 @@ void InitTopPannel( void )
     action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderRoundyPlus)));
     roundyPlusTab.onRelease = action;
-    topPannel.addChild(std::shared_ptr<Button>(new Button(roundyPlusTab)));
+    topPannel.addChild(std::make_shared<Button>(roundyPlusTab));
 
     //    Object
     std::shared_ptr<GLObject> obj = assetManager.getAsset<GLObject>(modelPath);
@@ -114,10 +114,10 @@ void InitTopPannel( void )
         action =
             std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(RenderModel)));
         objectTab.onRelease = action;
-        topPannel.addChild(std::shared_ptr<Button>(new Button(objectTab)));
+        topPannel.addChild(std::make_shared<Button>(objectTab));
     }
 
-    ui.registerElement(std::shared_ptr<UIElement>(new UIElement(topPannel)));
+    ui.registerElement(std::make_shared<UIElement>(topPannel));
 }
 
 void InitScenePannel( void )
@@ -148,7 +148,7 @@ void InitScenePannel( void )
     std::shared_ptr<ActionWrapper> action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode)));
     button.onRelease = action;
-    scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));
+    scenePannel.addChild(std::make_shared<Button>(button));
 
     //    Light button
     button.setPos(mft::vec2i(84, 0));
@@ -157,7 +157,7 @@ void InitScenePannel( void )
     action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeLightingMode)));
     button.onRelease = action;
-    scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));
+    scenePannel.addChild(std::make_shared<Button>(button));
 
     //    Camera speed
     UIElement cameraPannel(mft::vec2i(158, 0),
@@ -178,7 +178,7 @@ void InitScenePannel( void )
     action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(IncreaseCameraSpeed)));
     buttonPlus.onRelease = action;
-    cameraPannel.addChild(std::shared_ptr<Button>(new Button(buttonPlus)));
+    cameraPannel.addChild(std::make_shared<Button>(buttonPlus));
 
     //    Decrease speed button
     Button buttonLess(mft::vec2i(136, 3),
@@ -191,9 +191,9 @@ void InitScenePannel( void )
     action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DecreaseCameraSpeed)));
     buttonLess.onRelease = action;
-    cameraPannel.addChild(std::shared_ptr<Button>(new Button(buttonLess)));
+    cameraPannel.addChild(std::make_shared<Button>(buttonLess));
 
-    scenePannel.addChild(std::shared_ptr<UIElement>(new UIElement(cameraPannel)));
+    scenePannel.addChild(std::make_shared<UIElement>(cameraPannel));
 
     //    Grid button
     button.setPos(mft::vec2i(340, 0));
@@ -202,7 +202,7 @@ void InitScenePannel( void )
     action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DrawGrid)));
     button.onRelease = action;
-    scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));
+    scenePannel.addChild(std::make_shared<Button>(button));
 
     //    Grid button
     button.setPos(mft::vec2i(424, 0));
@@ -211,9 +211,9 @@ void InitScenePannel( void )
     action =
         std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(DrawCubemap)));
     button.onRelease = action;
-    scenePannel.addChild(std::shared_ptr<Button>(new Button(button)));
+    scenePannel.addChild(std::make_shared<Button>(button));
 
-    ui.registerElement(std::shared_ptr<UIElement>(new UIElement(scenePannel)));
+    ui.registerElement(std::make_shared<UIElement>(scenePannel));
 }
 
 void InitUI()
@@ -232,7 +232,7 @@ void InitUI()
   UIElement rightPannel(mft::vec2i(1280, 0),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
   rightPannel.setSize(mft::vec2i(320, 860));
-  ui.registerElement(std::shared_ptr<UIElement>(new UIElement(rightPannel)));
+  ui.registerElement(std::make_shared<UIElement>(rightPannel));
 
   InitModelPannel();
 
@@ -242,7 +242,7 @@ void InitUI()
   UIElement rightPannelLeftPipe(mft::vec2i(0, 1),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
   rightPannelLeftPipe.setSize(mft::vec2i(4, 857));
-  ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(rightPannelLeftPipe)));
+  ui.elements[2]->addChild(std::make_shared<UIElement>(rightPannelLeftPipe));
 
   InitAnimationListPannel();
 
@@ -250,7 +250,7 @@ void InitUI()
   UIElement rightPannelRightPipe(mft::vec2i(312, 1),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
   rightPannelRightPipe.setSize(mft::vec2i(6, 830));
-  ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(rightPannelRightPipe)));
+  ui.elements[2]->addChild(std::make_shared<UIElement>(rightPannelRightPipe));
 
   InitAnimationPannel();
 

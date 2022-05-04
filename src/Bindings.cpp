@@ -841,7 +841,7 @@ void InitBindings()
 
 	//  Right
 	AddBinding("Right", 0, SDLK_d, false,
-		std::shared_ptr<ActionWrapper>( new Action(std::function<void()>(Right))),
+		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Right))),
 		nullptr,
 		nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));

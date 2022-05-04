@@ -7,7 +7,7 @@ using namespace notrealengine;
 std::shared_ptr<GLObject> InitBobbyPlus(void)
 {
   std::cout << "Initializing Bobby Plus..." << std::endl;
-  std::shared_ptr<Mesh> mesh(new Mesh(GLContext::cube));
+  std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(GLContext::cube);
   std::vector<std::shared_ptr<Mesh>> meshes;
   meshes.push_back(mesh);
   Mesh& chest = *mesh;
@@ -17,14 +17,14 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   chest.localTransform.move(mft::vec3(0.0f, 0.5f, 0.0f));
   chest.localTransform.setScale(mft::vec3(0.50f, 0.25f, 0.15f));
 
-  chest.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  chest.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh&	neck = (*chest.getChildren()[0]);
   neck.setName("Neck");
   neck.setColor(mft::vec4(0.886f, 0.529f, 0.263f, 1.0f));
   neck.localTransform.move(mft::vec3(0.35f, 0.985f, 0.0f));
   neck.localTransform.setScale(mft::vec3(0.3f, 0.25f, 1.0f));
 
-  neck.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  neck.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh&	head = (*neck.getChildren()[0]);
   head.setName("Head");
   head.setColor(mft::vec4(0.886f, 0.529f, 0.263f, 1.0f));
@@ -34,7 +34,7 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   //    Upper boddy
 
   //    Left side
-  chest.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  chest.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& leftShoulder = (*chest.getChildren()[1]);
   leftShoulder.setName("Left shoulder");
   leftShoulder.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
@@ -42,14 +42,14 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   leftShoulder.localTransform.setScale(mft::vec3(0.3f, 0.6f, 1.0f));
   leftShoulder.localTransform.rotate(mft::quat::rotate(mft::vec3(10.0f, 0.0f, 180.0f), AngleDegrees));
 
-  leftShoulder.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  leftShoulder.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& upperLeftArm = (*leftShoulder.getChildren()[0]);
   upperLeftArm.setName("Upper left arm");
   upperLeftArm.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
   upperLeftArm.localTransform.move(mft::vec3(0.1f, 0.95f, 0.0f));
   upperLeftArm.localTransform.setScale(mft::vec3(0.8f, 1.30f, 1.0f));
 
-  upperLeftArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  upperLeftArm.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& leftElbow = (*upperLeftArm.getChildren()[0]);
   leftElbow.setName("Left elbow");
   leftElbow.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
@@ -57,7 +57,7 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   leftElbow.localTransform.setScale(mft::vec3(0.9f, 0.6f, 1.0f));
   leftElbow.localTransform.rotate(mft::quat::rotate(mft::vec3(10.0f, 0.0f, 0.0f), AngleDegrees));
 
-  leftElbow.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  leftElbow.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& lowerLeftArm = (*leftElbow.getChildren()[0]);
   lowerLeftArm.setName("Lower left arm");
   lowerLeftArm.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
@@ -65,7 +65,7 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   lowerLeftArm.localTransform.setScale(mft::vec3(0.8f, 1.5f, 1.0f));
   lowerLeftArm.localTransform.rotate(mft::quat::rotate(mft::vec3(10.0f, 0.0f, 0.0f), AngleDegrees));
 
-  lowerLeftArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  lowerLeftArm.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& leftHand = (*lowerLeftArm.getChildren()[0]);
   leftHand.setName("Left hand");
   leftHand.setColor(mft::vec4(0.886f, 0.529f, 0.263f, 1.0f));
@@ -73,7 +73,7 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   leftHand.localTransform.setScale(mft::vec3(0.9f, 0.8f, 1.0f));
 
   //    Right side
-  chest.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  chest.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightShoulder = (*chest.getChildren()[2]);
   rightShoulder.setName("Right shoulder");
   rightShoulder.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
@@ -81,14 +81,14 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   rightShoulder.localTransform.setScale(mft::vec3(0.3f, 0.6f, 1.0f));
   rightShoulder.localTransform.rotate(mft::quat::rotate(mft::vec3(10.0f, 0.0f, 180.0f), AngleDegrees));
 
-  rightShoulder.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  rightShoulder.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& upperRightArm = (*rightShoulder.getChildren()[0]);
   upperRightArm.setName("Upper right arm");
   upperRightArm.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
   upperRightArm.localTransform.move(mft::vec3(0.1f, 1.0f, 0.0f));
   upperRightArm.localTransform.setScale(mft::vec3(0.8f, 1.30f, 1.0f));
 
-  upperRightArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  upperRightArm.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightElbow = (*upperRightArm.getChildren()[0]);
   rightElbow.setName("Elbow");
   rightElbow.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
@@ -96,7 +96,7 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   rightElbow.localTransform.setScale(mft::vec3(0.9f, 0.6f, 1.0f));
   rightElbow.localTransform.rotate(mft::quat::rotate(mft::vec3(10.0f, 0.0f, 0.0f), AngleDegrees));
 
-  rightElbow.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  rightElbow.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& lowerRightArm = (*rightElbow.getChildren()[0]);
   lowerRightArm.setName("Lower right arm");
   lowerRightArm.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
@@ -104,7 +104,7 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   lowerRightArm.localTransform.setScale(mft::vec3(0.8f, 1.5f, 1.0f));
   lowerRightArm.localTransform.rotate(mft::quat::rotate(mft::vec3(10.0f, 0.0f, 0.0f), AngleDegrees));
 
-  lowerRightArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  lowerRightArm.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightHand = (*lowerRightArm.getChildren()[0]);
   rightHand.setName("Right hand");
   rightHand.setColor(mft::vec4(0.886f, 0.529f, 0.263f, 1.0f));
@@ -115,21 +115,21 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
 
   //    Lower boddy
 
-  chest.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  chest.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh&	abdomen = (*chest.getChildren()[3]);
   abdomen.setName("Abdomen");
   abdomen.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
   abdomen.localTransform.move(mft::vec3(0.1f, -0.9f, 0.0f));
   abdomen.localTransform.setScale(mft::vec3(0.8f, 0.9f, 0.8f));
 
-  abdomen.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  abdomen.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh&	pelvis = (*abdomen.getChildren()[0]);
   pelvis.setName("Pelvis");
   pelvis.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
   pelvis.localTransform.move(mft::vec3(-0.1f, -1.0f, 0.0f));
   pelvis.localTransform.setScale(mft::vec3(1.2f, 1.0f, 1.2f));
 
-  pelvis.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  pelvis.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh&	leftThigh = (*pelvis.getChildren()[0]);
   leftThigh.setName("Left thigh");
   leftThigh.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
@@ -137,28 +137,28 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   leftThigh.localTransform.setScale(mft::vec3(0.4f, 1.0f, 1.0f));
   leftThigh.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
 
-  leftThigh.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  leftThigh.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& leftKnee = (*leftThigh.getChildren()[0]);
   leftKnee.setName("Left knee");
   leftKnee.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
   leftKnee.localTransform.move(mft::vec3(0.1f, 1.0f, 0.0f));
   leftKnee.localTransform.setScale(mft::vec3(0.8f, 0.6f, 1.0f));
 
-  leftKnee.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  leftKnee.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& leftCalf = (*leftKnee.getChildren()[0]);
   leftCalf.setName("Left calf");
   leftCalf.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
   leftCalf.localTransform.move(mft::vec3(0.05f, 1.0f, 0.1f));
   leftCalf.localTransform.setScale(mft::vec3(0.9f, 1.9f, 0.8f));
 
-  leftCalf.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  leftCalf.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& leftFoot = (*leftCalf.getChildren()[0]);
   leftFoot.setName("Left foot");
   leftFoot.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
   leftFoot.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
   leftFoot.localTransform.setScale(mft::vec3(1.0f, 0.3f, 2.5f));
 
-  pelvis.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  pelvis.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightThigh = (*pelvis.getChildren()[1]);
   rightThigh.setName("Right thigh");
   rightThigh.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
@@ -166,28 +166,28 @@ std::shared_ptr<GLObject> InitBobbyPlus(void)
   rightThigh.localTransform.setScale(mft::vec3(0.4f, 1.0f, 1.0f));
   rightThigh.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
 
-  rightThigh.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  rightThigh.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightKnee = (*rightThigh.getChildren()[0]);
   rightKnee.setName("Right knee");
   rightKnee.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
   rightKnee.localTransform.move(mft::vec3(0.1f, 1.0f, 0.0f));
   rightKnee.localTransform.setScale(mft::vec3(0.8f, 0.6f, 1.0f));
 
-  rightKnee.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  rightKnee.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightCalf = (*rightKnee.getChildren()[0]);
   rightCalf.setName("Right calf");
   rightCalf.setColor(mft::vec4(0.15f, 0.15f, 0.15f, 1.0f));
   rightCalf.localTransform.move(mft::vec3(0.05f, 1.0f, 0.0f));
   rightCalf.localTransform.setScale(mft::vec3(0.9f, 1.9f, 0.8f));
 
-  rightCalf.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  rightCalf.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightFoot = (*rightCalf.getChildren()[0]);
   rightFoot.setName("Right foot");
   rightFoot.setColor(mft::vec4(0.32f, 0.117f, 0.117f, 1.0f));
   rightFoot.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
   rightFoot.localTransform.setScale(mft::vec3(1.0f, 0.3f, 2.5f));
 
-  std::shared_ptr<GLObject>	character(new GLObject(meshes));
+  std::shared_ptr<GLObject>	character = std::make_shared<GLObject>(meshes);
   character->setName("Bobby Plus");
   character->setShader(GLContext::getShader("color"));
   character->transform.move(mft::vec3(-0.25f, 1.15f, 0.0f));
@@ -339,7 +339,7 @@ std::shared_ptr<Animation> InitBobbyPlusWalking(void)
     bones["Left calf"] = leftCalf;
 
     std::shared_ptr<Animation> anim =
-        std::shared_ptr<Animation>(new Animation("Bobby Plus walking", bones));
+        std::make_shared<Animation>("Bobby Plus walking", bones);
     AssetManager::getInstance().addAsset(anim);
     return anim;
 }
@@ -442,7 +442,7 @@ std::shared_ptr<Animation> InitBobbyPlusJumping(void)
   bones["Right calf"] = rightCalf;
 
   std::shared_ptr<Animation> anim =
-    std::shared_ptr<Animation>(new Animation("Bobby Plus jumping", bones));
+    std::make_shared<Animation>("Bobby Plus jumping", bones);
   AssetManager::getInstance().addAsset(anim);
   return anim;
 }
@@ -479,7 +479,7 @@ std::shared_ptr<Animation> InitBobbyPlusIdle(void)
   bones["Right calf"] = rightCalf;
 
   std::shared_ptr<Animation> anim =
-    std::shared_ptr<Animation>(new Animation("Bobby Plus idle", bones));
+    std::make_shared<Animation>("Bobby Plus idle", bones);
   AssetManager::getInstance().addAsset(anim);
   return anim;
 }
@@ -645,7 +645,7 @@ std::shared_ptr<Animation> InitBobbyPlusBackflip(void)
     Bone rightCalf("Right calf", positions, rotations, scales);
     bones["Right calf"] = rightCalf;
     std::shared_ptr<Animation> anim =
-        std::shared_ptr<Animation>(new Animation("Bobby Plus backflip", bones));
+        std::make_shared<Animation>("Bobby Plus backflip", bones);
     AssetManager::getInstance().addAsset(anim);
     return anim;
 }
@@ -819,7 +819,7 @@ std::shared_ptr<Animation> InitBobbyPlusDance(void)
     Bone rightCalf("Right calf", positions, rotations, scales);
     bones["Right calf"] = rightCalf;
     std::shared_ptr<Animation> anim =
-        std::shared_ptr<Animation>(new Animation("Bobby Plus dance", bones));
+        std::make_shared<Animation>("Bobby Plus dance", bones);
     AssetManager::getInstance().addAsset(anim);
     return anim;
 }
@@ -1024,7 +1024,7 @@ std::shared_ptr<Animation> InitBobbyPlusMuayThai(void)
     Bone rightCalf("Right calf", positions, rotations, scales);
     bones["Right calf"] = rightCalf;
     std::shared_ptr<Animation> anim =
-        std::shared_ptr<Animation>(new Animation("Bobby Plus Muay Thai", bones));
+        std::make_shared<Animation>("Bobby Plus Muay Thai", bones);
     AssetManager::getInstance().addAsset(anim);
     return anim;
 }

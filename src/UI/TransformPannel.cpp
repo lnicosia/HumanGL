@@ -24,21 +24,21 @@ void InitTransformPannel( void )
         UIElement transformPannelSlot1(mft::vec2i(1, i * 35 + 65),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         transformPannelSlot1.setSize(mft::vec2i(16, 34));
-        transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot1)));
+        transformPannel.addChild(std::make_shared<UIElement>(transformPannelSlot1));
         UIElement transformPannelSlot2(mft::vec2i(17, i * 35 + 65),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         transformPannelSlot2.setSize(mft::vec2i(98, 34));
         if (i == 2)
             transformPannelSlot2.texts.push_back(UIText("Color", mft::vec2i(10, 10), 16.0f));
-        transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot2)));
+        transformPannel.addChild(std::make_shared<UIElement>(transformPannelSlot2));
         UIElement transformPannelSlot3(mft::vec2i(116, i * 35 + 65),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         transformPannelSlot3.setSize(mft::vec2i(185, 34));
-        transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot3)));
+        transformPannel.addChild(std::make_shared<UIElement>(transformPannelSlot3));
         UIElement transformPannelSlot3bis(mft::vec2i(302, i * 35 + 65),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         transformPannelSlot3bis.setSize(mft::vec2i(11, 34));
-        transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformPannelSlot3bis)));
+        transformPannel.addChild(std::make_shared<UIElement>(transformPannelSlot3bis));
     }
 
     UIElement transformSlotsBackground(mft::vec2i(12, 169),
@@ -57,7 +57,7 @@ void InitTransformPannel( void )
         else if (i == 0)
             str = "Scale";
         slot.texts.push_back(UIText(str, mft::vec2i(20, 10), 16.0f));
-        transformSlotsBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot)));
+        transformSlotsBackground.addChild(std::make_shared<UIElement>(slot));
 
         UIElement slot2(mft::vec2i(104, 1 + i * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
@@ -73,7 +73,7 @@ void InitTransformPannel( void )
             else if (j == 2)
                 N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-Z-Dark.png", "UI"));
             N.setSize(mft::vec2i(40, 24));
-            slot2.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
+            slot2.addChild(std::make_shared<UIElement>(N));
 
             Button button(mft::vec2i(49 + 60 * j, 17),
                 assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
@@ -83,18 +83,18 @@ void InitTransformPannel( void )
             //button.setPos(mft::vec2i(49 + 60 * j, 16));
             button.setFont(font12);
             button.setAllSizes(mft::vec2i(15, 15));
-            slot2.addChild(std::shared_ptr<Button>(new Button(button)));
+            slot2.addChild(std::make_shared<Button>(button));
 
 
             button.setPos(mft::vec2i(49 + 60 * j, 3));
             button.setText("-");
             button.setFont(font12);
             button.setAllSizes(mft::vec2i(15, 15));
-            slot2.addChild(std::shared_ptr<Button>(new Button(button)));
+            slot2.addChild(std::make_shared<Button>(button));
         }
-        transformSlotsBackground.addChild(std::shared_ptr<UIElement>(new UIElement(slot2)));
+        transformSlotsBackground.addChild(std::make_shared<UIElement>(slot2));
     }
-    transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(transformSlotsBackground)));
+    transformPannel.addChild(std::make_shared<UIElement>(transformSlotsBackground));
 
     UIElement colorPannel(mft::vec2i(12, 100),
       assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
@@ -116,7 +116,7 @@ void InitTransformPannel( void )
         else if (j == 3)
             N.setImage(assetManager.loadAsset<Texture>("resources/UI/defaultUI-A-Dark.png", "UI"));
         N.setSize(mft::vec2i(40, 24));
-        colorPannelSlot.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
+        colorPannelSlot.addChild(std::make_shared<UIElement>(N));
 
         Button button(mft::vec2i(53 + 68 * j, 16),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
@@ -125,26 +125,26 @@ void InitTransformPannel( void )
         button.setText("+");
         button.setFont(font12);
         button.setAllSizes(mft::vec2i(14, 14));
-        colorPannelSlot.addChild(std::shared_ptr<Button>(new Button(button)));
+        colorPannelSlot.addChild(std::make_shared<Button>(button));
 
 
         button.setPos(mft::vec2i(53 + 68 * j, 2));
         button.setText("-");
         button.setFont(font12);
         button.setAllSizes(mft::vec2i(14, 14));
-        colorPannelSlot.addChild(std::shared_ptr<Button>(new Button(button)));
+        colorPannelSlot.addChild(std::make_shared<Button>(button));
     }
-    colorPannel.addChild(std::shared_ptr<UIElement>(new UIElement(colorPannelSlot)));
+    colorPannel.addChild(std::make_shared<UIElement>(colorPannelSlot));
 
-    transformPannel.addChild(std::shared_ptr<UIElement>(new UIElement(colorPannel)));
+    transformPannel.addChild(std::make_shared<UIElement>(colorPannel));
 
-    ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(transformPannel)));
+    ui.elements[2]->addChild(std::make_shared<UIElement>(transformPannel));
 
     UIElement transformBorder(mft::vec2i(2, 477),
     assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
     transformBorder.setSize(mft::vec2i(304, 34));
     transformBorder.texts.push_back(UIText(">  Mesh", mft::vec2i(12, 6), 20.0f));
-    ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(transformBorder)));
+    ui.elements[2]->addChild(std::make_shared<UIElement>(transformBorder));
 }
 
 void SetSelectedMeshColor(mft::vec4 color)

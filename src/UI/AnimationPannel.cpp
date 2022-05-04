@@ -67,11 +67,11 @@ void InitAnimationPannel( void )
             nameSlot1.texts.push_back(UIText("Type", mft::vec2i(14, 10), 16.0f));
         else if (slot == 0)
             nameSlot1.texts.push_back(UIText("Duration (ms)", mft::vec2i(14, 10), 16.0f));
-        animationDetailsPannel.addChild(std::shared_ptr<UIElement>(new UIElement(nameSlot1)));
+        animationDetailsPannel.addChild(std::make_shared<UIElement>(nameSlot1));
         UIElement valueSlot1(mft::vec2i(100, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
         valueSlot1.setSize(mft::vec2i(100, 34));
-        animationDetailsPannel.addChild(std::shared_ptr<UIElement>(new UIElement(valueSlot1)));
+        animationDetailsPannel.addChild(std::make_shared<UIElement>(valueSlot1));
         UIElement nameSlot2(mft::vec2i(201, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         nameSlot2.setSize(mft::vec2i(99, 34));
@@ -81,32 +81,29 @@ void InitAnimationPannel( void )
             nameSlot2.texts.push_back(UIText("Time", mft::vec2i(14, 10), 16.0f));
         else if (slot == 0)
             nameSlot2.texts.push_back(UIText("Status", mft::vec2i(14, 10), 16.0f));
-        animationDetailsPannel.addChild(std::shared_ptr<UIElement>(new UIElement(nameSlot2)));
+        animationDetailsPannel.addChild(std::make_shared<UIElement>(nameSlot2));
         UIElement valueSlot2(mft::vec2i(301, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"));
         valueSlot2.setSize(mft::vec2i(100, 34));
-        animationDetailsPannel.addChild(std::shared_ptr<UIElement>(new UIElement(valueSlot2)));
+        animationDetailsPannel.addChild(std::make_shared<UIElement>(valueSlot2));
     }
 
     UIElement animationDetailsPannelLeftBorder(mft::vec2i(0, 0),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
     animationDetailsPannelLeftBorder.setSize(mft::vec2i(6, 104));
-    animationDetailsPannel.addChild(std::shared_ptr<UIElement>(
-        new UIElement(animationDetailsPannelLeftBorder)));
+    animationDetailsPannel.addChild(std::make_shared<UIElement>(animationDetailsPannelLeftBorder));
     UIElement animationDetailsPannelMiddleBorder(mft::vec2i(201, 0),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
     animationDetailsPannelMiddleBorder.setSize(mft::vec2i(6, 104));
-    animationDetailsPannel.addChild(std::shared_ptr<UIElement>(
-        new UIElement(animationDetailsPannelMiddleBorder)));
+    animationDetailsPannel.addChild(std::make_shared<UIElement>(animationDetailsPannelMiddleBorder));
     UIElement animationDetailsPannelTopBorder(mft::vec2i(0, 105),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
     animationDetailsPannelTopBorder.setSize(mft::vec2i(401, 34));
     animationDetailsPannelTopBorder.texts.push_back(UIText("Animation details",
         mft::vec2i(160, 10), 16.0f));
-    animationDetailsPannel.addChild(std::shared_ptr<UIElement>(
-        new UIElement(animationDetailsPannelTopBorder)));
+    animationDetailsPannel.addChild(std::make_shared<UIElement>(animationDetailsPannelTopBorder));
 
-    animationPannel.addChild(std::shared_ptr<UIElement>(new UIElement(animationDetailsPannel)));
+    animationPannel.addChild(std::make_shared<UIElement>(animationDetailsPannel));
 
     //  Control pannel
     UIElement animationControlPannel(mft::vec2i(402, 0),
@@ -118,7 +115,7 @@ void InitAnimationPannel( void )
         UIElement left(mft::vec2i(0, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         left.setSize(mft::vec2i(23, 34));
-        animationControlPannel.addChild(std::shared_ptr<UIElement>(new UIElement(left)));
+        animationControlPannel.addChild(std::make_shared<UIElement>(left));
         UIElement center(mft::vec2i(24, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         center.setSize(mft::vec2i(263, 34));
@@ -135,7 +132,7 @@ void InitAnimationPannel( void )
             std::shared_ptr<ActionWrapper> action =
                 std::shared_ptr<ActionWrapper>(new Action(func));
             button.onRelease = action;
-            center.addChild(std::shared_ptr<Button>(new Button(button)));
+            center.addChild(std::make_shared<Button>(button));
 
             button.setPos(mft::vec2i(148, 2));
             button.setText("Stop");
@@ -144,7 +141,7 @@ void InitAnimationPannel( void )
             func = ResetObjectPose;
             action = std::shared_ptr<ActionWrapper>(new Action(func));
             button.onRelease = action;
-            center.addChild(std::shared_ptr<Button>(new Button(button)));
+            center.addChild(std::make_shared<Button>(button));
         }
         else if (slot == 1)
         {
@@ -155,7 +152,7 @@ void InitAnimationPannel( void )
             std::stringstream str;
             str << std::fixed << std::setprecision(1) << 1.0f;
             N.texts.push_back(UIText(str.str(), mft::vec2i(20, 6), 20.0f));
-            center.addChild(std::shared_ptr<UIElement>(new UIElement(N)));
+            center.addChild(std::make_shared<UIElement>(N));
 
             Button button(mft::vec2i(170, 6),
                 assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
@@ -168,7 +165,7 @@ void InitAnimationPannel( void )
             std::shared_ptr<ActionWrapper> action =
                 std::shared_ptr<ActionWrapper>(new Action(func));
             button.onRelease = action;
-            center.addChild(std::shared_ptr<Button>(new Button(button)));
+            center.addChild(std::make_shared<Button>(button));
 
             button.setPos(mft::vec2i(198, 6));
             button.setText("-");
@@ -177,19 +174,18 @@ void InitAnimationPannel( void )
             func = DecreaseAnimationSpeed;
             action = std::shared_ptr<ActionWrapper>(new Action(func));
             button.onRelease = action;
-            center.addChild(std::shared_ptr<Button>(new Button(button)));
+            center.addChild(std::make_shared<Button>(button));
         }
-        animationControlPannel.addChild(std::shared_ptr<UIElement>(new UIElement(center)));
+        animationControlPannel.addChild(std::make_shared<UIElement>(center));
         UIElement right(mft::vec2i(288, slot * 35),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         right.setSize(mft::vec2i(23, 34));
-        animationControlPannel.addChild(std::shared_ptr<UIElement>(new UIElement(right)));
+        animationControlPannel.addChild(std::make_shared<UIElement>(right));
     }
     UIElement animationControlPannelLeftBorder(mft::vec2i(0, 0),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
     animationControlPannelLeftBorder.setSize(mft::vec2i(6, 104));
-    animationControlPannel.addChild(std::shared_ptr<UIElement>(
-        new UIElement(animationControlPannelLeftBorder)));
+    animationControlPannel.addChild(std::make_shared<UIElement>(animationControlPannelLeftBorder));
     UIElement animationControlPannelTopBorder(mft::vec2i(0, 105),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-clearer.png", "UI"));
     animationControlPannelTopBorder.setSize(mft::vec2i(311, 34));
@@ -198,17 +194,15 @@ void InitAnimationPannel( void )
     UIElement animationControlPannelRightBorder(mft::vec2i(305, 0),
         assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
     animationControlPannelRightBorder.setSize(mft::vec2i(6, 104));
-    animationControlPannel.addChild(std::shared_ptr<UIElement>(
-        new UIElement(animationControlPannelRightBorder)));
+    animationControlPannel.addChild(std::make_shared<UIElement>(animationControlPannelRightBorder));
 
-    animationControlPannel.addChild(std::shared_ptr<UIElement>(
-        new UIElement(animationControlPannelTopBorder)));
+    animationControlPannel.addChild(std::make_shared<UIElement>(animationControlPannelTopBorder));
 
-    animationPannel.addChild(std::shared_ptr<UIElement>(new UIElement(animationControlPannel)));
+    animationPannel.addChild(std::make_shared<UIElement>(animationControlPannel));
 
-    bottomPannel.addChild(std::shared_ptr<UIElement>(new UIElement(animationPannel)));
+    bottomPannel.addChild(std::make_shared<UIElement>(animationPannel));
 
-    ui.registerElement(std::shared_ptr<UIElement>(new UIElement(bottomPannel)));
+    ui.registerElement(std::make_shared<UIElement>(bottomPannel));
 }
 
 void UpdateAnimationTimeText( void )

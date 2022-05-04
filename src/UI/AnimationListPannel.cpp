@@ -25,7 +25,7 @@ void InitAnimationListPannel( void )
         UIElement left(mft::vec2i(0, 1 + i * 33),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         left.setSize(mft::vec2i(23, 32));
-        animationListPannel.addChild(std::shared_ptr<UIElement>(new UIElement(left)));
+        animationListPannel.addChild(std::make_shared<UIElement>(left));
         Button center(mft::vec2i(24, 1 + i * 33),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"),
               assetManager.loadAsset<Texture>("resources/UI/defaultUI.png", "UI"),
@@ -33,11 +33,11 @@ void InitAnimationListPannel( void )
         center.setSize(mft::vec2i(263, 32));
         center.active = false;
         center.setFont(font);
-        animationListPannel.addChild(std::shared_ptr<Button>(new Button(center)));
+        animationListPannel.addChild(std::make_shared<Button>(center));
         UIElement right(mft::vec2i(288, 1 + i * 33),
             assetManager.loadAsset<Texture>("resources/UI/defaultUI-clear.png", "UI"));
         right.setSize(mft::vec2i(23, 32));
-        animationListPannel.addChild(std::shared_ptr<UIElement>(new UIElement(right)));
+        animationListPannel.addChild(std::make_shared<UIElement>(right));
     }
 
     UIElement animationListBorder(mft::vec2i(-1, 6 * 33 + 1),
@@ -45,9 +45,9 @@ void InitAnimationListPannel( void )
     animationListBorder.setSize(mft::vec2i(289, 32));
     animationListBorder.texts.push_back(UIText(">  Animations", mft::vec2i(12, 6), 16.0f));
 
-    animationListPannel.addChild(std::shared_ptr<UIElement>(new UIElement(animationListBorder)));
+    animationListPannel.addChild(std::make_shared<UIElement>(animationListBorder));
 
-    ui.elements[2]->addChild(std::shared_ptr<UIElement>(new UIElement(animationListPannel)));
+    ui.elements[2]->addChild(std::make_shared<UIElement>(animationListPannel));
 }
 
 void SelectAnimation(std::shared_ptr<Animation> anim,
@@ -120,10 +120,9 @@ void UpdateAnimationList( void )
             "resources/UI/defaultUI.png", "UI"));
         std::function<void(std::shared_ptr<Animation>, std::shared_ptr<Button>)>
             func = SelectAnimation;
-        std::shared_ptr<ActionWrapper> action =
-            std::shared_ptr<ActionWrapper>(
-                new Action<std::shared_ptr<Animation>, std::shared_ptr<Button>>(
-                    func, animations[i], button));
-        button->onRelease = action;
+        button->onRelease = std::make_shared<ActionWrapper>(
+            Action<std::shared_ptr<Animation>, std::shared_ptr<Button>>(
+            func, animations[i], button));
+        //throw (GLException("COUCOU", 0));
     }
 }

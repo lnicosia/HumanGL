@@ -213,7 +213,7 @@ void	Render(GLContext_SDL& context)
 
 	//	Light
 
-	std::shared_ptr<Light>	light1(new Light(LightType::Point));
+	std::shared_ptr<Light>	light1 = std::make_shared<Light>(LightType::Point);
 	assetManager.addAsset(light1);
 	light1->move(mft::vec3(0.0f, 3.0f, 5.0f));
 

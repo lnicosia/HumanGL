@@ -7,7 +7,7 @@ using namespace notrealengine;
 std::shared_ptr<GLObject> InitBobby(void)
 {
   std::cout << "Initializing Bobby..." << std::endl;
-  std::shared_ptr<Mesh> mesh(new Mesh(GLContext::cube));
+  std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(GLContext::cube);
   std::vector<std::shared_ptr<Mesh>> meshes;
   meshes.push_back(mesh);
   Mesh& torso = *mesh;
@@ -16,14 +16,14 @@ std::shared_ptr<GLObject> InitBobby(void)
   torso.setColor(mft::vec4(0.0f, 0.5f, 0.0f, 1.0f));
   torso.localTransform.setScale(mft::vec3(0.50f, 0.75f, 0.15f));
 
-  torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  torso.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh&	head = (*torso.getChildren()[0]);
   head.setName("Head");
   head.setColor(mft::vec4(0.6f, 0.6f, 0.0f, 1.0f));
   head.localTransform.move(mft::vec3(0.125f, 1.025f, -0.5f));
   head.localTransform.setScale(mft::vec3(0.75f, 0.45f, 2.0f));
 
-  torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  torso.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& upperLeftArm = (*torso.getChildren()[1]);
   upperLeftArm.setName("Upper left arm");
   upperLeftArm.setColor(mft::vec4(0.5f, 0.5f, 0.0f, 1.0f));
@@ -31,13 +31,13 @@ std::shared_ptr<GLObject> InitBobby(void)
   upperLeftArm.localTransform.setScale(mft::vec3(0.35f, 0.475f, 1.0f));
   upperLeftArm.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
 
-  upperLeftArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  upperLeftArm.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& lowerLeftArm = (*upperLeftArm.getChildren()[0]);
   lowerLeftArm.setName("Lower left arm");
   lowerLeftArm.setColor(mft::vec4(0.6f, 0.6f, 0.0f, 1.0f));
   lowerLeftArm.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
 
-  torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  torso.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh&	upperRightArm = (*torso.getChildren()[2]);
   upperRightArm.setName("Upper right arm");
   upperRightArm.setColor(mft::vec4(0.5f, 0.5f, 0.0f, 1.0f));
@@ -45,13 +45,13 @@ std::shared_ptr<GLObject> InitBobby(void)
   upperRightArm.localTransform.setScale(mft::vec3(0.35f, 0.475f, 1.0f));
   upperRightArm.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
 
-  upperRightArm.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  upperRightArm.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& lowerRightArm = (*upperRightArm.getChildren()[0]);
   lowerRightArm.setName("Lower right arm");
   lowerRightArm.setColor(mft::vec4(0.6f, 0.6f, 0.0f, 1.0f));
   lowerRightArm.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
 
-  torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  torso.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh&	leftThigh = (*torso.getChildren()[3]);
   leftThigh.setName("Left thigh");
   leftThigh.setColor(mft::vec4(0.0f, 0.0f, 0.5f, 1.0f));
@@ -59,13 +59,13 @@ std::shared_ptr<GLObject> InitBobby(void)
   leftThigh.localTransform.setScale(mft::vec3(0.35f, 0.5f, 1.0f));
   leftThigh.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
 
-  leftThigh.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  leftThigh.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& leftCalf = (*leftThigh.getChildren()[0]);
   leftCalf.setName("Left calf");
   leftCalf.setColor(mft::vec4(0.0f, 0.0f, 0.6f, 1.0f));
   leftCalf.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
 
-  torso.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  torso.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightThigh = (*torso.getChildren()[4]);
   rightThigh.setName("Right thigh");
   rightThigh.setColor(mft::vec4(0.0f, 0.0f, 0.5f, 1.0f));
@@ -73,13 +73,13 @@ std::shared_ptr<GLObject> InitBobby(void)
   rightThigh.localTransform.setScale(mft::vec3(0.35f, 0.5f, 1.0f));
   rightThigh.localTransform.rotate(mft::quat::rotation(mft::vec3(0.0f, 0.0f, 1.0f), mft::radians(180.0f)));
 
-  rightThigh.addMesh(std::shared_ptr<Mesh>(new Mesh(GLContext::cube)));
+  rightThigh.addMesh(std::make_shared<Mesh>(GLContext::cube));
   Mesh& rightCalf = (*rightThigh.getChildren()[0]);
   rightCalf.setName("Right calf");
   rightCalf.setColor(mft::vec4(0.0f, 0.0f, 0.6f, 1.0f));
   rightCalf.localTransform.move(mft::vec3(0.0f, 1.0f, 0.0f));
 
-  std::shared_ptr<GLObject>	character(new GLObject(meshes));
+  std::shared_ptr<GLObject>	character = std::make_shared<GLObject>(meshes);
   character->setName("Bobby");
   character->setShader(GLContext::getShader("color"));
   character->transform.move(mft::vec3(-0.25f, 1.15f, 0.0f));
@@ -230,7 +230,7 @@ std::shared_ptr<Animation> InitBobbyWalking(void)
     bones["Left calf"] = leftCalf;
 
     std::shared_ptr<Animation> anim =
-        std::shared_ptr<Animation>(new Animation("Bobby walking", bones));
+        std::make_shared<Animation>("Bobby walking", bones);
     AssetManager::getInstance().addAsset(anim);
     return anim;
 }
@@ -333,7 +333,7 @@ std::shared_ptr<Animation> InitBobbyJumping(void)
   bones["Right calf"] = rightCalf;
 
   std::shared_ptr<Animation> anim =
-    std::shared_ptr<Animation>(new Animation("Bobby jumping", bones));
+    std::make_shared<Animation>("Bobby jumping", bones);
   AssetManager::getInstance().addAsset(anim);
   return anim;
 }
@@ -370,7 +370,7 @@ std::shared_ptr<Animation> InitBobbyIdle(void)
   bones["Right calf"] = rightCalf;
 
   std::shared_ptr<Animation> anim =
-    std::shared_ptr<Animation>(new Animation("Bobby idle", bones));
+    std::make_shared<Animation>("Bobby idle", bones);
   AssetManager::getInstance().addAsset(anim);
   return anim;
 }
@@ -536,7 +536,7 @@ std::shared_ptr<Animation> InitBobbyBackflip(void)
     Bone rightCalf("Right calf", positions, rotations, scales);
     bones["Right calf"] = rightCalf;
     std::shared_ptr<Animation> anim =
-        std::shared_ptr<Animation>(new Animation("Bobby backflip", bones));
+        std::make_shared<Animation>("Bobby backflip", bones);
     AssetManager::getInstance().addAsset(anim);
     return anim;
 }
@@ -709,7 +709,7 @@ std::shared_ptr<Animation> InitBobbyDance(void)
     Bone rightCalf("Right calf", positions, rotations, scales);
     bones["Right calf"] = rightCalf;
     std::shared_ptr<Animation> anim =
-        std::shared_ptr<Animation>(new Animation("Bobby dance", bones));
+        std::make_shared<Animation>("Bobby dance", bones);
     AssetManager::getInstance().addAsset(anim);
     return anim;
 }
@@ -914,7 +914,7 @@ std::shared_ptr<Animation> InitBobbyMuayThai(void)
     Bone rightCalf("Right calf", positions, rotations, scales);
     bones["Right calf"] = rightCalf;
     std::shared_ptr<Animation> anim =
-        std::shared_ptr<Animation>(new Animation("Bobby Muay Thai", bones));
+        std::make_shared<Animation>("Bobby Muay Thai", bones);
     AssetManager::getInstance().addAsset(anim);
     return anim;
 }
