@@ -242,15 +242,20 @@ void	Render(GLContext_SDL& context)
 	RenderLoop(context);
 }
 
+/**	Release OpenGL pointers before releasing the OpenGL windows and context
+*/
 void ReleasePointers()
 {
 	AssetManager::getInstance().clear();
 	scene.clear();
 	selectedObject.reset();
+	selectedMesh.reset();
 	selectedAnimation.reset();
 	bobbyAnimations.clear();
 	bobbyPlusAnimations.clear();
 	skeletalAnimations.clear();
+	ui.elements.clear();
+	ClearArmature(rootArmature);
 }
 
 int		LaunchHumanGL(int ac, char **av, SDLWindow& window, GLContext_SDL& context)

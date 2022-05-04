@@ -61,6 +61,10 @@ void RenderRoundyPlus( void );
 */
 void PopulateArmature( void );
 
+/**	Release the pointers in the Armature hierarchy
+*/
+void ClearArmature( Armature& armature );
+
 /**	Print the full armature
 */
 void PrintFullArmature( void );

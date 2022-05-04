@@ -119,6 +119,15 @@ void PopulateArmature()
     FillArmature(rootArmature, selectedObject->getMeshes()[0]);
 }
 
+void ClearArmature(Armature& armature)
+{
+    armature.mesh.reset();
+    for (auto& child : armature.children)
+    {
+        ClearArmature(child);
+    }
+}
+
 void OpenArmature(Armature& armature)
 {
     armature.open = true;
