@@ -10,6 +10,7 @@ define n
 endef
 
 CC = clang++ --std=c++20 -O3 -flto
+
 include project.mk
 
 ifneq ($L,)
@@ -97,11 +98,11 @@ $(foreach MOD,$(LIB_MOD),$(eval $($(MOD)_DIR)/$($(MOD)_LIB): MOD = $(MOD)))
 $(LIB): DIR = $($(MOD)_DIR)
 
 $(LIB):
-	$(call submodule_init,$(DIR))
+	@$(call submodule_init,$(DIR))
 	@make -C $(DIR) $($(MOD)_LIB) L='$L'
 
 $(EXEC_TARGET): $(OBJ) $(LIB) project.mk | $(CMAKE_LIB)
-	$(CC) -o $@ $(OBJ) $(LDFLAGS)
+	$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS)
 
 $(LIB_TARGET): $(OBJ) project.mk
 	ar -rc $@ $(OBJ)
