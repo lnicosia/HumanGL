@@ -39,8 +39,13 @@ void InitTopPannel( void )
 
     std::vector<std::shared_ptr<GLFont>> fonts =
         assetManager.getAssetsOfType<GLFont>();
+#ifdef USING_EXTERNAL_LIBS
     std::shared_ptr<GLFont> font =
-      assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+#else
+    std::shared_ptr<GLFont> font =
+        assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+#endif
 
     //  Top pannel (Bobby, Object etc tabs)
 
@@ -126,10 +131,17 @@ void InitScenePannel( void )
 
     std::vector<std::shared_ptr<GLFont>> fonts =
         assetManager.getAssetsOfType<GLFont>();
+#ifdef USING_EXTERNAL_LIBS
     std::shared_ptr<GLFont> font =
-      assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+    std::shared_ptr<GLFont> font12 =
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+#else
+    std::shared_ptr<GLFont> font =
+        assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
     std::shared_ptr<GLFont> font12 =
         assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+#endif
 
     UIElement scenePannel(mft::vec2i(0, 830));
     scenePannel.visible = false;

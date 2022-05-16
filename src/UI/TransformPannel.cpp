@@ -8,10 +8,17 @@ void InitTransformPannel( void )
 
     std::vector<std::shared_ptr<GLFont>> fonts =
         assetManager.getAssetsOfType<GLFont>();
+#ifdef USING_EXTERNAL_LIBS
     std::shared_ptr<GLFont> font =
-      assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+    std::shared_ptr<GLFont> font12 =
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+#else
+    std::shared_ptr<GLFont> font =
+        assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
     std::shared_ptr<GLFont> font12 =
         assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+#endif
 
     //    Transform pannel
     UIElement transformPannel(mft::vec2i(4, 167),

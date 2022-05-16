@@ -8,10 +8,17 @@ void InitModelPannel( void )
 
     std::vector<std::shared_ptr<GLFont>> fonts =
         assetManager.getAssetsOfType<GLFont>();
+#ifdef USING_EXTERNAL_LIBS
     std::shared_ptr<GLFont> font =
-      assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+    std::shared_ptr<GLFont> font12 =
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+#else
+    std::shared_ptr<GLFont> font =
+        assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
     std::shared_ptr<GLFont> font12 =
         assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+#endif
 
     //    Model pannel
     UIElement modelPannel(mft::vec2i(5, 511),
@@ -204,8 +211,17 @@ void UpdateModelPannel( void )
     return ;
   mustUpdateModelPannel = false;
   AssetManager& assetManager = AssetManager::getInstance();
-  std::shared_ptr<GLFont> font =
-    assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+#ifdef USING_EXTERNAL_LIBS
+    std::shared_ptr<GLFont> font =
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+    std::shared_ptr<GLFont> font12 =
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+#else
+    std::shared_ptr<GLFont> font =
+      assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+    std::shared_ptr<GLFont> font12 =
+        assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
+#endif
 
   std::shared_ptr<UIElement> modelPannel = ui.elements[2]->getChild(0)->getChild(1);
   modelPannel->clearChildren();
