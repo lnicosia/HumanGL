@@ -9,7 +9,7 @@ define n
 
 endef
 
-CC = clang++ --std=c++20 -O3 -flto
+CC = clang++ --std=c++20 -O3
 
 include project.mk
 

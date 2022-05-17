@@ -57,11 +57,23 @@ void InitAnimationListPannel( void )
     ui.elements[2]->addChild(std::make_shared<UIElement>(animationListPannel));
 }
 
-void SelectAnimation(std::shared_ptr<Animation> anim,
-    std::shared_ptr<Button> sourceButton)
+void SelectAnimation(size_t id)
 {
     //  Select anim
-    selectedAnimation = anim;
+    std::vector<std::shared_ptr<Animation>> animations;
+	if (renderingMode == Bobby || renderingMode == Roundy)
+	{
+		animations = bobbyAnimations;
+	}
+    else if (renderingMode == BobbyPlus || renderingMode == RoundyPlus)
+    {
+        animations = bobbyPlusAnimations;
+    }
+	else if (renderingMode == Model || renderingMode == BonesInfluence)
+	{
+		animations = skeletalAnimations;
+	}
+    selectedAnimation = animations[id];
     if (selectedObject != nullptr && selectedAnimation != nullptr)
     {
         if (selectedObject->getAnimationState() == AnimationState::Stopped
@@ -81,11 +93,13 @@ void SelectAnimation(std::shared_ptr<Animation> anim,
         std::shared_ptr<Button> button =
             dynamic_pointer_cast<Button>(
                 animationListPannel->getChild(i * 3 + 1));
-        button->setReleasedImg(AssetManager::getInstance().loadAsset<Texture>(
-            "resources/UI/defaultUI-clear.png", "UI"));
+        if (i == id)
+            button->setReleasedImg(AssetManager::getInstance().loadAsset<Texture>(
+                "resources/UI/defaultUI.png", "UI"));
+        else
+            button->setReleasedImg(AssetManager::getInstance().loadAsset<Texture>(
+                "resources/UI/defaultUI-clear.png", "UI"));
     }
-    sourceButton->setReleasedImg(AssetManager::getInstance().loadAsset<Texture>(
-        "resources/UI/defaultUI.png", "UI"));
 
     UpdateAnimationPannel();
 }
@@ -125,11 +139,8 @@ void UpdateAnimationList( void )
         if (selectedAnimation != nullptr && selectedAnimation == animations[i])
             button->setReleasedImg(AssetManager::getInstance().loadAsset<Texture>(
             "resources/UI/defaultUI.png", "UI"));
-        std::function<void(std::shared_ptr<Animation>, std::shared_ptr<Button>)>
-            func = SelectAnimation;
-        button->onRelease = std::make_shared<ActionWrapper>(
-            Action<std::shared_ptr<Animation>, std::shared_ptr<Button>>(
-            func, animations[i], button));
-        //throw (GLException("COUCOU", 0));
+        std::function<void(size_t)>func = SelectAnimation;
+        button->onRelease = std::shared_ptr<ActionWrapper>(
+            new Action<size_t>(func, i));
     }
 }
