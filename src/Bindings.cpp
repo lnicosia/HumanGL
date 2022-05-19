@@ -833,7 +833,7 @@ void InitBindings()
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Quit))));
 
 	//  Left
-	AddBinding("Left", 0, SDLK_q, false,
+	AddBinding("Left", 0, SDLK_a, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Left))),
 		nullptr,
 		nullptr,
@@ -847,7 +847,7 @@ void InitBindings()
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(StopWalking))));
 
 	//  Forward
-	AddBinding("Forward", 0, SDLK_z, false,
+	AddBinding("Forward", 0, SDLK_w, false,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(Forward))),
 		nullptr,
 		nullptr,
@@ -878,7 +878,7 @@ void InitBindings()
 	ref.onRelease = std::shared_ptr<ActionWrapper>(new Action(func8));
 
 	//  Draw mode: wireframe/fill
-	AddBinding("Change draw mode", SDLK_w, 0, false,
+	AddBinding("Change draw mode", SDLK_z, 0, false,
 		nullptr, nullptr, nullptr,
 		std::shared_ptr<ActionWrapper>(new Action(std::function<void()>(ChangeDrawMode))));
 

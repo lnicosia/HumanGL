@@ -39,9 +39,9 @@ void InitAnimationPannel( void )
         assetManager.getAssetsOfType<GLFont>();
 #ifdef USING_EXTERNAL_LIBS
     std::shared_ptr<GLFont> font =
-        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.ttf");
     std::shared_ptr<GLFont> font12 =
-        assetManager.loadAsset<GLFont>("resources/fonts/arial.tff");
+        assetManager.loadAsset<GLFont>("resources/fonts/arial.ttf");
 #else
     std::shared_ptr<GLFont> font =
         assetManager.loadAsset<GLFont>("resources/fonts/pt-sans-48.bff");
