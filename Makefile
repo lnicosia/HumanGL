@@ -120,15 +120,15 @@ clean: $(TMP_DIRS:%=clean@%)
 
 fclean: clean $(patsubst %,clean@%,$(EXEC_TARGET) $(LIB_TARGET))
 
-$(LIB_MOD:%=libclean@$L/%):
-	$(MAKE) -s -C $L/$* fclean "L="
+$(LIB_MOD:%=libclean@$L/%): libclean@%:
+	$(MAKE) -s -C $* fclean "L="
 
-$(CMAKE_LIB_MOD:%=libclean@$L/%/build):
-	rm -Rf $%
+$(CMAKE_LIB_MOD:%=libclean@$L/%/build): libclean@%:
+	rm -Rf $*
 
 libclean: $(LIB_MOD:%=libclean@$L/%)
 
-realclean: $(CMAKE_LIB_MOD:%=libclean@$L/%/build)
+realclean: $(CMAKE_LIB_MOD:%=libclean@$L/%/build) libclean fclean
 
 re: fclean all
 relib: libclean all
