@@ -233,8 +233,11 @@ void	Render(GLContext_SDL& context)
 	};
 	std::shared_ptr<Skybox> skybox =
 		assetManager.loadAsset<Skybox>("resources/images/skybox/right.png", paths);
-	scene.setSkybox(skybox);
-	scene.drawSkybox = true;
+	if (skybox != nullptr)
+	{
+		scene.setSkybox(skybox);
+		scene.drawSkybox = true;
+	}
 
 	std::cout << "Asset manager content:" << std::endl;
 	assetManager.printContent();
