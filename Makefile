@@ -101,7 +101,7 @@ $(LIB):
 	@$(call submodule_init,$(DIR))
 	@make -C $(DIR) $($(MOD)_LIB) L='$L'
 
-$(EXEC_TARGET): $(OBJ) $(LIB) project.mk | $(CMAKE_LIB)
+$(EXEC_TARGET): $(LIB) $(OBJ) project.mk | $(CMAKE_LIB)
 	$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS)
 
 $(LIB_TARGET): $(OBJ) project.mk
