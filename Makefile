@@ -83,7 +83,7 @@ $($(1)_DIR)/$($(1)_INC):
 
 endef
 
-$(foreach MOD,$(LIB_MOD) $(CMAKE_LIB_MOD),$(eval $(call init_includes,$(MOD))))
+$(foreach MOD,$(LIB_MOD),$(eval $(call init_includes,$(MOD))))
 
 $(foreach MOD,$(CMAKE_LIB_MOD),$(eval $($(MOD)_DIR)/build/$($(MOD)_LIB): MOD = $(MOD)))
 $(CMAKE_LIB): DIR = $($(MOD)_DIR)/build
