@@ -73,23 +73,12 @@ $D/%.d: $S/%.cpp | $$(dir $$@) $(INCLUDES)
 $(OBJ): $O/%.o: $S/%.cpp |  $$(dir $$@) $(INCLUDES)
 	$(CC) -c -o $@ $(CPPFLAGS) $(INCLUDES:%=-I%) $<
 
-define submodule_init
-$(if $(shell git submodule status $(1) | grep '^-'),git submodule update --init $(1),)
-endef
-
-define init_includes
-$($(1)_DIR)/$($(1)_INC):
-	$(call submodule_init,$($(1)_DIR))
-
-endef
-
 $(foreach MOD,$(LIB_MOD),$(eval $(call init_includes,$(MOD))))
 
 $(foreach MOD,$(CMAKE_LIB_MOD),$(eval $($(MOD)_DIR)/build/$($(MOD)_LIB): MOD = $(MOD)))
 $(CMAKE_LIB): DIR = $($(MOD)_DIR)/build
 
 $(CMAKE_LIB):
-	@$(call submodule_init,$($(MOD)_DIR))
 	@mkdir -p $(DIR)
 	@sh -c "cd $(DIR); cmake .."
 	@$(MAKE) -C $(DIR)
@@ -98,7 +87,6 @@ $(foreach MOD,$(LIB_MOD),$(eval $($(MOD)_DIR)/$($(MOD)_LIB): MOD = $(MOD)))
 $(LIB): DIR = $($(MOD)_DIR)
 
 $(LIB):
-	@$(call submodule_init,$(DIR))
 	@make -C $(DIR) $($(MOD)_LIB) L='$L'
 
 $(EXEC_TARGET): $(LIB) $(OBJ) project.mk | $(CMAKE_LIB)

@@ -29,7 +29,7 @@ ifdef USING_EXTERNAL
 notrealengine_LIB = libnre-external.a
 CMAKE_LIB_MOD += assimp freetype
 CPPFLAGS += -D USING_EXTERNAL_LIBS
-LDFLAGS += -lz -lpng -lharfbuzz
+LDFLAGS += -lz -lpng -lharfbuzz -lbz2
 else
 notrealengine_LIB = libnre.a
 endif
