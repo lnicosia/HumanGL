@@ -70,12 +70,12 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>inc;..\lib\notrealengine\inc;..\lib\notrealengine\inc\notrealengine;..\lib\SDL\include;$(IncludePath)</IncludePath>
-    <LibraryPath>x64\Debug;..\lib\SDL\build-windows\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>inc;..\lib\notrealengine\inc;..\lib\notrealengine\inc\notrealengine;..\lib\notrealengine\lib\SDL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>x64\Debug;..\lib\notrealengine\lib\SDL\build-windows\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>x64\Release;..\lib\SDL\build-windows\Release;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <IncludePath>inc;..\lib\notrealengine\inc;..\lib\notrealengine\inc\notrealengine;..\lib\SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>x64\Release;..\lib\notrealengine\lib\SDL\build-windows\Release;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>inc;..\lib\notrealengine\inc;..\lib\notrealengine\inc\notrealengine;..\lib\notrealengine\lib\SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
