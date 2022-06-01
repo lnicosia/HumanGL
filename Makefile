@@ -56,7 +56,7 @@ $(error OS not supported)
 endif
 
 .PHONY: all, clean, clean(), fclean, libclean, libclean(), realclean, re, relib, space, force
-.PHONY: $(foreach MOD,$(LIB_MOD),$(if $(filter 1,$(shell make -C $($(MOD)_DIR) -q $($(MOD)_LIB) >/dev/null; echo $$?)),$($(MOD)_DIR)/$($(MOD)_LIB),))
+.PHONY: $(foreach MOD,$(LIB_MOD),$(if $(shell $(MAKE) -C $($(MOD)_DIR) -q $($(MOD)_LIB) || echo false),,$($(MOD)_DIR)/$($(MOD)_LIB),))
 
 all: $(LIB_TARGET) $(EXEC_TARGET)
 
@@ -73,7 +73,17 @@ $D/%.d: $S/%.cpp | $$(dir $$@) $(INCLUDES)
 $(OBJ): $O/%.o: $S/%.cpp |  $$(dir $$@) $(INCLUDES)
 	$(CC) -c -o $@ $(CPPFLAGS) $(INCLUDES:%=-I%) $<
 
-$(foreach MOD,$(LIB_MOD),$(eval $(call init_includes,$(MOD))))
+define submodule_init
+$(if $(wildcard $(1)),,tar -xf $(1).tar -C $(dir $(1)))
+endef
+
+define init_includes
+$($(1)_INC:%=$($(1)_DIR)/%):
+	$(call submodule_init,$($(1)_DIR))
+
+endef
+
+$(foreach MOD,$(LIB_MOD) $(CMAKE_LIB_MOD),$(eval $(call init_includes,$(MOD))))
 
 $(foreach MOD,$(CMAKE_LIB_MOD),$(eval $($(MOD)_DIR)/build/$($(MOD)_LIB): MOD = $(MOD)))
 $(CMAKE_LIB): DIR = $($(MOD)_DIR)/build
@@ -87,16 +97,17 @@ $(foreach MOD,$(LIB_MOD),$(eval $($(MOD)_DIR)/$($(MOD)_LIB): MOD = $(MOD)))
 $(LIB): DIR = $($(MOD)_DIR)
 
 $(LIB):
-	@make -C $(DIR) $($(MOD)_LIB) L='$L'
+	@$(MAKE) -j4 -C $(DIR) $($(MOD)_LIB) L='$L'
 
-$(EXEC_TARGET): $(LIB) $(OBJ) project.mk | $(CMAKE_LIB)
+$(EXEC_TARGET): $(LIB) $(if $(wildcard $(if $(USING_EXTERNAL),noexternal,external)),clean) $(OBJ) project.mk | $(CMAKE_LIB)
+	@touch $(if $(USING_EXTERNAL),external,noexternal)
 	$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS)
 
 $(LIB_TARGET): $(OBJ) project.mk
 	ar -rc $@ $(OBJ)
 	ranlib $@
 
-$(patsubst %,clean@%,$(OBJ) $(DEP) $(EXEC_TARGET) $(LIB_TARGET)): clean@%:
+$(patsubst %,clean@%,$(OBJ) $(DEP) external noexternal $(EXEC_TARGET) $(LIB_TARGET)): clean@%:
 	@$(call RM,$*)
 
 $(foreach FILE,$(OBJ) $(DEP) $(TMP_DIR),$(eval $(if $(filter-out ./,$(dir $(FILE))),clean@$(dir $(FILE)): clean@$(FILE),)))
@@ -104,7 +115,7 @@ $(foreach FILE,$(OBJ) $(DEP) $(TMP_DIR),$(eval $(if $(filter-out ./,$(dir $(FILE
 $(TMP_DIRS:%=clean@%):
 	@$(call RMDIR,$%)
 
-clean: $(TMP_DIRS:%=clean@%)
+clean: $(TMP_DIRS:%=clean@%) clean@external clean@noexternal
 
 fclean: clean $(patsubst %,clean@%,$(EXEC_TARGET) $(LIB_TARGET))
 
