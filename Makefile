@@ -56,7 +56,7 @@ $(error OS not supported)
 endif
 
 .PHONY: all, clean, clean(), fclean, libclean, libclean(), realclean, re, relib, space, force
-.PHONY: $(foreach MOD,$(LIB_MOD),$(if $(shell $(MAKE) -C $($(MOD)_DIR) -q $($(MOD)_LIB) || echo false),,$($(MOD)_DIR)/$($(MOD)_LIB),))
+.PHONY: $(foreach MOD,$(LIB_MOD),$(if $(shell $(MAKE) -C $($(MOD)_DIR) -j4 -q $($(MOD)_LIB) || echo false),,$($(MOD)_DIR)/$($(MOD)_LIB),))
 
 all: $(LIB_TARGET) $(EXEC_TARGET)
 
