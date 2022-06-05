@@ -56,7 +56,6 @@ $(error OS not supported)
 endif
 
 .PHONY: all, clean, clean(), fclean, libclean, libclean(), realclean, re, relib, space, force
-.PHONY: $(foreach MOD,$(LIB_MOD),$(if $(shell $(MAKE) -C $($(MOD)_DIR) -j4 -q $($(MOD)_LIB) || echo false),,$($(MOD)_DIR)/$($(MOD)_LIB),))
 
 all: $(LIB_TARGET) $(EXEC_TARGET)
 
@@ -96,7 +95,8 @@ $(CMAKE_LIB):
 $(foreach MOD,$(LIB_MOD),$(eval $($(MOD)_DIR)/$($(MOD)_LIB): MOD = $(MOD)))
 $(LIB): DIR = $($(MOD)_DIR)
 
-$(LIB):
+.SECONDEXPANSION:
+$(LIB): $$(shell $$(MAKE) -C $$(DIR) -j4 -q $$($$(MOD)_LIB) > /dev/null || echo force)
 	@$(MAKE) -j4 -C $(DIR) $($(MOD)_LIB) L='$L'
 
 $(EXEC_TARGET): $(LIB) $(if $(wildcard $(if $(USING_EXTERNAL),noexternal,external)),clean) $(OBJ) project.mk | $(CMAKE_LIB)
