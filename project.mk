@@ -18,7 +18,7 @@ SRC =	$S/main.cpp \
 			$S/UI/AnimationPannel.cpp \
 
 CC = clang++ --std=c++20
-CPPFLAGS = -O3
+CPPFLAGS = -O3 -flto
 LDFLAGS = -lGL -ldl -lpthread
 INCLUDE =
 
