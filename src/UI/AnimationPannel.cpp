@@ -230,7 +230,9 @@ void UpdateAnimationStatusText( void )
     std::shared_ptr<UIElement> animationDetailsPannel =
 		ui.elements[3]->getChild(0)->getChild(0);
     std::string str;
-    if (selectedObject->getAnimationState() == AnimationState::Playing)
+    if (selectedObject == nullptr)
+        str = "Stopped";
+    else if (selectedObject->getAnimationState() == AnimationState::Playing)
         str = "Playing";
     else if (selectedObject->getAnimationState() == AnimationState::Paused)
         str = "Paused";
