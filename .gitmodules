@@ -1,0 +1,3 @@
+[submodule "lib/notrealengine"]
+	path = lib/notrealengine
+	url = git@github.com:lnicosia/notrealengine
