@@ -25,7 +25,7 @@ INCLUDE =
 LIB_MOD = notrealengine
 CMAKE_LIB_MOD = SDL 
 
-ifdef USING_EXTERNAL
+ifndef CUSTOM_LIBS
 notrealengine_LIB = libnre-external.a
 CMAKE_LIB_MOD += assimp freetype
 CPPFLAGS += -D USING_EXTERNAL_LIBS

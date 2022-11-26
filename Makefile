@@ -4,8 +4,6 @@ L = lib
 I = inc
 D = dep
 
-USING_EXTERNAL=1
-
 define n
 
 
@@ -101,8 +99,8 @@ $(LIB): DIR = $($(MOD)_DIR)
 $(LIB): $$(shell $$(MAKE) -C $$(DIR) -j4 -q $$($$(MOD)_LIB) > /dev/null || echo force)
 	@$(MAKE) -j4 -C $(DIR) $($(MOD)_LIB) L='$L'
 
-$(EXEC_TARGET): $(LIB) $(if $(wildcard $(if $(USING_EXTERNAL),noexternal,external)),clean) $(OBJ) project.mk | $(CMAKE_LIB)
-	@touch $(if $(USING_EXTERNAL),external,noexternal)
+$(EXEC_TARGET): $(LIB) $(if $(wildcard $(if $(CUSTOM_LIBS),noexternal,external)),clean) $(OBJ) project.mk | $(CMAKE_LIB)
+	@touch $(if $(CUSTOM_LIBS),external,noexternal)
 	$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS)
 
 $(LIB_TARGET): $(OBJ) project.mk
