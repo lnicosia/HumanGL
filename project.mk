@@ -19,7 +19,7 @@ SRC =	$S/main.cpp \
 
 CC = clang++ --std=c++20
 CPPFLAGS = -O3 -flto
-LDFLAGS = -lGL -ldl -lpthread
+LDFLAGS = -lGL $(shell pkg-config sdl2 --libs --static)
 INCLUDE =
 
 LIB_MOD = notrealengine
@@ -29,7 +29,7 @@ ifndef CUSTOM_LIBS
 notrealengine_LIB = libnre-external.a
 CMAKE_LIB_MOD += assimp freetype
 CPPFLAGS += -D USING_EXTERNAL_LIBS
-LDFLAGS += -lz -lpng -lbz2
+LDFLAGS += $(shell pkg-config libpng freetype2 --libs --static)
 else
 notrealengine_LIB = libnre.a
 endif
