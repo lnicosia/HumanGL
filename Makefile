@@ -4,6 +4,8 @@ L = lib
 I = inc
 D = dep
 
+USING_EXTERNAL=1
+
 define n
 
 
