@@ -1,0 +1,3 @@
+Use shared libs instead of static
+Use assimp, SDL and freetype submodules instead of tar
+Handle -j flags correctly

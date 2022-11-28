@@ -96,8 +96,8 @@ $(foreach MOD,$(LIB_MOD),$(eval $($(MOD)_DIR)/$($(MOD)_LIB): MOD = $(MOD)))
 $(LIB): DIR = $($(MOD)_DIR)
 
 .SECONDEXPANSION:
-$(LIB): $$(shell $$(MAKE) -C $$(DIR) -j4 -q $$($$(MOD)_LIB) > /dev/null || echo force)
-	@$(MAKE) -j4 -C $(DIR) $($(MOD)_LIB) L='$L'
+$(LIB): $$(shell $$(MAKE) -C $$(DIR) -q $$($$(MOD)_LIB) > /dev/null || echo force)
+	@$(MAKE) -C $(DIR) $($(MOD)_LIB) L='$L'
 
 $(EXEC_TARGET): $(LIB) $(if $(wildcard $(if $(CUSTOM_LIBS),noexternal,external)),clean) $(OBJ) project.mk | $(CMAKE_LIB)
 	@touch $(if $(CUSTOM_LIBS),external,noexternal)
