@@ -1,5 +1,5 @@
 # HumanGL
--insert gif-
+![](docs/vampire.gif)
 
 3D Engine with skeletal animations
 
@@ -25,39 +25,60 @@ This simple program is coded in C++ with the OpenGL API. The engine is written i
 ### Models
 The application can be launched without input file. Only the hard coded assets will be present: 4 cube-constructed characters with small specificities:
 * Bobby - The most basic character, made of 1x1x1 cubes (with transformations). It fulfills the mandatory part of the 42 project.
--insert bobby picture-
+
+![](docs/bobby.png)
+
 * BobbyPlus - Just like Bobby, it is made of 1x1x1 cubes. But this time, the character has more members.
--insert bobby plus picture-
+
+![](docs/bobbyplus.png)
+
 * Roundy - Same as Bobby but made from spheres instead of cubes.
--insert roundy plus picture-
+
+![](docs/roundy.png)
+
 * RoundyPlus - Judy like BobbyPlus to Bobby, roundy plus is made of spheres but has more members.
--insert roundy plus picture-
+
+![](docs/roundyplus.png)
+
 ### Hierarchal members
 The hierarchical tree is displayed on the right. You can select any mesh and apply transformations to it to see how the tree works. For example, if you scale the root mesh, the whole model is going to be scaled.
--insert scale gif-
+
+![](docs/scale.gif)
+
 ### Animations
 
 At the bottom right of the screen, you can select animations. There are 6 animations for the hard coded models. For the loaded ones, it depends on the loaded files.
--insert anim gif-
+
+![](docs/kick.gif)
 
 ### Skeletal models
 
 You can also load models and animations.
--insert dancing vampire gif-
+
+![](docs/vampire.gif)
 
 ### Miscellaneous
 
 You can enable or disable the following features:
 * Lighting
--insert light on/off gif-
+
+![](docs/light.gif)
+
 * Skybox/Cubemap
--insert no cubemap
+
+![](docs/skybox.gif)
+
 * Wireframe
--insert wireframe-
+
+![](docs/wireframe.gif)
+
 * Grid
--insert grid on/off 
+
+![](docs/grid.gif)
+
 You can also pause or change the animation speed
--insert gif super fast anim-
+
+![](docs/anim-fast.gif)
 
 ## Installation
 
