@@ -73,7 +73,7 @@ $(OBJ): $O/%.o: $S/%.cpp |  $$(dir $$@) $(INCLUDES)
 	$(CC) -c -o $@ $(CPPFLAGS) $(INCLUDES:%=-I%) $<
 
 define submodule_init
-$(if $(wildcard $(1)), , $(shell git submodule update --init --progress --recursive --remote && tar -xf $(1).tar -C $(dir $(1))))
+$(if $(wildcard $(1)), , $(shell git submodule update --init --progress --recursive --remote))
 endef
 
 define init_includes
