@@ -33,20 +33,52 @@ The application can be launched without input file. Only the hard coded assets w
 * RoundyPlus - Judy like BobbyPlus to Bobby, roundy plus is made of spheres but has more members.
 -insert roundy plus picture-
 ### Hierarchal members
-
-WIP
-
+The hierarchical tree is displayed on the right. You can select any mesh and apply transformations to it to see how the tree works. For example, if you scale the root mesh, the whole model is going to be scaled.
+-insert scale gif-
 ### Animations
 
-WIP
+At the bottom right of the screen, you can select animations. There are 6 animations for the hard coded models. For the loaded ones, it depends on the loaded files.
+-insert anim gif-
+
+### Skeletal models
+
+You can also load models and animations.
+-insert dancing vampire gif-
+
+### Miscellaneous
+
+You can enable or disable the following features:
+* Lighting
+-insert light on/off gif-
+* Skybox/Cubemap
+-insert no cubemap
+* Wireframe
+-insert wireframe-
+* Grid
+-insert grid on/off 
+You can also pause or change the animation speed
+-insert gif super fast anim-
 
 ## Installation
 
-WIP
+Tested on Linux, Windows 10 and WSL (needs an X server like Xming).
+
+OpenGL 4.0 is required (hence it is not going to work on Virtual Box's Linux machines since they can handle OpenGL 3.3 at most).
+
+### Linux, WSL
+
+A `clang` version compatible with C++20 is required.
+
+Run `make`. It will produce a `humangl` binary.
+
+### Windows
+
+Run `Setup.bat` from cmd or the file explorer.
+Build the solution in the `windows/` folder. It will produce a `HumanGL.exe` binary located in `windows\x64\[Config]\` where [Config] is the configuration you built the project with.
 
 ## How to use
 
-WIP
+Run `./humangl` on Linux or `HumanGL.exe` from the root folder on Windows. You can launch the program without arguments. It will only load the hard coded models. If you give a file as an argument, the program will load any object and animation found in the first given file. You can add more animations in the next arguments. If they are compatible with the model, you will be able select and launch them from the animation selection interface.
 
 ## Authors
 
