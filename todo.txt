@@ -1,3 +1,4 @@
 Use shared libs instead of static
 Use assimp, SDL and freetype submodules instead of tar
 Handle -j flags correctly
+Build freetype without harfbuzz, it does not compile if the user does not have it.
