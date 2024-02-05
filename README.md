@@ -94,6 +94,7 @@ Run `make`. It will produce a `humangl` binary.
 
 ### Windows
 
+Cmake is required.
 Run `Setup.bat` from cmd or the file explorer.
 Build the solution in the `windows/` folder. It will produce a `HumanGL.exe` binary located in `windows\x64\[Config]\` where [Config] is the configuration you built the project with.
 
