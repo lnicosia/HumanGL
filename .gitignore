@@ -7,5 +7,6 @@ lib/**/build
 humangl
 windows/x64/
 windows/SDL2d.dll
+windows/
 external
 noexternal
