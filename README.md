@@ -94,8 +94,9 @@ Run `make`. It will produce a `humangl` binary.
 
 ### Windows
 
+Tested with: Visual Studio 2019. Not working with Visual Studio 2022
 Cmake is required.
-Run `Setup.bat` from cmd or the file explorer.
+Go in the windows/ directory. Run `Setup.bat` from cmd or the file explorer.
 Build the solution in the `windows/` folder. It will produce a `HumanGL.exe` binary located in `windows\x64\[Config]\` where [Config] is the configuration you built the project with.
 
 ## How to use
