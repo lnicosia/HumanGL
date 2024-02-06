@@ -2,3 +2,6 @@ Use shared libs instead of static
 Use assimp, SDL and freetype submodules instead of tar
 Handle -j flags correctly
 Build freetype without harfbuzz, it does not compile if the user does not have it.
+Dont push the .SLN in notrealengine but generate it
+Does not work on WSL when SDL audio can't init -> Add compile options to choose what to init
+Segfaults when closing (on WSL)
