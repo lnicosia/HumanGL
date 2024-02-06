@@ -10,3 +10,4 @@ windows/SDL2d.dll
 windows/
 external
 noexternal
+.vscode/

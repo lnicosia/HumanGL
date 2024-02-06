@@ -25,13 +25,13 @@ INCLUDE =
 LIB_MOD = notrealengine
 CMAKE_LIB_MOD = SDL 
 
-ifndef CUSTOM_LIBS
+ifeq ($(CUSTOM_LIBS), 1)
+notrealengine_LIB = libnre.a
+else
 notrealengine_LIB = libnre-external.a
 CMAKE_LIB_MOD += assimp freetype
 CPPFLAGS += -D USING_EXTERNAL_LIBS
 LDFLAGS += $(shell pkg-config libpng freetype2 --libs --static) -lharfbuzz
-else
-notrealengine_LIB = libnre.a
 endif
 notrealengine_INC = inc inc/notrealengine
 
