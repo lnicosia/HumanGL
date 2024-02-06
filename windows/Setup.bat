@@ -28,3 +28,11 @@ if not exist SDL2d.dll (
 	)
 	move lib\SDL\build-windows\Debug\SDL2d.dll windows\
 )
+
+if not exist src (
+	mklink /j src ..\src
+)
+
+if not exist inc (
+	mklink /j inc ..\inc
+)
