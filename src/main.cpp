@@ -22,9 +22,12 @@ int		main(int ac, char **av)
 	catch (std::runtime_error& e)
 	{
 		std::cerr << "Runtime error: " << e.what() << std::endl;
+		return -1;
 	}
 	catch (std::exception& e)
 	{
 		std::cerr << "STD Exception: " << e.what() << std::endl;
+		return -1;
 	}
+	return 0;
 }
