@@ -9,7 +9,7 @@ if not exist ..\lib\notrealengine\lib\assimp\build-windows\lib\Debug\assimp-vc14
 	if not exist ..\lib\notrealengine\lib\assimp\build-windows (
 		md ..\lib\notrealengine\lib\assimp\build-windows
 	)
-	cmake -S ..\lib\notrealengine\lib\assimp\ -D BUILD_SHARED_LIBS=OFF -B ..\lib\notrealengine\lib\assimp\build-windows
+	cmake -S ..\lib\notrealengine\lib\assimp\ -G "Visual Studio 16 2019" -T "v142" -D BUILD_SHARED_LIBS=OFF -B ..\lib\notrealengine\lib\assimp\build-windows
 	cmake --build ..\lib\notrealengine\lib\assimp\build-windows --config Debug
 		
 )

@@ -129,7 +129,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UsingExternalLibs-Debug|x64'">
     <IncludePath>..\lib\notrealengine\lib\freetype\include;..\lib\notrealengine\lib\assimp\include;..\lib\notrealengine\lib\assimp\build-windows\include;inc;..\lib\notrealengine\inc;..\lib\notrealengine\inc\notrealengine;..\lib\notrealengine\lib\SDL\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\lib\notrealengine\lib\freetypebuild-windows\Debug;..\lib\notrealengine\lib\assimp\build-windows\lib\Debug;x64\UsingExternalLibs-Debug;..\lib\notrealengine\lib\SDL\build-windows\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\lib\notrealengine\lib\freetype\build-windows\Debug;..\lib\notrealengine\lib\assimp\build-windows\lib\Debug;x64\UsingExternalLibs-Debug;..\lib\notrealengine\lib\SDL\build-windows\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>x64\Release;..\lib\notrealengine\lib\SDL\build-windows\Release;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
