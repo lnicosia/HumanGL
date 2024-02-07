@@ -3,6 +3,8 @@ SetLocal EnableDelayedExpansion
 
 if not exist ..\lib\notrealengine\lib\freetype\build-windows\Release\freetype.lib (
 
+	echo Buildling freetype...
+
 	if not exist ..\lib\notrealengine\lib\freetype\include\freetype.h (
 		git submodule update --init --recursive --progress ..\lib\notrealengine\
 	)
