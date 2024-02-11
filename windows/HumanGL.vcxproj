@@ -209,7 +209,8 @@
       <AdditionalDependencies>NotRealEngined.lib;SDL2d.lib;SDL2maind.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>cmd.exe /c "BuildSDL-Debug.bat"</Command>
+      <Command>cmd.exe /c "Setup.bat"
+cmd.exe /c "BuildSDL-Debug.bat"</Command>
     </PreBuildEvent>
     <ClCompile>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -228,7 +229,8 @@
       <AdditionalDependencies>NotRealEngined.lib;zlibstaticd.lib;freetyped.lib;assimp-vc142-mtd.lib;SDL2d.lib;SDL2maind.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>cmd.exe /c "BuildSDL-External-Debug.bat"
+      <Command>cmd.exe /c "Setup.bat"
+cmd.exe /c "BuildSDL-External-Debug.bat"
 cmd.exe /c "BuildAssimp-Debug.bat"
 cmd.exe /c "BuildFreetype-Debug.bat"</Command>
     </PreBuildEvent>
@@ -243,7 +245,8 @@ cmd.exe /c "BuildFreetype-Debug.bat"</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
-      <Command>cmd.exe /c "BuildSDL-Release.bat"</Command>
+      <Command>cmd.exe /c "Setup.bat"
+cmd.exe /c "BuildSDL-Release.bat"</Command>
     </PreBuildEvent>
     <ClCompile>
       <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
@@ -257,7 +260,8 @@ cmd.exe /c "BuildFreetype-Debug.bat"</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UsingExternalLibs-Release|x64'">
     <PreBuildEvent>
-      <Command>cmd.exe /c "BuildSDL-External-Release.bat"
+      <Command>cmd.exe /c "Setup.bat"
+cmd.exe /c "BuildSDL-External-Release.bat"
 cmd.exe /c "BuildAssimp-Release.bat"
 cmd.exe /c "BuildFreetype-Release.bat"</Command>
     </PreBuildEvent>
