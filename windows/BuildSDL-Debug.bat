@@ -3,9 +3,9 @@ SetLocal EnableDelayedExpansion
 
 if not exist .\x64\Debug\SDL2d.dll (
 
-	if not exist ..\lib\notrealengine\lib\SDL\build-windows\Debug\SDL2d.lib (
+	if not exist ..\lib\notrealengine\lib\SDL\build-windows\Debug\SDL2d.dll (
 
-		echo Buildling SDL...
+		echo Buildling SDL in Debug...
 
 		if not exist ..\lib\notrealengine\lib\SDL\include\SDL.h (
 			git submodule update --init --recursive --progress ..\lib\notrealengine\

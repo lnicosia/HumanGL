@@ -3,7 +3,7 @@ SetLocal EnableDelayedExpansion
 
 if not exist ..\lib\notrealengine\lib\assimp\build-windows\lib\Release\assimp-vc142-mt.lib (
 
-	echo Buildling assimp...
+	echo Buildling assimp in Release...
 
 	if not exist ..\lib\notrealengine\lib\assimp\include\assimp.h (
 		git submodule update --init --recursive --progress ..\lib\notrealengine\

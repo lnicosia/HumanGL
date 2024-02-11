@@ -1,7 +1,7 @@
 @echo off
 SetLocal EnableDelayedExpansion
 
-if not exist .\x64\Release\SDL2.dll (
+if not exist .\x64\UsingExternalLibs-Release\SDL2.dll (
 
 	if not exist ..\lib\notrealengine\lib\SDL\build-windows\Release\SDL2.dll (
 
@@ -20,6 +20,6 @@ if not exist .\x64\Release\SDL2.dll (
 
 	echo Copying SDL2.dll...
 	
-	move ..\lib\notrealengine\lib\SDL\build-windows\Release\SDL2.dll .\x64\Release
+	move ..\lib\notrealengine\lib\SDL\build-windows\Release\SDL2.dll .\x64\UsingExternalLibs-Release
 
 )

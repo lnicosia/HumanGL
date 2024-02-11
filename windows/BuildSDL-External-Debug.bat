@@ -1,11 +1,11 @@
 @echo off
 SetLocal EnableDelayedExpansion
 
-if not exist .\x64\Release\SDL2.dll (
+if not exist .\x64\UsingExternalLibs-Debug\SDL2d.dll (
 
-	if not exist ..\lib\notrealengine\lib\SDL\build-windows\Release\SDL2.dll (
+	if not exist ..\lib\notrealengine\lib\SDL\build-windows\Debug\SDL2d.dll (
 
-		echo Buildling SDL in Release...
+		echo Buildling SDL in Debug...
 
 		if not exist ..\lib\notrealengine\lib\SDL\include\SDL.h (
 			git submodule update --init --recursive --progress ..\lib\notrealengine\
@@ -14,12 +14,10 @@ if not exist .\x64\Release\SDL2.dll (
 			md ..\lib\notrealengine\lib\SDL\build-windows
 		)
 		cmake -S ..\lib\notrealengine\lib\SDL\ -G "Visual Studio 16 2019" -T "v142" -B ..\lib\notrealengine\lib\SDL\build-windows
-		cmake --build ..\lib\notrealengine\lib\SDL\build-windows --config Release
+		cmake --build ..\lib\notrealengine\lib\SDL\build-windows --config Debug
 		
 	)
 
-	echo Copying SDL2.dll...
+	move ..\lib\notrealengine\lib\SDL\build-windows\Debug\SDL2d.dll .\x64\UsingExternalLibs-Debug
 	
-	move ..\lib\notrealengine\lib\SDL\build-windows\Release\SDL2.dll .\x64\Release
-
 )
