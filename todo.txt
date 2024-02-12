@@ -1,5 +1,4 @@
-Use shared libs instead of static.
-Handle -j flags correctly.
+(linux) Handle -j flags correctly.
 Build freetype without harfbuzz, it does not compile if the user does not have it.
 Does not work on WSL when SDL audio can't init -> Add compile options to choose what to init
 Segfaults when closing (on WSL).
