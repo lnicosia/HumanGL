@@ -96,8 +96,9 @@ Run `make CUSTOM_LIBS=1` to build without linking to any external library instea
 
 ### Windows
 
-Tested with: Visual Studio 2019. Not working with Visual Studio 2022
+Requires Visual Studio 2019. Not working with Visual Studio 2022
 Cmake is required.
+Run Setup.bat in the `windows/` folder.
 Build the solution in the `windows/` folder. It will produce a `HumanGL.exe` binary located in `windows\x64\[Config]\` where [Config] is the configuration you built the project with.
 
 Choose between the configurations to build with or without external libraries.
