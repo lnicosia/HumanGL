@@ -88,7 +88,8 @@ OpenGL 4.0 is required (hence it is not going to work on Virtual Box's Linux mac
 
 ### Linux, WSL
 
-A `clang` version compatible with C++20 and `cmake` are required.
+`clang` version compatible with C++20, `make` and `cmake` are required.
+Dependencies: OpenGL and X headers and harfbuzz (`sudo apt-get install libgl-dev libxext-dev libharfbuzz-dev`)
 
 Run `make` (-j flag is not supported). It will produce a `humangl` binary.
 
@@ -96,7 +97,7 @@ Run `make CUSTOM_LIBS=1` to build without linking to any external library instea
 
 ### Windows
 
-Requires Visual Studio 2019. Not working with Visual Studio 2022
+Requires Visual Studio 2019 (v142). Not working with Visual Studio 2022
 Cmake is required.
 Run Setup.bat in the `windows/` folder.
 Build the solution in the `windows/` folder. It will produce a `HumanGL.exe` binary located in `windows\x64\[Config]\` where [Config] is the configuration you built the project with.
