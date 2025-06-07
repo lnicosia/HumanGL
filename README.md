@@ -88,9 +88,9 @@ OpenGL 4.0 is required (hence it is not going to work on Virtual Box's Linux mac
 
 ### Linux, WSL
 
-A `clang` version compatible with C++20 is required.
+A `clang` version compatible with C++20 and `cmake` are required.
 
-Run `make`. It will produce a `humangl` binary.
+Run `make` (-j flag is not supported). It will produce a `humangl` binary.
 
 Run `make CUSTOM_LIBS=1` to build without linking to any external library instead (except for SDL and glad).
 
